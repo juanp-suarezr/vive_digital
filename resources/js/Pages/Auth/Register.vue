@@ -261,7 +261,7 @@
 
                 <div class="flex w-full justify-center">
                     <vue-qrcode
-                        :value="route('registrados.index', { identificacion: form.identificacion, origin: 'validation' })" />
+                        :value="route('registrados.index', { identificacion: form.identificacion, origin: 'validation', fechaCreacion: fecha_inicio })" />
                 </div>
 
 
@@ -466,14 +466,14 @@ const submit = () => {
 
     form.post(route('registro'), {
         onSuccess: () => {
-            // visible.value = true,
+            visible.value = true,
 
 
-            router.get(
-                "/registrados",
-                { search: form.identificacion, origin: 'validation', fechaCreacion: props.fecha_inicio },
+            // router.get(
+            //     "/registrados",
+            //     { search: form.identificacion, origin: 'validation', fechaCreacion: props.fecha_inicio },
 
-            );
+            // );
         },
 
         onError: () => {
