@@ -18,7 +18,7 @@
                 <HomeIcon class="h-6 w-6 text-white" />
                 <span class="mx-3">Inicio</span>
             </nav-link>
-            <nav-link :href="route('about')" :active="route().current('about')">
+            <nav-link  :href="route('about')" :active="route().current('about')" class="hidden">
                 <FireIcon class="h-6 w-6 text-white" />
                 <span class="mx-3">Pagina </span>
             </nav-link>
@@ -27,7 +27,7 @@
                 <ClipboardDocumentIcon class="h-6 w-6 text-white" />
                 <span class="mx-3">Registrados </span>
             </nav-link>
-            <nav-link :href="route('perfil.index')" :active="route().current().includes('perfil')">
+            <nav-link :href="route('perfil.index')" :active="route().current().includes('perfil')" class="hidden">
                 <DocumentIcon class="h-6 w-6 text-white" />
                 <span class="mx-3">Editar información </span>
             </nav-link>
