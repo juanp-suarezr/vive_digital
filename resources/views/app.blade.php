@@ -3,8 +3,11 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="keywords" content="Vive Digital, vive digital, puntos vive digital, conexion gratis, internet gratis, pereira, puntos acceso internet pereira">
+        <meta name="description" content="Sitio diseñado el registro, oferta e información relevante de los puntos vive digital de la alcaldía de Pereira">
+        <meta name="author" content="M.Sc.&#169; Alcaldía de Pereira - Taytech">
 
-        <title inertia>{{ config('app.name', 'Laravel') }}</title>
+        <title inertia>{{ config('app.name', 'Vive Digital') }}</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
