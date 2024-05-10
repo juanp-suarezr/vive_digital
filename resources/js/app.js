@@ -13,7 +13,7 @@ import PrimeVue from 'primevue/config';
 import 'vue-toast-notification/dist/theme-default.css';
 
 
-const appName = import.meta.env.VITE_APP_NAME || 'Vive Digital';
+const appName = 'Vive Digital';
 
 createInertiaApp({
     title: (title) => `${title} - ${appName}`,
