@@ -466,14 +466,7 @@ const submit = () => {
 
     form.post(route('registro'), {
         onSuccess: () => {
-            visible.value = true,
-
-
-            // router.get(
-            //     "/registrados",
-            //     { search: form.identificacion, origin: 'validation', fechaCreacion: props.fecha_inicio },
-
-            // );
+            visible.value = true;
         },
 
         onError: () => {
