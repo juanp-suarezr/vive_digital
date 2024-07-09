@@ -22,6 +22,7 @@ class Perfil extends Model
     protected $fillable = [
         'descripcion',
         'telefono',
+        'celular',
         'email',
         'instagram',
         'facebook',

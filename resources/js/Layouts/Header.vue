@@ -13,7 +13,7 @@
         <div class="flex items-center">
             <dropdown>
                 <template #trigger>
-                    <button @click="dropdownOpen = !dropdownOpen" class="relative block overflow-hidden">
+                    <button v-tooltip.bottom="{ value: 'Ajustes', autoHide: false }" @click="dropdownOpen = !dropdownOpen" class="relative block overflow-hidden">
                         {{ $page.props.auth.user.name ? $page.props.auth.user.name : '' }}
                     </button>
                 </template>

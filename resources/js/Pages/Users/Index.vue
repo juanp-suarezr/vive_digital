@@ -101,9 +101,9 @@
                                         </span>
                                     </td>
                                     <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                                        <SecondaryButton :href="route('users.edit', user.id)">
+                                        <SecondaryLink :href="route('users.edit', user.id)">
                                             Editar
-                                        </SecondaryButton>
+                                        </SecondaryLink>
                                     </td>
                                 </tr>
                             </tbody>
@@ -127,7 +127,7 @@ import PrimaryLink from '@/Components/PrimaryLink.vue';
 import Pagination from '@/Components/Pagination.vue'
 import { Head } from '@inertiajs/vue3';
 import { router } from '@inertiajs/vue3'
-import SecondaryButton from "@/Components/SecondaryButton.vue";
+import SecondaryLink from "@/Components/SecondaryLink.vue";
 import Avatar from 'primevue/avatar';
 
 const props = defineProps({

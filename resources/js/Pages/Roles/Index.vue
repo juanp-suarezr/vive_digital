@@ -37,9 +37,9 @@
                         <td
                             class="inline-flex w-full border-b border-gray-200 bg-white sm:px-5 sm:py-5 p-2 sm:text-sm text-xs">
 
-                            <SecondaryButton :href="route('roles.edit', role.id)" class="mr-2">
+                            <SecondaryLink :href="route('roles.edit', role.id)" class="mr-2">
                                 Editar
-                            </SecondaryButton>
+                            </SecondaryLink>
 
                             <DangerButton @click="confirmUserDeletion(role.id)">Eliminar</DangerButton>
 
@@ -100,6 +100,7 @@ import { Head, Link, useForm } from '@inertiajs/vue3';
 import { router } from '@inertiajs/vue3'
 import { ref, computed, watch, inject } from 'vue';
 import SecondaryButton from "@/Components/SecondaryButton.vue";
+import SecondaryLink from "@/Components/SecondaryLink.vue";
 import DangerButton from '@/Components/DangerButton.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';

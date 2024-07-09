@@ -7,7 +7,7 @@ import MultiSelect from 'primevue/multiselect';
 
 import { Link, useForm, usePage } from '@inertiajs/vue3';
 import { inject, ref } from 'vue';
-import SecondaryButton from '@/Components/SecondaryButton.vue';
+import SecondaryLink from '@/Components/SecondaryLink.vue';
 
 const swal = inject('$swal');
 const props = defineProps({
@@ -111,9 +111,9 @@ const submit = () => {
                     </p>
                 </div>
                 <div class="col-span-2 text-right">
-                    <SecondaryButton :href="route('registrados.index')">
+                    <SecondaryLink :href="route('registrados.index')">
                         Regresar
-                    </SecondaryButton>
+                    </SecondaryLink>
                 </div>
             </div>
 

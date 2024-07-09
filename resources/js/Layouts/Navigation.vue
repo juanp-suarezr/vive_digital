@@ -18,7 +18,7 @@
                 <HomeIcon class="h-6 w-6 text-white" />
                 <span class="mx-3">Inicio</span>
             </nav-link>
-            <nav-link  :href="route('about')" :active="route().current('about')">
+            <nav-link  :href="route('Welcome')" :active="route().current('Welcome')">
                 <FireIcon class="h-6 w-6 text-white" />
                 <span class="mx-3">Pagina </span>
             </nav-link>

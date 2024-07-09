@@ -2,6 +2,7 @@
 
 namespace App\Http\Middleware;
 
+use App\Models\Perfil;
 use Illuminate\Http\Request;
 use Inertia\Middleware;
 
@@ -42,9 +43,16 @@ class HandleInertiaRequests extends Middleware
                     'success' => $request->session()->get('success'),
                 ];
             },
+
             'user.roles' => $request->user() ? $request->user()->roles->pluck('name') : [],
             'user.permissions' => $request->user() ? $request->user()->getPermissionsViaRoles()->pluck('name') : [],
             'showingMobileMenu' => false,
+            'accesibilidad' => [
+                'contraste' => false,
+                'letra' => 0,
+                'audio' => false,
+            ],
+            'infoPunto' => Perfil::with('punto')->get(),
         ]);
     }
 }

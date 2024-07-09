@@ -6,7 +6,8 @@
         <meta name="keywords" content="Vive Digital, vive digital, puntos vive digital, conexion gratis, internet gratis, pereira, puntos acceso internet pereira">
         <meta name="description" content="Sitio diseñado el registro, oferta e información relevante de los puntos vive digital de la alcaldía de Pereira">
         <meta name="author" content="M.Sc.&#169; Alcaldía de Pereira - Taytech">
-
+        <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+        
         <title inertia>{{ config('app.name', 'Vive Digital') }}</title>
 
         <!-- Fonts -->
@@ -18,7 +19,7 @@
         @vite(['resources/js/app.js', "resources/js/Pages/{$page['component']}.vue"])
         @inertiaHead
     </head>
-    <body class="font-sans antialiased">
+    <body class="font-sans antialiased overflow-x-hidden">
         @inertia
     </body>
 </html>

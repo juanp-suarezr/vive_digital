@@ -20,16 +20,24 @@ class Ofertas extends Model
         'nombre',
         'id_puntos',
         'horario',
+        'jornada',
         'fecha_init',
         'fecha_fin',
         'estado',
         'cupo',
         'tipo',
+        'lugar',
+        'banner',
         
     ];
 
     public function puntos_vive()
     {
         return $this->hasOne(Puntos::class, 'id', 'id_puntos');
+    }
+
+    public function inscripciones()
+    {
+        return $this->hasMany(Inscripciones::class, 'id_oferta', 'id');
     }
 }
