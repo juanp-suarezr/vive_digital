@@ -49,7 +49,7 @@
             </div>
         </div>
         <header class="w-full py-2 ps-8 flex bg-[#3366cc]">
-            <a class="flex w-5/6 sm:w-[20%] md:w-[10%]" href="https://www.gov.co/" target="_blank">
+            <a class="flex w-5/6 sm:w-[20%] md:w-[10%] z-20" href="https://www.gov.co/" target="_blank">
                 <figure>
                     <img class="w-full sm:w-5/6" :src="logoGobierno" alt="imagen de logo" title="Gobierno colombiano">
                     <figcaption lang="es" class="hidden">Esta es una imagen del logo del gobierno actual de colombia

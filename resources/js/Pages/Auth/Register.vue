@@ -525,20 +525,20 @@ const fetchUserInfo = debounce((newVal) => {
             .then((response) => {
 
                 info_usuario.value = response.data.registrados;
-                form.nombres = info_usuario.value ? info_usuario.value.nombres : '';
-                    form.apellidos = info_usuario.value ? info_usuario.value.apellidos : '';
-                    form.edad = info_usuario.value ? info_usuario.value.edad : 0;
-                    form.tipo_documento = info_usuario.value ? info_usuario.value.tipo_documento : '';
-                    form.direccion = info_usuario.value ? info_usuario.value.direccion : '';
-                    form.sector = info_usuario.value ? info_usuario.value.sector : '';
-                    form.telefono = info_usuario.value ? info_usuario.value.telefono : 0;
-                    form.email = info_usuario.value ? info_usuario.value.email : '';
-                    form.genero = info_usuario.value ? info_usuario.value.genero : '';
+                form.nombres = info_usuario.value ? info_usuario.value.nombres : form.nombres;
+                    form.apellidos = info_usuario.value ? info_usuario.value.apellidos : form.apellidos;
+                    form.edad = info_usuario.value ? info_usuario.value.edad : form.edad;
+                    form.tipo_documento = info_usuario.value ? info_usuario.value.tipo_documento : form.tipo_documento;
+                    form.direccion = info_usuario.value ? info_usuario.value.direccion : form.direccion;
+                    form.sector = info_usuario.value ? info_usuario.value.sector : form.sector;
+                    form.telefono = info_usuario.value ? info_usuario.value.telefono : form.telefono;
+                    form.email = info_usuario.value ? info_usuario.value.email : form.email;
+                    form.genero = info_usuario.value ? info_usuario.value.genero : form.genero;
                     form.condicion = info_usuario.value ? info_usuario.value.condicion : 'NA';
                     form.etnia = info_usuario.value ? info_usuario.value.etnia : 'NA';
-                    form.nivel_estudio = info_usuario.value ? info_usuario.value.nivel_estudio : '';
-                    form.codePunto = info_usuario.value ? info_usuario.value.codePunto : '';
-                    form.checked = info_usuario.value ? true : '';
+                    form.nivel_estudio = info_usuario.value ? info_usuario.value.nivel_estudio : form.nivel_estudio;
+                    form.codePunto = info_usuario.value ? info_usuario.value.codePunto : form.codePunto;
+                    form.checked = info_usuario.value ? true : form.checked;
 
                     
             })
