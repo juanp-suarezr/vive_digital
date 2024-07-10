@@ -53,7 +53,7 @@
 import NavLink from '@/Components/NavLink.vue';
 import SeparadorMenu from "@/Components/SeparadorMenu.vue";
 import { Link } from '@inertiajs/vue3';
-import imglogo_w from '/public/assets/img/logo_white.png'
+import imglogo_w from '/public/assets/img/logo_white.webp'
 import { ref } from 'vue'
 import { FingerPrintIcon, UserGroupIcon, HomeIcon, FireIcon, ClipboardDocumentIcon, BarsArrowDownIcon, DocumentIcon } from '@heroicons/vue/24/solid'
 
