@@ -1,6 +1,6 @@
 <script setup>
-import imglogo from '/public/assets/img/logo.png'
-import imglogoWhite from '/public/assets/img/logo_white.png'
+import imglogo from '/public/assets/img/logo.webp'
+import imglogoWhite from '/public/assets/img/logo_white.webp'
 import { ref, watch, inject } from 'vue';
 import { usePage } from '@inertiajs/vue3';
 

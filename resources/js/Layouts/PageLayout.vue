@@ -99,6 +99,7 @@
                     <div class="md:hidden z-20">
                         <!-- Mobile menu button -->
                         <button class="text-parrafo hover:text-secondary focus:outline-none"
+                            @click="isMobileMenuOpen = !isMobileMenuOpen"
                             :class="[{ '!text-yellow-200 font-bold': HandleContrast }]">
                             <svg class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -108,6 +109,18 @@
                     </div>
                 </div>
             </div>
+            <!-- Mobile menu -->
+            <div v-if="isMobileMenuOpen" class="md:hidden">
+                <ul class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                    <li>
+                        <a :href="route('register')"
+                            :class="[{ 'underline': route().current('register') }, { '!text-yellow-200 font-bold': HandleContrast }]"
+                            class="block text-parrafo hover:underline border-b-2 border-secondary py-2">Registro</a>
+                    </li>
+                    <!-- Añadir más elementos de menú aquí si es necesario -->
+                </ul>
+            </div>
+
         </nav>
 
         <main class="flex-1 overflow-y-auto overflow-x-hidden bg-light text-black">
@@ -181,9 +194,9 @@
 </template>
 
 <script setup>
-import logo from '../../../public/assets/img/logo.png';
-import logoBlanco from '../../../public/assets/img/logo_white.png';
-import logoGobierno from '../../../public/assets/img/gobierno.png';
+import logo from '../../../public/assets/img/logo.webp';
+import logoBlanco from '../../../public/assets/img/logo_white.webp';
+import logoGobierno from '../../../public/assets/img/gobierno.webp';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import { ArrowUpCircleIcon } from '@heroicons/vue/24/solid'
@@ -201,6 +214,8 @@ AOS.init();
 const HandleContrast = ref(usePage().props.accesibilidad.contraste);
 const HandleLetra = ref(usePage().props.accesibilidad.letra);
 const HandleActivated = ref('');
+// Variable para manejar el estado del menú móvil
+const isMobileMenuOpen = ref(false);
 
 const toggleContrast = () => {
     HandleContrast.value = !HandleContrast.value;

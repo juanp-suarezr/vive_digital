@@ -445,7 +445,7 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm, router, usePage } from '@inertiajs/vue3';
-import logoViveD from '../../../../public/assets/img/puntoViveDigital.png'
+import logoViveD from '../../../../public/assets/img/puntoViveDigital.webp'
 import Steps from 'primevue/steps';
 import { ref, watch, inject } from 'vue'
 import Dialog from 'primevue/dialog';

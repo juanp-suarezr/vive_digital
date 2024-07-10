@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Facades\Excel;
 
 
@@ -25,8 +26,8 @@ class RegistroController extends Controller
     public function index()
     {
 
-        
-        
+
+
         if (auth()->check()) {
 
             $registro = [];
@@ -72,7 +73,7 @@ class RegistroController extends Controller
                             $fecha_init = RequestFacade::input('fecha_init');
                             $fecha_end = RequestFacade::input('fecha_end');
 
-                            if($fecha_end == null) {
+                            if ($fecha_end == null) {
                                 $fecha_end = date('Y-m-d');
                             }
 
@@ -82,7 +83,7 @@ class RegistroController extends Controller
                         ->paginate(5)
                         ->withQueryString();
                 } else {
-                    
+
                     $registro = Registro::query()
 
                         ->when(RequestFacade::input('search'), function ($query, $search) {
@@ -93,11 +94,11 @@ class RegistroController extends Controller
                             $fecha_init = RequestFacade::input('fecha_init');
                             $fecha_end = RequestFacade::input('fecha_end');
 
-                            if($fecha_end == null) {
-                                
+                            if ($fecha_end == null) {
+
                                 $fecha_end = date('d-m-Y');
                             }
-                            
+
                             $query->whereBetween('created_at', [$fecha_init, $fecha_end]);
                         })->whereHas('puntos_vive', function ($query) {
                             $query->where('id_user', Auth::id()); // Filtrar por el ID del usuario autenticado
@@ -126,15 +127,15 @@ class RegistroController extends Controller
         }
     }
 
-    public function searchRegistrado() {
-        
+    public function searchRegistrado()
+    {
+
         return [
             'registrados' => Info_usuario::query()
-            ->when(RequestFacade::input('identificacion'), function ($query, $search) {
-                $query->where('identificacion', $search);
-            })->get()->first(),
+                ->when(RequestFacade::input('identificacion'), function ($query, $search) {
+                    $query->where('identificacion', $search);
+                })->get()->first(),
         ];
-
     }
 
     /**
@@ -145,9 +146,7 @@ class RegistroController extends Controller
      */
     public function create(Request $request)
     {
-
-        $puntos = Puntos::where('code', $request->codePunto)->get();
-
+        // Validación de los datos del request
         $request->validate([
             'nombres' => 'required|string|max:100',
             'apellidos' => 'required|string|max:100',
@@ -163,37 +162,59 @@ class RegistroController extends Controller
             'etnia' => 'required',
             'nivel_estudio' => 'required',
             'codePunto' => 'required',
-
         ]);
 
-        $user = Registro::create([
-            'nombres' => $request->nombres,
-            'apellidos' => $request->apellidos,
-            'edad' => $request->edad,
-            'tipo_documento' => $request->tipo_documento,
-            'identificacion' => $request->identificacion,
-            'direccion' => $request->direccion,
-            'sector' => $request->sector,
-            'telefono' => $request->telefono,
-            'email' => $request->email,
-            'genero' => $request->genero,
-            'condicion' => $request->condicion,
-            'etnia' => $request->etnia,
-            'nivel_estudio' => $request->nivel_estudio,
-            'id_puntos' => $puntos[0]->id,
+        // Obtener el punto correspondiente
+        $puntos = Puntos::where('code', $request->codePunto)->get();
 
-        ]);
+        DB::transaction(function () use ($request, $puntos) {
+            // Crear el registro en la tabla 'registro'
+            $user = Registro::create([
+                'nombres' => $request->nombres,
+                'apellidos' => $request->apellidos,
+                'edad' => $request->edad,
+                'tipo_documento' => $request->tipo_documento,
+                'identificacion' => $request->identificacion,
+                'direccion' => $request->direccion,
+                'sector' => $request->sector,
+                'telefono' => $request->telefono,
+                'email' => $request->email,
+                'genero' => $request->genero,
+                'condicion' => $request->condicion,
+                'etnia' => $request->etnia,
+                'nivel_estudio' => $request->nivel_estudio,
+                'id_puntos' => $puntos[0]->id,
+            ]);
 
-        event(new Registered($user));
+            // Verificar si ya existe un registro con la misma identificación en la tabla 'info_usuario'
+            $existingUser = Info_usuario::where('identificacion', $request->identificacion)->first();
 
-        // $fechaCreacion = $user->created_at;
-        // dd($fechaCreacion->format('Y-m-d H:i:s')); "2024-04-07 16:40:17"
+            if (!$existingUser) {
+                // Crear el registro en la tabla 'info_usuario' solo si no existe
+                Info_usuario::create([
+                    'nombres' => $user->nombres,
+                    'apellidos' => $user->apellidos,
+                    'edad' => $user->edad,
+                    'tipo_documento' => $user->tipo_documento,
+                    'identificacion' => $user->identificacion,
+                    'direccion' => $user->direccion,
+                    'sector' => $user->sector,
+                    'telefono' => $user->telefono,
+                    'email' => $user->email,
+                    'genero' => $user->genero,
+                    'condicion' => $user->condicion,
+                    'etnia' => $user->etnia,
+                    'nivel_estudio' => $user->nivel_estudio,
+                ]);
+            }
 
-
+            event(new Registered($user));
+        });
 
         return redirect()->route('register');
-        // return Redirect::route('register')->with('fechaCreacion', $fechaCreacion->format('Y-m-d H:i:s'));
     }
+
+
 
     public function edit(Request $request)
     {
