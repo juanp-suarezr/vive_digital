@@ -8,7 +8,7 @@
         <meta name="author" content="M.Sc.&#169; Alcaldía de Pereira - Taytech">
         <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
         
-        <title inertia>{{ config('app.name', 'Vive Digital') }}</title>
+        <title inertia>Vive Digital</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">
