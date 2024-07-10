@@ -453,6 +453,7 @@ import VueQrcode from 'vue-qrcode';
 import { useToast } from 'vue-toast-notification';
 import { SpeakerWaveIcon, PlayCircleIcon } from '@heroicons/vue/24/solid';
 import audioIntro from '../../../../public/assets/audios/inicioForm.wav'
+import axios from 'axios';
 
 const $toast = useToast();
 
@@ -472,6 +473,7 @@ const props = defineProps({
 
 const isContrast = ref(usePage().props.accesibilidad.contraste);
 const letraSize = ref(usePage().props.accesibilidad.letra);
+const info_usuario = ref([]);
 
 watch(() => usePage().props.accesibilidad.contraste, (newVal) => {
     isContrast.value = newVal;
@@ -484,23 +486,70 @@ watch(() => usePage().props.accesibilidad.letra, (newVal) => {
 });
 
 const form = useForm({
-    nombres: 'jp',
-    apellidos: 'suarez',
-    edad: 15,
-    tipo_documento: 'Cédula Ciudadanía',
-    identificacion: 1004734004,
-    direccion: 'via armenia',
-    sector: 'huertas',
-    telefono: 3008634104,
-    email: 'jpsuarez40@gmail.com',
-    genero: 'Masculino',
+    nombres: '',
+    apellidos: '',
+    edad: 0,
+    tipo_documento: '',
+    identificacion: 0,
+    direccion: '',
+    sector: '',
+    telefono: 0,
+    email: '',
+    genero: '',
     condicion: 'NA',
     etnia: 'NA',
-    nivel_estudio: 'universitario',
+    nivel_estudio: '',
     codePunto: '',
-    checked: '',
+    checked:  '',
 
+});
 
+// Debounce function
+function debounce(func, wait) {
+    let timeout;
+    return function (...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+    };
+}
+
+const fetchUserInfo = debounce((newVal) => {
+    if (newVal.length > 8) {
+        console.log(newVal);
+        axios
+            .get('/searchRegistrado', {
+                params: {
+                    identificacion: newVal,
+                },
+            })
+            .then((response) => {
+
+                info_usuario.value = response.data.registrados;
+                form.nombres = info_usuario.value ? info_usuario.value.nombres : '';
+                    form.apellidos = info_usuario.value ? info_usuario.value.apellidos : '';
+                    form.edad = info_usuario.value ? info_usuario.value.edad : 0;
+                    form.tipo_documento = info_usuario.value ? info_usuario.value.tipo_documento : '';
+                    form.direccion = info_usuario.value ? info_usuario.value.direccion : '';
+                    form.sector = info_usuario.value ? info_usuario.value.sector : '';
+                    form.telefono = info_usuario.value ? info_usuario.value.telefono : 0;
+                    form.email = info_usuario.value ? info_usuario.value.email : '';
+                    form.genero = info_usuario.value ? info_usuario.value.genero : '';
+                    form.condicion = info_usuario.value ? info_usuario.value.condicion : 'NA';
+                    form.etnia = info_usuario.value ? info_usuario.value.etnia : 'NA';
+                    form.nivel_estudio = info_usuario.value ? info_usuario.value.nivel_estudio : '';
+                    form.codePunto = info_usuario.value ? info_usuario.value.codePunto : '';
+                    form.checked = info_usuario.value ? true : '';
+
+                    
+            })
+            .catch((error) => {
+                console.error("Error loading:", error);
+            });
+    }
+}, 300); // 300 ms debounce delay
+
+watch(() => form.identificacion, (newVal) => {
+    fetchUserInfo(newVal);
 });
 
 //valida si ya se reprodujo el audio

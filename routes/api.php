@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\RegistroController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\api\UserAuthController;
@@ -22,7 +23,7 @@ Route::get('userinfo',function () {
     return response()->json([
         'status' => true,
         'message' => "Consume API Rest 2.1",
-        'product' => 'JM ACEVEDO'
+        'product' => 'VIVE DIGITAL'
     ], 200);
 });
 
@@ -36,5 +37,7 @@ Route::middleware('auth:sanctum')->group( function () {
         Route::delete('/products/{id}', 'destroy');
     }); */
 });
+
+Route::get('/registrados', [RegistroController::class, 'index']);
 
 Route::post('login',[UserAuthController::class,'login']);

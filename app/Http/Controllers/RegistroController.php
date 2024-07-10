@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Exports\RegisterExports;
 use Illuminate\Support\Facades\Request as RequestFacade;
 use App\Http\Controllers\Controller;
+use App\Models\Info_usuario;
 use App\Models\Puntos;
 use App\Models\Registro;
 use App\Models\User;
@@ -123,6 +124,17 @@ class RegistroController extends Controller
         } else {
             return redirect()->route('login', ['origin' => 'validation', 'identificacion' => RequestFacade::input('search')]);
         }
+    }
+
+    public function searchRegistrado() {
+        
+        return [
+            'registrados' => Info_usuario::query()
+            ->when(RequestFacade::input('identificacion'), function ($query, $search) {
+                $query->where('identificacion', $search);
+            })->get()->first(),
+        ];
+
     }
 
     /**
