@@ -7,7 +7,7 @@ import TextInput from '@/Components/TextInput.vue';
 import MultiCheckbox from "@/Components/MultiCheckbox.vue";
 import { Head, useForm, usePage, Link } from '@inertiajs/vue3';
 import { ref, watch, inject } from 'vue';
-import SecondaryButton from "@/Components/SecondaryButton.vue";
+import SecondaryLink from "@/Components/SecondaryLink.vue";
 const swal = inject('$swal');
 
 const props = defineProps({
@@ -51,9 +51,9 @@ watch(
                     Nuevo Rol
                 </h3>
                 <div class="text-right">
-                    <SecondaryButton :href="route('roles.index')">
+                    <SecondaryLink :href="route('roles.index')">
                         Regresar
-                    </SecondaryButton>
+                    </SecondaryLink>
                 </div>
 
             </div>

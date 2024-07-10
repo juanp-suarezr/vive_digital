@@ -158,9 +158,9 @@
                                     </td>
 
                                     <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                                        <SecondaryButton :href="route('registrados.edit', { id: user.id })">
+                                        <SecondaryLink :href="route('registrados.edit', { id: user.id })">
                                             Editar
-                                        </SecondaryButton>
+                                        </SecondaryLink>
                                     </td>
 
                                 </tr>
@@ -185,7 +185,7 @@ import PrimaryLink from '@/Components/PrimaryLink.vue';
 import Pagination from '@/Components/Pagination.vue'
 import { Head } from '@inertiajs/vue3';
 import { router } from '@inertiajs/vue3'
-import SecondaryButton from "@/Components/SecondaryButton.vue";
+import SecondaryLink from "@/Components/SecondaryLink.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { DocumentArrowDownIcon } from '@heroicons/vue/24/solid';
 import Calendar from 'primevue/calendar';

@@ -1,6 +1,12 @@
 <template>
     <button :type="type"
-        class="inline-flex items-center text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+        class="inline-flex items-center text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2"
+        :class="[
+            letraSize == -2 ? '!sm:text-[0.65rem]'
+                : letraSize == -1 ? '!text-xs'
+                    : letraSize == 1 ? '!text-base'
+                        : letraSize == 2 ? '!text-lg' : ''
+        ]">
         <CursorArrowRippleIcon class="h-6 w-6 text-white" />
         <slot />
     </button>
@@ -8,6 +14,13 @@
 
 <script setup>
 import { CursorArrowRippleIcon } from '@heroicons/vue/24/solid'
+import { onMounted, ref, watch } from 'vue';
+import { usePage } from '@inertiajs/vue3';
+
+const letraSize = ref(usePage().props.accesibilidad.letra);
+watch(() => usePage().props.accesibilidad.letra, (newVal) => {
+    letraSize.value = newVal;
+});
 
 defineProps({
     type: {

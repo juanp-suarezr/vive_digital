@@ -12,9 +12,9 @@
                     Nuevo Usuario
                 </h3>
                 <div class="text-right">
-                    <SecondaryButton :href="route('users.index')">
+                    <SecondaryLink :href="route('users.index')">
                         Regresar
-                    </SecondaryButton>
+                    </SecondaryLink>
                 </div>
 
             </div>
@@ -81,7 +81,7 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm } from '@inertiajs/vue3';
-import SecondaryButton from "@/Components/SecondaryButton.vue";
+import SecondaryLink from "@/Components/SecondaryLink.vue";
 import MultiSelect from 'primevue/multiselect';
 import { inject } from 'vue';
 
