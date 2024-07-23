@@ -31,6 +31,7 @@ class Registro extends Model
         'etnia',
         'nivel_estudio',
         'id_puntos',
+        'tipo_servicio',
     ];
 
     public function puntos_vive()

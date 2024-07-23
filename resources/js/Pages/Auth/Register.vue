@@ -100,7 +100,7 @@
 
                                         <option class="text-black text-[9px] sm:text-xs" v-for="tipo in tipoIden"
                                             :key="tipo.id" :value="tipo.nombre">
-                                            {{ tipo.code == 'CC' || tipo.code == 'TI' ? tipo.code : tipo.nombre }}
+                                            {{ tipo.code == 'CC' || tipo.code == 'TI' || tipo.code == 'PPT' ? tipo.code : tipo.nombre }}
                                         </option>
                                     </select>
                                     <InputError class="mt-1" :message="form.errors.tipo_documento" />
@@ -352,6 +352,30 @@
                             </select>
                             <InputError class="mt-1" :message="form.errors.codePunto" />
                         </div>
+                        <!-- Tipo servicios -->
+                        <div class="mb-4">
+                            <InputLabel :class="[isContrast ? '!text-yellow-200 font-bold' : '',
+                            letraSize == -2 ? '!sm:text-[0.65rem] !text-[0.55rem]'
+                                : letraSize == -1 ? '!sm:text-xs !text-[0.65rem]'
+                                    : letraSize == 1 ? '!sm:text-lg !text-sm'
+                                        : letraSize == 2 ? '!sm:text-xl !text-base' : ''
+                            ]" for="tipo_servicios" value="Tipo de servicio a usar"
+                                class="text-neutral-500 sm:text-sm text-xs" />
+                            <select id="tipo_servicios" name="tipo_servicios" v-model="form.tipo_servicio" :class="[isContrast ? '!text-yellow-200 font-bold bg-black' : '',
+                            letraSize == -2 ? '!text-[0.65rem]'
+                                : letraSize == -1 ? '!text-sm'
+                                    : letraSize == 1 ? '!text-lg'
+                                        : letraSize == 2 ? '!text-xl' : ''
+                            ]"
+                                class="block w-full sm:px-4 sm:py-2 p-0 mt-1 text-base text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-blue-500 focus:border-blue-500">
+
+                                <option class="text-black" :class="[isContrast ? '!text-yellow-200 font-bold' : '']"
+                                    v-for="niv in tipoServ" :key="niv.id" :value="niv.code">
+                                    {{ niv.nombre }}
+                                </option>
+                            </select>
+                            <InputError class="mt-1" :message="form.errors.tipo_servicio" />
+                        </div>
 
                         <!-- ncheck tratamiento datos -->
                         <div class="mb-4 col-span-2">
@@ -501,6 +525,7 @@ const form = useForm({
     nivel_estudio: '',
     codePunto: '',
     checked:  '',
+    tipo_servicio: '',
 
 });
 
@@ -539,6 +564,7 @@ const fetchUserInfo = debounce((newVal) => {
                     form.nivel_estudio = info_usuario.value ? info_usuario.value.nivel_estudio : form.nivel_estudio;
                     form.codePunto = info_usuario.value ? info_usuario.value.codePunto : form.codePunto;
                     form.checked = info_usuario.value ? true : form.checked;
+                    form.tipo_servicio = info_usuario.value ? info_usuario.value.tipo_servicio : form.tipo_servicio;
 
                     
             })
@@ -578,7 +604,8 @@ const tipoIden = ref([
     { id: '2', nombre: "Cédula Ciudadanía", code: 'CC' },
     { id: '3', nombre: "Cédula Extranjería", code: 'CE' },
     { id: '4', nombre: "Pasaporte", code: 'P' },
-    { id: '5', nombre: "Otro", code: 'O' },
+    { id: '5', nombre: "Permiso por Protección Temporal", code: 'PPT' },
+    { id: '6', nombre: "Otro", code: 'O' },
 ]);
 //ITEMS DE CONDICIONES
 const condiciones = ref([
@@ -612,6 +639,15 @@ const nivel_estudios = ref([
     { id: '4', nombre: 'Tecnologico', code: 'tecnologico' },
     { id: '5', nombre: 'Universitario', code: 'universitario' },
     { id: '6', nombre: 'Postgrado', code: 'postgrado' },
+]);
+
+//ITEMS DEL TIPO DE Servicios
+const tipoServ = ref([
+    { id: '0', nombre: "Acceso a Internet", code: 'acceso internet' },
+    { id: '1', nombre: "Préstamo de instalaciones", code: 'prestamo instalaciones' },
+    { id: '2', nombre: "Capacitaciones", code: 'capacitaciones' },
+    { id: '3', nombre: "Entretenimiento", code: 'entretenimiento' },
+    
 ]);
 
 //step activo

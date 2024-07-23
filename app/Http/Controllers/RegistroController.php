@@ -162,6 +162,7 @@ class RegistroController extends Controller
             'etnia' => 'required',
             'nivel_estudio' => 'required',
             'codePunto' => 'required',
+            'tipo_servicio' => 'required',
         ]);
 
         // Obtener el punto correspondiente
@@ -184,6 +185,7 @@ class RegistroController extends Controller
                 'etnia' => $request->etnia,
                 'nivel_estudio' => $request->nivel_estudio,
                 'id_puntos' => $puntos[0]->id,
+                'tipo_servicio' => $request->tipo_servicio,
             ]);
 
             // Verificar si ya existe un registro con la misma identificación en la tabla 'info_usuario'
@@ -208,7 +210,7 @@ class RegistroController extends Controller
                 ]);
             }
 
-            event(new Registered($user));
+            // event(new Registered($user));
         });
 
         return redirect()->route('register');
@@ -246,7 +248,8 @@ class RegistroController extends Controller
             'genero' => 'required',
             'condicion' => 'required',
             'etnia' => 'required',
-            'nivel_estudio' => 'required'
+            'nivel_estudio' => 'required',
+            'tipo_servicio' => 'required',
         ]);
         // Actualizar el modelo de usuario con los datos validados
 

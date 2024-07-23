@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\RegisteredUserController;
 use Illuminate\Support\Facades\Request as RequestFacade;
 use App\Http\Controllers\EventosController;
 use App\Http\Controllers\OfertasController;
@@ -72,6 +73,8 @@ Route::get('/home', function () {
 Route::post('registro', [RegistroController::class, 'create'])->name('registro');
 Route::get('/registrados', [RegistroController::class, 'index'])->name('registrados.index');
 Route::get('/searchRegistrado', [RegistroController::class, 'searchRegistrado'])->name('searchRegistrado');
+Route::get('register', [RegisteredUserController::class, 'create'])
+                ->name('register');
 
 
 

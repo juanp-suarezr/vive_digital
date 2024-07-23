@@ -56,6 +56,7 @@ class RegisterExports implements FromCollection, WithHeadings, WithStyles, Shoul
                 'condicion',
                 'etnia',
                 'nivel_estudio',
+                'tipo_servicio',
                 'id_puntos', // Necesario para la relación
                 'created_at'
             )
@@ -87,6 +88,7 @@ class RegisterExports implements FromCollection, WithHeadings, WithStyles, Shoul
                         'condicion',
                         'etnia',
                         'nivel_estudio',
+                        'tipo_servicio',
                         'id_puntos', // Necesario para la relación
                         'created_at'
                     )
