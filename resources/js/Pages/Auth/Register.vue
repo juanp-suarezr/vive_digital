@@ -440,9 +440,9 @@
                 </div>
 
 
-                <!-- next button -->
+                <!-- finalizar button -->
                 <div class="flex justify-center items-center justify-end mt-6 z-20">
-                    <primaryButton type="button" @click="visible = false" :class="{ 'opacity-25': form.processing }"
+                    <primaryButton type="button" @click="closeModal" :class="{ 'opacity-25': form.processing }"
                         :disabled="form.processing">
                         Finalizar
                     </primaryButton>
@@ -739,6 +739,11 @@ const handleAudio = num => {
         usePage().props.accesibilidad.audio = false;
     }
 
+}
+
+const closeModal = () => {
+    visible.value = false;
+    window.location.reload();
 }
 
 const submit = () => {

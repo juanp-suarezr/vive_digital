@@ -178,7 +178,7 @@
             </div>
         </div>
         <div class="flex flex-col items-center border-t bg-white px-5 py-5 xs:flex-row xs:justify-between">
-            <pagination v-if="registrados.links" :links="registrados.links" />
+            <pagination v-if="registrados.length > 1" :links="props.registro.links" />
         </div>
 
     </AuthenticatedLayout>
