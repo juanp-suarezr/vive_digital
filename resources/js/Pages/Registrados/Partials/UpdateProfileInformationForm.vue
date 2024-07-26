@@ -88,10 +88,12 @@ const nivel_estudios = ref([
 
 //ITEMS DEL TIPO DE Servicios
 const tipoServ = ref([
-    { id: '0', nombre: "Acceso a Internet", code: 'acceso internet' },
-    { id: '1', nombre: "Préstamo de instalaciones", code: 'prestamo instalaciones' },
+    { id: '0', nombre: "Uso internet - Estudio", code: 'Uso internet-estudio' },
+    { id: '1', nombre: "Uso internet - Ocio", code: 'Uso internet-ocio' },
     { id: '2', nombre: "Capacitaciones", code: 'capacitaciones' },
-    { id: '3', nombre: "Entretenimiento", code: 'entretenimiento' },
+    { id: '3', nombre: "Préstamo de aulas", code: 'prestamo aulas' },
+    { id: '4', nombre: "Tramites", code: 'tramites' },
+    { id: '5', nombre: "Videojuegos", code: 'videojuegos' },
     
 ]);
 

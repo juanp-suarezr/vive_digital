@@ -174,7 +174,7 @@
                             ]" class="sm:text-sm text-xs" for="email" value="Correo electronico" />
                             <TextInput id="email" type="email" class="mt-1 block w-full p-0 sm:p-2"
                                 :class="[isContrast ? '!text-yellow-200 font-bold bg-black' : '']" v-model="form.email"
-                                required autofocus autocomplete="username" />
+                                autofocus autocomplete="username" />
                             <InputError class="mt-1" :message="form.errors.email" />
                         </div>
 
@@ -240,7 +240,7 @@
                                     ]" class="sm:text-sm text-xs" for="genero" value="¿Cual?" />
                                     <TextInput id="genero" type="text" class="mt-1 block w-full p-0 sm:p-1"
                                         :class="[isContrast ? '!text-yellow-200 font-bold bg-black' : '']"
-                                        v-model="form.genero" autofocus autocomplete="genero" />
+                                        v-model="form.genero" autocomplete="genero" />
                                     <InputError class="mt-1" :message="form.errors.genero" />
                                 </div>
                                 <div v-else class="sm:ms-6">
@@ -643,10 +643,12 @@ const nivel_estudios = ref([
 
 //ITEMS DEL TIPO DE Servicios
 const tipoServ = ref([
-    { id: '0', nombre: "Acceso a Internet", code: 'acceso internet' },
-    { id: '1', nombre: "Préstamo de instalaciones", code: 'prestamo instalaciones' },
+    { id: '0', nombre: "Uso internet - Estudio", code: 'Uso internet-estudio' },
+    { id: '1', nombre: "Uso internet - Ocio", code: 'Uso internet-ocio' },
     { id: '2', nombre: "Capacitaciones", code: 'capacitaciones' },
-    { id: '3', nombre: "Entretenimiento", code: 'entretenimiento' },
+    { id: '3', nombre: "Préstamo de aulas", code: 'prestamo aulas' },
+    { id: '4', nombre: "Tramites", code: 'tramites' },
+    { id: '5', nombre: "Videojuegos", code: 'videojuegos' },
     
 ]);
 
@@ -677,7 +679,7 @@ const nextStep = num => {
     isValidate.value = false;
     switch (num) {
         case 1:
-            if (form.nombres && form.apellidos && form.identificacion && form.edad && form.tipo_documento && form.telefono && form.direccion && form.sector && form.email) {
+            if (form.nombres && form.apellidos && form.identificacion && form.edad && form.tipo_documento && form.telefono && form.direccion && form.sector) {
                 isValidate.value = true;
             }
             break;
@@ -714,9 +716,7 @@ const nextStep = num => {
         if (!form.telefono) {
             form.errors.telefono = 'Este campo es requerido.';
         }
-        if (!form.email) {
-            form.errors.email = 'Este campo es requerido.';
-        }
+        
 
     }
 
