@@ -78,6 +78,10 @@ class RegistroController extends Controller
                             }
 
                             $query->whereBetween('created_at', [$fecha_init, $fecha_end]);
+                        })->when(RequestFacade::input('punto'), function ($query, $punto) {
+                            $query->whereHas('puntos_vive', function ($query) use ($punto) {
+                                $query->where('id', $punto);
+                            });
                         })
                         ->latest('created_at') // Ordena los resultados por la columna 'created_at' de forma descendente
                         ->paginate(5)
@@ -117,7 +121,7 @@ class RegistroController extends Controller
 
                 [
                     'registro' => $registro,
-                    'filters' => RequestFacade::only(['search', 'fecha_init', 'fecha_end']),
+                    'filters' => RequestFacade::only(['search', 'fecha_init', 'fecha_end', 'punto']),
                     'validation' => $isValidation,
                     'puntos' => Puntos::all(),
                 ]
