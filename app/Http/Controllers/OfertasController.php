@@ -30,7 +30,7 @@ class OfertasController extends Controller
     {
         $puntosID = [];
         $puntos = Puntos::where('id_user', Auth::id())->get();
-        if (Auth::user()->roles[0]->name == 'Administrador') {
+        if (Auth::user()->roles[0]->name == 'Administrador' || Auth::user()->roles[0]->name == 'Supervisor') {
             $puntos = Puntos::all();
         } else {
             $puntosID = $puntos[0]->id;

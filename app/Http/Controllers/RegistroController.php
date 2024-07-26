@@ -38,7 +38,7 @@ class RegistroController extends Controller
             if (RequestFacade::input('origin') == 'validation') {
 
                 $isValidation = true;
-                if (Auth::user()->roles[0]->name == 'Administrador') {
+                if (Auth::user()->roles[0]->name == 'Administrador' || Auth::user()->roles[0]->name == 'Supervisor') {
                     $registro =  Registro::query()
                         ->when(RequestFacade::input('search'), function ($query, $search) {
                             $query->where('nombres', 'like', '%' . $search . '%')
@@ -63,7 +63,7 @@ class RegistroController extends Controller
 
                 $isValidation = false;
 
-                if (Auth::user()->roles[0]->name == 'Administrador') {
+                if (Auth::user()->roles[0]->name == 'Administrador' || Auth::user()->roles[0]->name == 'Supervisor') {
                     $registro =  Registro::query()
                         ->when(RequestFacade::input('search'), function ($query, $search) {
                             $query->where('nombres', 'like', '%' . $search . '%')
