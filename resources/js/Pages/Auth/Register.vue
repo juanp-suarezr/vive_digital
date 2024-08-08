@@ -539,7 +539,7 @@ function debounce(func, wait) {
 }
 
 const fetchUserInfo = debounce((newVal) => {
-    if (newVal.length > 8) {
+    if (newVal.length > 6) {
         console.log(newVal);
         axios
             .get('/searchRegistrado', {
