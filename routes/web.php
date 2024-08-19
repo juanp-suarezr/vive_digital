@@ -10,8 +10,12 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PuntosController;
 use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\RoleController;
+use App\Models\Ofertas;
 use App\Models\Perfil;
+use App\Models\Puntos;
+use App\Models\Registro;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -47,7 +51,7 @@ Route::get('/', function () {
 
             'laravelVersion' => Application::VERSION,
             'phpVersion' => PHP_VERSION,
-            
+
 
 
 
@@ -63,7 +67,7 @@ Route::get('/home', function () {
 
             'laravelVersion' => Application::VERSION,
             'phpVersion' => PHP_VERSION,
-            
+
 
         ]);
     }
@@ -74,16 +78,36 @@ Route::post('registro', [RegistroController::class, 'create'])->name('registro')
 Route::get('/registrados', [RegistroController::class, 'index'])->name('registrados.index');
 Route::get('/searchRegistrado', [RegistroController::class, 'searchRegistrado'])->name('searchRegistrado');
 Route::get('register', [RegisteredUserController::class, 'create'])
-                ->name('register');
+    ->name('register');
 
 
 
 Route::get('/dashboard', function () {
-    return Inertia::render('Dashboard');
+    $puntosID = [];
+    $registrados = [];
+    $ofertas = [];
+    $puntos = Puntos::where('id_user', Auth::id())->first();
+    if ($puntos) {
+        $puntosID = $puntos->id;
+        $registrados = Registro::whereHas('puntos_vive', function ($query) {
+            $query->where('id_user', Auth::id()); // Filtrar por el ID del usuario autenticado
+        })->count();
+        $ofertas = Ofertas::where('id_puntos', $puntosID)->count();
+    } else {
+        $puntos = Puntos::count();
+        $registrados = Registro::count();
+        $ofertas = Ofertas::count();
+    }
+    return Inertia::render('Dashboard', [
+        'registrados' =>  $registrados,
+        'ofertas' => $ofertas,
+        'puntos' => $puntos,
+
+    ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/about', fn () => Inertia::render('About'))->name('about');
+    Route::get('/about', fn() => Inertia::render('About'))->name('about');
     Route::get('users', [UserController::class, 'index'])->name('users.index');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
