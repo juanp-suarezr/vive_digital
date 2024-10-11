@@ -271,7 +271,15 @@ class RegistroController extends Controller
             'nivel_estudio' => 'required',
             'tipo_servicio' => 'required',
         ]);
+        
         // Actualizar el modelo de usuario con los datos validados
+
+        // Verificar si ya existe un registro con la misma identificación en la tabla 'info_usuario'
+        $existingUser = Info_usuario::where('identificacion', $request->identificacion)->first();
+        if ($existingUser) {
+            // Actualizar el registro existente con la nueva información
+            $existingUser->fill($data)->save();
+        }
 
         $user = Registro::findOrFail($request->id);
         $user->fill($data)->save();
