@@ -212,6 +212,22 @@ class RegistroController extends Controller
                     'etnia' => $user->etnia,
                     'nivel_estudio' => $user->nivel_estudio,
                 ]);
+            } else {
+                // Actualizar el registro existente con la nueva información
+                $existingUser->update([
+                    'nombres' => $user->nombres,
+                    'apellidos' => $user->apellidos,
+                    'edad' => $user->edad,
+                    'tipo_documento' => $user->tipo_documento,
+                    'direccion' => $user->direccion,
+                    'sector' => $user->sector,
+                    'telefono' => $user->telefono,
+                    'email' => $user->email,
+                    'genero' => $user->genero,
+                    'condicion' => $user->condicion,
+                    'etnia' => $user->etnia,
+                    'nivel_estudio' => $user->nivel_estudio,
+                ]);
             }
 
             // event(new Registered($user));
