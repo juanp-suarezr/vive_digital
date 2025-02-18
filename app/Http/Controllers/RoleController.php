@@ -10,6 +10,7 @@ use Spatie\Permission\Models\Permission;
 use DB;
 use Illuminate\View\View;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -49,7 +50,7 @@ class RoleController extends Controller
      */
     public function create()
     {
-        $permission = Permission::get();
+        $permission = Permission::pluck('name')->all();
         return Inertia::render('Roles/Create', compact('permission'));
     }
 
@@ -96,10 +97,8 @@ class RoleController extends Controller
     public function edit($id)
     {
         $role = Role::find($id);
-        $permission = Permission::get();
-        $rolePermissions = DB::table("role_has_permissions")->where("role_has_permissions.role_id", $id)
-            ->pluck('role_has_permissions.permission_id', 'role_has_permissions.permission_id')
-            ->all();
+        $permission = Permission::pluck('name')->all();
+        $rolePermissions = $role->permissions()->pluck('name')->all();
 
         return Inertia::render('Roles/Edit', compact('role', 'permission', 'rolePermissions'));
     }
@@ -114,7 +113,7 @@ class RoleController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'name' => 'required',
+            'name' => 'required|unique:roles,name,' . $id . ',id,id_tenant,' . session('tenant_id'),
             'permisos' => 'required',
         ]);
 
@@ -123,6 +122,8 @@ class RoleController extends Controller
         $role->save();
 
         $role->syncPermissions($request->input('permisos'));
+        Cache::forget('user_permissions_' . auth()->id());
+        Cache::forget('user_roles_' . auth()->id());
         //Alert::info('Success', 'Rol has been updated !');
         return Redirect::route('roles.edit', $id)->with('message', 'Registro actualizado');
     }

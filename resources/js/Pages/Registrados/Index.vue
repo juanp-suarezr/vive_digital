@@ -10,7 +10,7 @@
         <div class="flex inline-block min-w-full overflow-hidden mb-3 grid md:grid-cols-10 gap-4">
 
             <div class="... col-span-3 w-full m-auto">
-                
+
                 <div class="relative">
                     <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
                         <svg class="w-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
@@ -49,7 +49,7 @@
             </div>
 
             <div class="flex justify-end w-full my-auto col-span-2">
-                <a :href="route('registrados.excel', {fecha_init: fecha_init, fecha_end: fecha_end})"
+                <a :href="route('registrados.excel', { fecha_init: fecha_init, fecha_end: fecha_end })"
                     class="flex text-white bg-green-800 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2">
                     <DocumentArrowDownIcon class="h-6 w-6 me-2" />Exportar
                 </a>
@@ -57,6 +57,18 @@
 
 
         </div>
+
+        <!-- solo admin, para elegir punto -->
+        <div class="sm:w-1/2 md:w-2/6 mb-4" v-if="$page.props.user.roles.includes('Administrador') || $page.props.user.roles.includes('Supervisor')">
+            <InputLabel class="!text-base mb-1" for="puntos" value="Puntos vive digital" />
+            <select id="puntos" name="puntos" v-model="punto" @change="handleEnterKey"
+                class="block w-full px-4 py-1 text-base text-gray-900 border border-gray-600 rounded-lg bg-gray-200 focus:ring-blue-500 focus:border-blue-500">
+                <option selected disabled value="">Seleccionar punto vive digital</option>
+                <option v-for="pt in puntos" :key="pt.id" :value="pt.id">{{ pt.nombre }}</option>
+
+            </select>
+        </div>
+
         <div class="flex flex-col overflow-x-auto">
             <div class="inline-block rounded-lg shadow">
                 <div class="inline-block min-w-full py-2">
@@ -104,7 +116,11 @@
                                     </th>
                                     <th
                                         class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
-                                        Etnía
+                                        Etnia
+                                    </th>
+                                    <th
+                                        class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
+                                        Tipo Servicio
                                     </th>
 
                                     <th
@@ -156,6 +172,9 @@
                                     <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
                                         <p class="text-gray-900 whitespace-no-wrap">{{ user.etnia }}</p>
                                     </td>
+                                    <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+                                        <p class="text-gray-900 whitespace-no-wrap">{{ user.tipo_servicio }}</p>
+                                    </td>
 
                                     <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
                                         <SecondaryLink :href="route('registrados.edit', { id: user.id })">
@@ -171,7 +190,7 @@
             </div>
         </div>
         <div class="flex flex-col items-center border-t bg-white px-5 py-5 xs:flex-row xs:justify-between">
-            <pagination v-if="registrados.links" :links="registrados.links" />
+            <pagination v-if="registrados.length > 1" :links="props.registro.links" />
         </div>
 
     </AuthenticatedLayout>
@@ -235,10 +254,11 @@ console.log(registrados.value);
 let search = ref(props.filters.search);
 let fecha_init = ref(props.filters.fecha_init ?? "");
 let fecha_end = ref(props.filters.fecha_end ?? "");
+const punto = ref(props.filters.punto ?? "");
 const handleEnterKey = () => {
     router.get(
         "/registrados",
-        { search: search.value, fecha_init: fecha_init.value, fecha_end: fecha_end.value },
+        { search: search.value, fecha_init: fecha_init.value, fecha_end: fecha_end.value, punto: punto.value },
         {
 
             replace: true,
@@ -258,9 +278,10 @@ const clearAll = () => {
     search.value = '';
     fecha_init.value = '';
     fecha_end.value = '';
+    punto.value = '';
     router.get(
         "/registrados",
-        { search: search.value, fecha_init: fecha_init.value, fecha_end: fecha_end.value },
+        { search: search.value, fecha_init: fecha_init.value, fecha_end: fecha_end.value, punto: punto.value },
         {
 
             replace: true,

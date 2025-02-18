@@ -49,7 +49,7 @@
             </div>
         </div>
         <header class="w-full py-2 ps-8 flex bg-[#3366cc]">
-            <a class="flex w-5/6 sm:w-[20%] md:w-[10%]" href="https://www.gov.co/" target="_blank">
+            <a class="flex w-5/6 sm:w-[20%] md:w-[10%] z-20" href="https://www.gov.co/" target="_blank">
                 <figure>
                     <img class="w-full sm:w-5/6" :src="logoGobierno" alt="imagen de logo" title="Gobierno colombiano">
                     <figcaption lang="es" class="hidden">Esta es una imagen del logo del gobierno actual de colombia
@@ -100,6 +100,12 @@
                                     class="text-parrafo cursor hover:underline border-r-2 border-secondary pe-2">Registro</a>
                             </li>
 
+                            <li><a :href="route('dashboard')" v-if="$page.props.auth.user"
+                                    :class="[{ 'underline': route().current('dashboard') }, { '!text-yellow-200 font-bold': HandleContrast }, { '!text-yellow-200 font-bold': HandleContrast }]"
+                                    v-tooltip.bottom="{ value: 'regresar al dashboard', autoHide: false }"
+                                    class="text-parrafo cursor hover:underline border-r-2 border-secondary pe-2">Dashboard</a>
+                            </li>
+
                         </ul>
                     </div>
                     <div class="md:hidden z-20">
@@ -122,6 +128,11 @@
                         <a :href="route('register')"
                             :class="[{ 'underline': route().current('register') }, { '!text-yellow-200 font-bold': HandleContrast }]"
                             class="block text-parrafo hover:underline border-b-2 border-secondary py-2">Registro</a>
+                    </li>
+                    <li>
+                        <a :href="route('dashboard')" v-if="$page.props.auth.user"
+                            :class="[{ 'underline': route().current('dashboard') }, { '!text-yellow-200 font-bold': HandleContrast }]"
+                            class="block text-parrafo hover:underline border-b-2 border-secondary py-2">Dashboard</a>
                     </li>
                     <!-- Añadir más elementos de menú aquí si es necesario -->
                 </ul>

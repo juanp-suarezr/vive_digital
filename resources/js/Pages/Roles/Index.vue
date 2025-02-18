@@ -105,6 +105,8 @@ import DangerButton from '@/Components/DangerButton.vue';
 import InputError from '@/Components/InputError.vue';
 import InputLabel from '@/Components/InputLabel.vue';
 import TextInput from '@/Components/TextInput.vue';
+import MultiSelect from "primevue/multiselect";
+import Fieldset from "primevue/fieldset";
 const props = defineProps({
     roles: Object
 })

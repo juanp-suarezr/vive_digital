@@ -38,7 +38,7 @@ class RegistroController extends Controller
             if (RequestFacade::input('origin') == 'validation') {
 
                 $isValidation = true;
-                if (Auth::user()->roles[0]->name == 'Administrador') {
+                if (Auth::user()->roles[0]->name == 'Administrador' || Auth::user()->roles[0]->name == 'Supervisor') {
                     $registro =  Registro::query()
                         ->when(RequestFacade::input('search'), function ($query, $search) {
                             $query->where('nombres', 'like', '%' . $search . '%')
@@ -63,7 +63,7 @@ class RegistroController extends Controller
 
                 $isValidation = false;
 
-                if (Auth::user()->roles[0]->name == 'Administrador') {
+                if (Auth::user()->roles[0]->name == 'Administrador' || Auth::user()->roles[0]->name == 'Supervisor') {
                     $registro =  Registro::query()
                         ->when(RequestFacade::input('search'), function ($query, $search) {
                             $query->where('nombres', 'like', '%' . $search . '%')
@@ -78,6 +78,10 @@ class RegistroController extends Controller
                             }
 
                             $query->whereBetween('created_at', [$fecha_init, $fecha_end]);
+                        })->when(RequestFacade::input('punto'), function ($query, $punto) {
+                            $query->whereHas('puntos_vive', function ($query) use ($punto) {
+                                $query->where('id', $punto);
+                            });
                         })
                         ->latest('created_at') // Ordena los resultados por la columna 'created_at' de forma descendente
                         ->paginate(5)
@@ -117,7 +121,7 @@ class RegistroController extends Controller
 
                 [
                     'registro' => $registro,
-                    'filters' => RequestFacade::only(['search', 'fecha_init', 'fecha_end']),
+                    'filters' => RequestFacade::only(['search', 'fecha_init', 'fecha_end', 'punto']),
                     'validation' => $isValidation,
                     'puntos' => Puntos::all(),
                 ]
@@ -162,6 +166,7 @@ class RegistroController extends Controller
             'etnia' => 'required',
             'nivel_estudio' => 'required',
             'codePunto' => 'required',
+            'tipo_servicio' => 'required',
         ]);
 
         // Obtener el punto correspondiente
@@ -184,6 +189,7 @@ class RegistroController extends Controller
                 'etnia' => $request->etnia,
                 'nivel_estudio' => $request->nivel_estudio,
                 'id_puntos' => $puntos[0]->id,
+                'tipo_servicio' => $request->tipo_servicio,
             ]);
 
             // Verificar si ya existe un registro con la misma identificación en la tabla 'info_usuario'
@@ -206,9 +212,25 @@ class RegistroController extends Controller
                     'etnia' => $user->etnia,
                     'nivel_estudio' => $user->nivel_estudio,
                 ]);
+            } else {
+                // Actualizar el registro existente con la nueva información
+                $existingUser->update([
+                    'nombres' => $user->nombres,
+                    'apellidos' => $user->apellidos,
+                    'edad' => $user->edad,
+                    'tipo_documento' => $user->tipo_documento,
+                    'direccion' => $user->direccion,
+                    'sector' => $user->sector,
+                    'telefono' => $user->telefono,
+                    'email' => $user->email,
+                    'genero' => $user->genero,
+                    'condicion' => $user->condicion,
+                    'etnia' => $user->etnia,
+                    'nivel_estudio' => $user->nivel_estudio,
+                ]);
             }
 
-            event(new Registered($user));
+            // event(new Registered($user));
         });
 
         return redirect()->route('register');
@@ -246,9 +268,18 @@ class RegistroController extends Controller
             'genero' => 'required',
             'condicion' => 'required',
             'etnia' => 'required',
-            'nivel_estudio' => 'required'
+            'nivel_estudio' => 'required',
+            'tipo_servicio' => 'required',
         ]);
+        
         // Actualizar el modelo de usuario con los datos validados
+
+        // Verificar si ya existe un registro con la misma identificación en la tabla 'info_usuario'
+        $existingUser = Info_usuario::where('identificacion', $request->identificacion)->first();
+        if ($existingUser) {
+            // Actualizar el registro existente con la nueva información
+            $existingUser->fill($data)->save();
+        }
 
         $user = Registro::findOrFail($request->id);
         $user->fill($data)->save();

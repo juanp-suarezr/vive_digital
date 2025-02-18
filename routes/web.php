@@ -1,10 +1,7 @@
 <?php
 
-<<<<<<< Updated upstream
-=======
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CapacitacionesController;
->>>>>>> Stashed changes
 use Illuminate\Support\Facades\Request as RequestFacade;
 use App\Http\Controllers\EventosController;
 use App\Http\Controllers\OfertasController;
@@ -14,14 +11,14 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PuntosController;
 use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\RoleController;
-<<<<<<< Updated upstream
-=======
 use App\Models\Inscripciones;
 use App\Models\Ofertas;
 use App\Models\PageView;
->>>>>>> Stashed changes
 use App\Models\Perfil;
+use App\Models\Puntos;
+use App\Models\Registro;
 use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -58,7 +55,7 @@ Route::get('/', function () {
 
             'laravelVersion' => Application::VERSION,
             'phpVersion' => PHP_VERSION,
-            
+
 
 
 
@@ -78,7 +75,7 @@ Route::get('/home', function () {
 
             'laravelVersion' => Application::VERSION,
             'phpVersion' => PHP_VERSION,
-            
+
 
         ]);
     }
@@ -88,20 +85,19 @@ Route::get('/home', function () {
 Route::post('registro', [RegistroController::class, 'create'])->name('registro');
 Route::get('/registrados', [RegistroController::class, 'index'])->name('registrados.index');
 Route::get('/searchRegistrado', [RegistroController::class, 'searchRegistrado'])->name('searchRegistrado');
+Route::get('register', [RegisteredUserController::class, 'create'])
+    ->name('register');
 
 
 
 Route::get('/dashboard', function () {
-<<<<<<< Updated upstream
-    return Inertia::render('Dashboard');
-=======
     $puntosID = [];
     $registrados = [];
     $certificados = [];
     $ofertas = [];
     $puntos = Puntos::where('id_user', Auth::id())->first();
     $pageView = PageView::all();
-    
+
     if ($puntos) {
         $puntosID = $puntos->id;
         $registrados = Registro::whereHas('puntos_vive', function ($query) {
@@ -127,11 +123,10 @@ Route::get('/dashboard', function () {
         'views' => $pageView,
 
     ]);
->>>>>>> Stashed changes
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/about', fn () => Inertia::render('About'))->name('about');
+    Route::get('/about', fn() => Inertia::render('About'))->name('about');
     Route::get('users', [UserController::class, 'index'])->name('users.index');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
