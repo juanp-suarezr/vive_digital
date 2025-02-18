@@ -1,4 +1,5 @@
 <template>
+
     <Head title="Dashboard" />
 
     <AuthenticatedLayout>
@@ -19,7 +20,10 @@
                                 </div>
                                 <div class="inline-flex text-sm text-gray-600 group-hover:text-gray-200 sm:text-base">
 
-                                    Total Registrados {{ puntos.id ? `del punto ${puntos.nombre}` : 'de todos los puntos' }}
+                                    Total Registrados
+                                    {{ puntos.id ?
+                                        `del punto ${puntos.nombre}`
+                                        : 'de todos los puntos' }}
                                 </div>
                             </div>
                             <h1
@@ -61,30 +65,30 @@
                                 </div>
                                 <div class="inline-flex text-sm text-gray-600 group-hover:text-gray-200 sm:text-base">
 
-                                    {{ puntos.id ? `Información Punto` : 'Total de todos los puntos' }}
+                                    {{ puntos.id ? `certificados x curso` : 'Total de certificaciones' }}
                                 </div>
                             </div>
                             <div class="" v-if="puntos.id">
                                 <h1 class="text-lg sm:text-xl font-bold text-gray-700 mt-12 group-hover:text-gray-50">
-                                {{ puntos.nombre }}</h1>
-                            <div class="group-hover:text-gray-200">
-                                <p>
-                                    {{ puntos.administrador }}
-                                </p>
-                                <p>
-                                    {{ puntos.direccion }}
-                                </p>
-                            </div>
+                                    {{ puntos.nombre }}</h1>
+                                <div class="group-hover:text-gray-200">
+                                    <p>
+                                        {{ certificados }}
+                                    </p>
+                                    <p>
+                                        Total de Certificados
+                                    </p>
+                                </div>
                             </div>
                             <div class="" v-else>
                                 <h1
-                                class="text-3xl sm:text-4xl xl:text-5xl font-bold text-gray-700 mt-12 group-hover:text-gray-50">
-                                {{ puntos }}</h1>
-                            <div class="flex group-hover:text-gray-200">
-                                <p>Puntos registrados</p>
+                                    class="text-3xl sm:text-4xl xl:text-5xl font-bold text-gray-700 mt-12 group-hover:text-gray-50">
+                                    {{ certificados }}</h1>
+                                <div class="flex group-hover:text-gray-200">
+                                    <p>Total de certificados en los cursos</p>
+                                </div>
                             </div>
-                            </div>
-                            
+
                         </div>
                     </div>
                     <!-- trafico -->
@@ -100,9 +104,14 @@
                                     Trafico
                                 </div>
                             </div>
-                            <h1
-                                class="text-3xl sm:text-4xl xl:text-5xl font-bold text-gray-700 mt-12 group-hover:text-gray-50">
-                                #</h1>
+                            <p
+                                class="text-sm sm:text-base xl:text-lg font-bold text-gray-700 mt-8 group-hover:text-gray-50">
+                                <b>Inicio:</b> {{ getTotalViews('inicio') }}
+                                <br>
+                                <b>Registros:</b> {{ getTotalViews('register') }}
+                                <br>
+                                <b>Capacitaciones:</b> {{ getTotalViews('capacitaciones') }}
+                            </p>
                             <div class="flex group-hover:text-gray-200">
                                 <p>Visitas a la pagina</p>
                             </div>
@@ -127,21 +136,49 @@ import {
 
 const props = defineProps({
     registrados: {
-        type: Object,
-        default: () => ({}),
+        type: Number,
+        default: 0,
     },
     ofertas: {
-        type: Object,
-        default: () => ({}),
+        type: Number,
+        default: 0
     },
     puntos: {
         type: Object,
         default: () => ({}),
     },
-    
+    views: {
+        type: Object,
+        default: () => ({}),
+    },
+    certificados: {
+        type: Object,
+        default: () => ({}),
+    },
 });
 
 console.log(props);
+
+// Computed que retorna una función para contar visitas en la página especificada
+const getTotalViews = computed(() => (pageType) => {
+    let pagesToCount;
+
+    // Determina las páginas a contar según el tipo de página solicitado
+    if (pageType === 'inicio') {
+        pagesToCount = ['/', 'Welcome', 'Home'];
+    } else if (pageType === 'capacitaciones') {
+        pagesToCount = ['capacitaciones'];
+     } else if (pageType === 'register') {
+        pagesToCount = ['register'];
+    } else {
+        return 0;
+    }
+
+    // Filtra las vistas según el tipo de página y suma los views
+    return props.views
+        .filter(view => pagesToCount.includes(view.page))
+        .reduce((total, view) => total + view.views, 0);
+});
 
 
 </script>

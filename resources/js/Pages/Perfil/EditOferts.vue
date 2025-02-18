@@ -76,22 +76,16 @@
                             placeholder="salon 201" autocomplete="lugar" />
                         <InputError class="mt-2" :message="form.errors.lugar" />
                     </div>
-                    <!-- cupo max -->
-                    <div>
-                        <InputLabel for="cupo" value="Cupo max" />
-                        <TextInput id="cupo" type="cupo" class="mt-1 block w-full" v-model="form.cupo" required
-                            autocomplete="cupo" />
-                        <InputError class="mt-2" :message="form.errors.cupo" />
-                    </div>
+
                     <!-- estado oferta -->
                     <div>
                         <InputLabel for="estado" value="estado de curso" />
                         <select id="estado" name="estado" v-model="form.estado"
                             class="block mt-1 w-full px-4 py-2 text-base text-gray-900 rounded-md bg-white focus:ring-blue-500 focus:border-blue-500">
                             <option selected disabled value="0">Seleccionar estado del curso</option>
-                            <option value="Activo">Activo</option>
-                            <option value="Bloqueado">Bloqueado</option>
-                            
+                            <option value=1>Activo</option>
+                            <option value=0>Bloqueado</option>
+
 
                         </select>
                         <InputError class="mt-2" :message="form.errors.estado" />
@@ -167,14 +161,13 @@ const form = useForm({
     fecha_init: props.oferta ? new Date(props.oferta.fecha_fin) : '',
     fecha_fin: props.oferta ? new Date(props.oferta.fecha_fin) : '',
     estado: props.oferta ? props.oferta.estado : '',
-    cupo: props.oferta ? props.oferta.cupo : '',
     tipo: props.oferta ? props.oferta.tipo : '',
     lugar: props.oferta ? props.oferta.lugar : '',
     id_puntos: props.oferta.id_puntos,
     banner: props.oferta ? props.oferta.banner : '',
 });
 
-//IMAGEN 
+//IMAGEN
 const getImageUrl = (imageName) => {
     // Si las imágenes están almacenadas en la carpeta public/images, la ruta sería algo como esto:
     return `/storage/uploads/ofertas/${imageName}`;

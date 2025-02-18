@@ -44,4 +44,10 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function hasRole($role)
+    {
+        // Suponiendo que la columna 'role' almacena el nombre del rol
+        return $this->role === $role;
+    }
 }

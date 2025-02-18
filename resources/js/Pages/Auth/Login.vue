@@ -3,7 +3,7 @@
     <Head title="Iniciar Sesión" />
 
     <GuestLayout>
-        <Link href="/" class="flex items-center justify-center">
+        <Link href="/" class="flex items-center justify-center z-50">
         <ApplicationLogo :isLogin=true class="fill-current text-gray-500" />
         </Link>
 
@@ -12,7 +12,7 @@
         </div>
 
         <form @submit.prevent="submit">
-            <div>
+            <div class="z-50">
                 <InputLabel for="email" value="Correo electronico" :class="[
                     isContrast ? '!text-yellow-200 font-bold' : '',
                     letraSize == -2 ? '!sm:text-[0.65rem] !text-[0.55rem]'
@@ -99,12 +99,12 @@ const letraSize = ref(usePage().props.accesibilidad.letra);
 
 watch(() => usePage().props.accesibilidad.contraste, (newVal) => {
     isContrast.value = newVal;
-    
+
 });
 
 watch(() => usePage().props.accesibilidad.letra, (newVal) => {
     letraSize.value = newVal;
-    
+
 });
 
 const form = useForm({
