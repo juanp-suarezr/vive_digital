@@ -1,4 +1,5 @@
 <template>
+
     <Head title="Dashboard" />
 
     <AuthenticatedLayout>
@@ -6,6 +7,7 @@
             Dashboard
         </template>
 
+<<<<<<< Updated upstream
         <div class="items-center px-4 py-8 m-auto mt-5">
             <div class="flex flex-wrap pb-3 mx-4 md:mx-24 lg:mx-0">
                 <div class="w-full p-2 lg:w-1/4 md:w-1/2">
@@ -22,6 +24,26 @@
                                         d="M4.293 15.707a1 1 0 010-1.414L8.586 10 4.293 5.707a1 1 0 011.414-1.414l5 5a1 1 0 010 1.414l-5 5a1 1 0 01-1.414 0z"
                                         clip-rule="evenodd" />
                                 </svg>
+=======
+        <div class="w-full">
+            <div class="items-center px-4 py-8 m-auto mt-5">
+                <div class="flex flex-wrap pb-3 mx-4 md:mx-24 lg:mx-0">
+                    <!-- Registrados -->
+                    <div class="w-full p-2 lg:w-1/4 md:w-1/2 flex">
+                        <div
+                            class="flex w-full flex-col px-6 py-10 overflow-hidden bg-white border-[#e1e5ea] hover:text-white hover:bg-gradient-to-br hover:from-primary hover:to-secondary rounded-xl border-2 duration-300 hover:shadow-2xl group">
+                            <div class="flex flex-row justify-between items-center">
+                                <div class="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">
+                                    <ClipboardDocumentIcon class="h-6 w-6" />
+                                </div>
+                                <div class="inline-flex text-sm text-gray-600 group-hover:text-gray-200 sm:text-base">
+
+                                    Total Registrados
+                                    {{ puntos.id ?
+                                        `del punto ${puntos.nombre}`
+                                        : 'de todos los puntos' }}
+                                </div>
+>>>>>>> Stashed changes
                             </div>
                             <div class="inline-flex text-sm text-gray-600 group-hover:text-gray-200 sm:text-base">
                                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -48,6 +70,7 @@
                             </span>
                         </div>
                     </div>
+<<<<<<< Updated upstream
                 </div>
                 <div class="w-full p-2 lg:w-1/4 md:w-1/2">
                     <div
@@ -82,6 +105,42 @@
                                         clip-rule="evenodd" />
                                 </svg>
                             </span>
+=======
+                    <!-- Puntos -->
+                    <div class="w-full p-2 lg:w-1/4 md:w-1/2 flex">
+                        <div
+                            class="flex w-full flex-col px-6 py-10 overflow-hidden bg-white border-[#e1e5ea] hover:text-white hover:bg-gradient-to-br hover:from-primary hover:to-secondary rounded-xl border-2 duration-300 hover:shadow-2xl group">
+                            <div class="flex flex-row justify-between items-center">
+                                <div class="px-4 py-4 bg-gray-300 rounded-xl bg-opacity-30">
+                                    <UserGroupIcon class="h-6 w-6" />
+                                </div>
+                                <div class="inline-flex text-sm text-gray-600 group-hover:text-gray-200 sm:text-base">
+
+                                    {{ puntos.id ? `certificados x curso` : 'Total de certificaciones' }}
+                                </div>
+                            </div>
+                            <div class="" v-if="puntos.id">
+                                <h1 class="text-lg sm:text-xl font-bold text-gray-700 mt-12 group-hover:text-gray-50">
+                                    {{ puntos.nombre }}</h1>
+                                <div class="group-hover:text-gray-200">
+                                    <p>
+                                        {{ certificados }}
+                                    </p>
+                                    <p>
+                                        Total de Certificados
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="" v-else>
+                                <h1
+                                    class="text-3xl sm:text-4xl xl:text-5xl font-bold text-gray-700 mt-12 group-hover:text-gray-50">
+                                    {{ certificados }}</h1>
+                                <div class="flex group-hover:text-gray-200">
+                                    <p>Total de certificados en los cursos</p>
+                                </div>
+                            </div>
+
+>>>>>>> Stashed changes
                         </div>
                     </div>
                 </div>
@@ -98,6 +157,7 @@
                                         clip-rule="evenodd" />
                                 </svg>
                             </div>
+<<<<<<< Updated upstream
                             <div class="inline-flex text-sm text-gray-600 group-hover:text-gray-200 sm:text-base">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     class="h-6 w-6 mr-2 text-green-500 group-hover:text-gray-200" fill="none"
@@ -106,6 +166,18 @@
                                         d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                                 12%
+=======
+                            <p
+                                class="text-sm sm:text-base xl:text-lg font-bold text-gray-700 mt-8 group-hover:text-gray-50">
+                                <b>Inicio:</b> {{ getTotalViews('inicio') }}
+                                <br>
+                                <b>Registros:</b> {{ getTotalViews('register') }}
+                                <br>
+                                <b>Capacitaciones:</b> {{ getTotalViews('capacitaciones') }}
+                            </p>
+                            <div class="flex group-hover:text-gray-200">
+                                <p>Visitas a la pagina</p>
+>>>>>>> Stashed changes
                             </div>
                         </div>
                         <h1 class="text-3xl sm:text-4xl xl:text-5xl font-bold text-gray-700 mt-12 group-hover:text-gray-50">
@@ -170,4 +242,62 @@
 <script setup>
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue'
 import { Head } from '@inertiajs/vue3';
+<<<<<<< Updated upstream
+=======
+import { ref, watch, inject, onMounted, computed } from 'vue';
+import {
+    UserGroupIcon,
+    EyeIcon,
+    FireIcon,
+    ClipboardDocumentIcon,
+} from "@heroicons/vue/24/solid";
+
+const props = defineProps({
+    registrados: {
+        type: Number,
+        default: 0,
+    },
+    ofertas: {
+        type: Number,
+        default: 0
+    },
+    puntos: {
+        type: Object,
+        default: () => ({}),
+    },
+    views: {
+        type: Object,
+        default: () => ({}),
+    },
+    certificados: {
+        type: Object,
+        default: () => ({}),
+    },
+});
+
+console.log(props);
+
+// Computed que retorna una función para contar visitas en la página especificada
+const getTotalViews = computed(() => (pageType) => {
+    let pagesToCount;
+
+    // Determina las páginas a contar según el tipo de página solicitado
+    if (pageType === 'inicio') {
+        pagesToCount = ['/', 'Welcome', 'Home'];
+    } else if (pageType === 'capacitaciones') {
+        pagesToCount = ['capacitaciones'];
+     } else if (pageType === 'register') {
+        pagesToCount = ['register'];
+    } else {
+        return 0;
+    }
+
+    // Filtra las vistas según el tipo de página y suma los views
+    return props.views
+        .filter(view => pagesToCount.includes(view.page))
+        .reduce((total, view) => total + view.views, 0);
+});
+
+
+>>>>>>> Stashed changes
 </script>

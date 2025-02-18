@@ -10,7 +10,12 @@
         <div class="inline-block w-full mt-4">
 
             <!-- solo admin, para elegir punto -->
+<<<<<<< Updated upstream
             <div class="sm:w-1/2 md:w-2/6 mb-4" v-if="$page.props.user.roles.includes('Administrador')">
+=======
+            <div class="sm:w-1/2 md:w-2/6 mb-4"
+                v-if="$page.props.user.roles.includes('Administrador') || $page.props.user.roles.includes('Supervisor')">
+>>>>>>> Stashed changes
                 <InputLabel class="!text-base mb-1" for="puntos" value="Puntos vive digital" />
                 <select id="puntos" name="puntos" v-model="punto" @change="handleSelectPuntos"
                     class="block w-full px-4 py-1 text-base text-gray-900 border border-gray-600 rounded-lg bg-gray-200 focus:ring-blue-500 focus:border-blue-500">
@@ -191,10 +196,6 @@
 
                                                 <th
                                                     class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
-                                                    Cupo
-                                                </th>
-                                                <th
-                                                    class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
                                                     Tipo
                                                 </th>
                                                 <th
@@ -231,16 +232,18 @@
                                                     <p class="text-gray-900 whitespace-no-wrap">{{ ofert.jornada }} </p>
                                                 </td>
                                                 <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                                                    <p class="text-gray-900 whitespace-no-wrap">{{ ofert.fecha_init }}
+                                                    <p class="text-gray-900 whitespace-no-wrap">{{
+                                                        formatField(ofert.fecha_init)
+                                                        }}
                                                     </p>
                                                 </td>
                                                 <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                                                    <p class="text-gray-900 whitespace-no-wrap">{{ ofert.fecha_fin }}
+                                                    <p class="text-gray-900 whitespace-no-wrap">{{
+                                                        formatField(ofert.fecha_fin)
+                                                        }}
                                                     </p>
                                                 </td>
-                                                <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                                                    <p class="text-gray-900 whitespace-no-wrap">{{ ofert.cupo }}</p>
-                                                </td>
+
                                                 <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
                                                     <p class="text-gray-900 whitespace-no-wrap">{{ ofert.tipo }}</p>
                                                 </td>
@@ -253,16 +256,19 @@
                                                         'Si' }}</p>
                                                 </td>
                                                 <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                                                    <span v-if="ofert.estado == 'Activo'"
+                                                    <span v-if="ofert.estado == 1"
                                                         class="bg-lime-500 text-white text-sm font-medium me-2 px-2.5 py-0.5 rounded">
-                                                        {{ ofert.estado }}
+                                                        Activo
                                                     </span>
-                                                    <span v-if="ofert.estado == 'Bloqueado'"
+                                                    <span v-if="ofert.estado == 0"
                                                         class="bg-red-500 text-white text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-500">
-                                                        {{ ofert.estado }}
+                                                        Bloqueado
                                                     </span>
                                                 </td>
-                                                <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+                                                <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm gap-x-2 flex flex-wrap">
+                                                    <SecondaryButton class="mb-2" @click="abrirModal(2, ofert)">
+                                                        Inscribir
+                                                    </SecondaryButton>
                                                     <SecondaryLink :href="route('ofertas.edit', { id: ofert.id })">
                                                         Editar
                                                     </SecondaryLink>
@@ -303,12 +309,12 @@
                                                     class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
                                                     Nombre
                                                 </th>
-                                                
+
                                                 <th
                                                     class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
                                                     Tipo
                                                 </th>
-                                                
+
                                                 <th
                                                     class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
                                                     Imagen
@@ -318,7 +324,7 @@
                                                     class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
                                                     Link
                                                 </th>
-                                                
+
                                                 <th
                                                     class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
                                                     Estado
@@ -341,7 +347,7 @@
                                                 <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
                                                     <p class="text-gray-900 whitespace-no-wrap">{{ ev.tipo }}</p>
                                                 </td>
-                                                
+
                                                 <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
                                                     <p class="text-gray-900 whitespace-no-wrap">{{ ev.banner == 'NA'
                                                         ? 'No' :
@@ -360,11 +366,14 @@
                                                         {{ ev.estado }}
                                                     </span>
                                                 </td>
-                                                <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm flex-wrap gap-4">
-                                                    <SecondaryLink class="mb-2" :href="route('eventos.edit', { id: ev.id })">
+                                                <td
+                                                    class="border-b border-gray-200 bg-white px-5 py-5 text-sm flex-wrap gap-4">
+                                                    <SecondaryLink class="mb-2"
+                                                        :href="route('eventos.edit', { id: ev.id })">
                                                         Editar
                                                     </SecondaryLink>
-                                                    <DangerButton class="ms-2 mb-2" @click="confirmEventDeletion(ev.id)">
+                                                    <DangerButton class="ms-2 mb-2"
+                                                        @click="confirmEventDeletion(ev.id)">
                                                         Eliminar
                                                     </DangerButton>
                                                 </td>
@@ -489,7 +498,9 @@
                 </h2>
 
                 <p class="mt-1 text-sm text-gray-600">
-                    Una vez que se elimine el evento, no volverá aparecer en el registro, ni en la vista del perfil en la pagina web.
+                    Una vez que se elimine el evento, no volverá aparecer en el registro, ni en la vista del perfil en
+                    la pagina
+                    web.
 
                     Por favor ingrese su contraseña para confirmar que desea eliminar.
                 </p>
@@ -514,6 +525,53 @@
             </div>
         </Modal>
 
+        <!-- MODAL Inscripcion -->
+        <Dialog v-model:visible="visible" modal position="center" header="INSCRIBIRSE"
+            class="max-w-xl mx-2 sm:mx-4 flex">
+
+            <div class="m-auto">
+                <p class="text-lg">
+                    Ingrese la cédula para validar su información
+                </p>
+
+                <div class="flex w-full justify-center">
+                    <!-- Identificacion -->
+                    <div class="w-full">
+                        <InputLabel :class="[isContrast ? '!text-yellow-200 font-bold' : '',
+                        letraSize == -2 ? '!sm:text-[0.65rem] !text-[0.55rem]'
+                            : letraSize == -1 ? '!sm:text-xs !text-[0.65rem]'
+                                : letraSize == 1 ? '!sm:text-lg !text-sm'
+                                    : letraSize == 2 ? '!sm:text-xl !text-base' : 'sm:text-sm text-xs'
+                        ]" for="identificacion" value="identificacion" />
+                        <TextInput id="identificacion" type="number" class="mt-1 block w-full p-0 sm:p-2"
+                            :class="[isContrast ? '!text-yellow-200 font-bold bg-black' : '']"
+                            v-model="form1.identificacion" required autocomplete="identificacion" />
+                        <InputError class="mt-1" :message="form1.errors.identificacion" />
+                    </div>
+                </div>
+
+
+                <!-- next button -->
+                <div class="flex justify-center items-center justify-end mt-6 z-20" v-if="6 < form1.identificacion">
+
+                    <primaryButton v-if="info_usuario.find(item => item.identificacion == form1.identificacion)"
+                        type="button" @click="submit2" :class="{ 'opacity-25': form.processing }"
+                        :disabled="form1.processing">
+                        Inscribir
+                    </primaryButton>
+                    <div v-else class="">
+                        <em>El usuario debe tener registro primero en el punto para inscribirlo al curso. <a
+                                :href="route('register')">click
+                                aquí</a> para registrarlo</em>
+                    </div>
+                </div>
+
+            </div>
+
+
+
+        </Dialog>
+
     </AuthenticatedLayout>
 </template>
 
@@ -536,6 +594,7 @@ import TextInput from '@/Components/TextInput.vue';
 import Dialog from 'primevue/dialog';
 import Textarea from 'primevue/textarea';
 import Modal from '@/Components/Modal.vue';
+import { format } from 'date-fns';
 
 const swal = inject('$swal');
 
@@ -559,6 +618,11 @@ const props = defineProps({
     eventos: {
         type: Object,
         default: ([]),
+    },
+
+    info_usuario: {
+        type: Object,
+        default: ([]),
     }
 
 });
@@ -568,6 +632,8 @@ const confirmingDeletion = ref(false);
 const ofert_id = ref();
 // Modal de eliminacion eventos
 const confirmingDeletion1 = ref(false);
+// Modal de inscripcion
+const visible = ref(false);
 const event_id = ref();
 
 const active = ref(0);
@@ -580,8 +646,7 @@ const modalActualizar = ref(false);
 //max palabras
 const isMaxPalabras = ref(false);
 
-console.log(props.infoPunto);
-console.log(punto.value);
+console.log(props);
 
 const form = useForm({
     id: props.infoPunto.length ? props.infoPunto[0].id_punto : 'NA',
@@ -595,6 +660,13 @@ const form = useForm({
     twitter: props.infoPunto.length ? props.infoPunto[0].twitter : 'NA',
     banner: props.infoPunto.length ? props.infoPunto[0].banner : 'NA',
     password: '',
+});
+
+const form1 = useForm({
+    id_oferta: '',
+    id_info_user: '',
+    identificacion: '',
+    nombre_oferta: '',
 });
 
 
@@ -611,7 +683,7 @@ const handleSelectPuntos = () => {
     );
 };
 
-const abrirModal = num => {
+const abrirModal = (num, oferta) => {
     modalAñadir.value = false;
     modalActualizar.value = false;
     switch (num) {
@@ -620,6 +692,11 @@ const abrirModal = num => {
             break;
         case 1:
             modalActualizar.value = true;
+            break;
+        case 2:
+            form1.id_oferta = oferta.id;
+            form1.nombre_oferta = oferta.nombre;
+            visible.value = true;
             break;
 
         default:
@@ -632,7 +709,9 @@ const cerrarModal = () => {
     modalActualizar.value = false;
     confirmingDeletion.value = false;
     confirmingDeletion1.value = false;
+    visible.value = false;
     form.reset('password');
+    form1.reset('identificacion');
 
 }
 
@@ -679,7 +758,7 @@ const deleteEvent = () => {
     });
 };
 
-//IMAGEN 
+//IMAGEN
 const getImageUrl = (imageName) => {
     // Si las imágenes están almacenadas en la carpeta public/images, la ruta sería algo como esto:
     return `/storage/uploads/banners/${imageName}`;
@@ -755,7 +834,33 @@ const submit1 = () => {
     });
 };
 
+//INSCRIPCIONES
+const submit2 = () => {
 
+form1.post(route('puntos.store'), {
+    onSuccess: function () {
+        visible.value = false;
+        swal({
+            title: "Registro Guardado",
+            text: "usuario inscrito a la capacitación " + form1.nombre_oferta,
+            icon: "success"
+        })
+    }, onError: function () {
+        visible.value = false;
+        swal({
+            title: "Registro NO Guardado",
+            text: "posiblemente el usuario ya se encuentre inscrito a la oferta: " + form1.nombre_oferta,
+            icon: "error"
+        })
+    }
+});
+};
+
+const formatField = value => {
+
+    return format(new Date(value), 'dd/MM/yyyy');
+
+}
 
 
 

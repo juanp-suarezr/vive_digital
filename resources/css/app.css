@@ -2,6 +2,28 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Estilo para el scrollbar */
+::-webkit-scrollbar {
+    /* Ancho del scrollbar vertical */
+    width: 4%;
+    height: 4%;
+
+    /* Altura del scrollbar horizontal */
+}
+
+/* Estilo para el scrollbar thumb */
+::-webkit-scrollbar-thumb {
+    background-color: #004884;
+    /* Color del scrollbar thumb */
+    border-radius: 6px;
+    /* Radio de borde del scrollbar thumb */
+}
+
+/* Estilo para el scrollbar track */
+::-webkit-scrollbar-track {
+    background-color: #E6EFFD;
+    /* Color del scrollbar track */
+}
 
 @layer tailwind-base, primevue, tailwind-utilities;
 
@@ -13,3 +35,16 @@
     @tailwind components;
     @tailwind utilities;
 }
+
+
+.work-sans {
+    font-family: "Work Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+  }
+
+  .desyrel {
+    font-family: "desirel", sans-serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+  }

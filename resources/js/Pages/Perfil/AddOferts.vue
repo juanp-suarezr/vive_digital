@@ -76,13 +76,7 @@
                             placeholder="salon 201" autocomplete="lugar" />
                         <InputError class="mt-2" :message="form.errors.lugar" />
                     </div>
-                    <!-- cupo max -->
-                    <div>
-                        <InputLabel for="cupo" value="Cupo max" />
-                        <TextInput id="cupo" type="cupo" class="mt-1 block w-full" v-model="form.cupo" required
-                            autocomplete="cupo" />
-                        <InputError class="mt-2" :message="form.errors.cupo" />
-                    </div>
+                    
                     <div class="col-span-2">
                         <!-- imagen banner -->
                     <p class="text-gray-600 text-sm">
@@ -160,7 +154,7 @@ const form = useForm({
 
 //variable de imagen
 const imageUrl = ref(null);
-//IMAGEN 
+//IMAGEN
 const getImageUrl = (imageName) => {
     // Si las imágenes están almacenadas en la carpeta public/images, la ruta sería algo como esto:
     return `/storage/uploads/ofertas/${imageName}`;

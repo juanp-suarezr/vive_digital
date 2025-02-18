@@ -11,7 +11,8 @@ import TextInput from '@/Components/TextInput.vue';
 import AOS from 'aos';
 import 'aos/dist/aos.css';
 import puntoVive from '../../../public/assets/img/puntoVive.webp';
-import { WifiIcon, ComputerDesktopIcon, AcademicCapIcon, RocketLaunchIcon } from '@heroicons/vue/24/solid'
+import { WifiIcon, ComputerDesktopIcon, AcademicCapIcon, RocketLaunchIcon } from '@heroicons/vue/24/solid';
+import VanillaTilt from 'vanilla-tilt';
 
 AOS.init();
 
@@ -70,7 +71,7 @@ const getLetterSize = size => {
 }
 
 
-//IMAGEN 
+//IMAGEN
 const getImageUrl = (imageName) => {
     // Si las imágenes están almacenadas en la carpeta public/images, la ruta sería algo como esto:
     return `/storage/uploads/categorias/${imageName}`;
@@ -229,6 +230,18 @@ onMounted(() => {
             retina_detect: true
         });
     }
+
+    // Inicializar VanillaTilt en la imagen
+    const imageElement = document.querySelector('.tilt-image');
+    if (imageElement) {
+        VanillaTilt.init(imageElement, {
+            max: 25,
+            speed: 50,
+            glare: true,
+            "max-glare": 0.5,
+        });
+    }
+
 });
 
 </script>
@@ -261,6 +274,15 @@ onMounted(() => {
                             Empoderando Comunidades con Tecnología y Conocimiento
                         </h1>
                     </div>
+                    <div class="mt-8 z-30">
+                        <Link href="/capacitaciones"
+                            class="bg-primary text-white font-bold py-2 px-4 z-30 rounded mr-2 cursor-pointer">
+                        Capacitaciones
+                        </Link>
+                        <Link href="/register" class="bg-primary text-white font-bold py-2 px-4 rounded">
+                        Registro
+                        </Link>
+                    </div>
                 </div>
             </div>
             <div ref="particlesContainer" id="aa_particles" :class="{ '!bg-black': isContrast }"></div>
@@ -274,14 +296,14 @@ onMounted(() => {
             <!-- texto e imagen -->
             <div class="flex flex-col md:flex-row md:grid grid-cols-8 gap-4 mt-8">
                 <!-- texto -->
-                <div class="col-span-3 flex justify-center items-center px-4 mb-4" :class="getLetterSize(letraSize)">
+                <div class="col-span-3 flex justify-center items-center px-6 mb-4" :class="getLetterSize(letraSize)">
                     Los puntos Vive Digital ofrecen servicios como acceso a internet, capacitaciones en TIC y asesorías
                     en trámites electrónicos.
                 </div>
                 <!-- imagen -->
                 <div class="col-span-5 flex justify-center items-center m-auto px-4">
                     <figure>
-                        <img class="w-full rounded-xl shadow-xl" :src="puntoVive" alt="imagen de espacio digital"
+                        <img class="w-full rounded-xl shadow-xl tilt-image" :src="puntoVive" alt="imagen de espacio digital"
                             title="Punto vive digital">
                         <figcaption lang="es" class="hidden">Esta es una imagen del punto vive digital Lucy Tejada de
                             Pereira</figcaption>
@@ -300,7 +322,8 @@ onMounted(() => {
         </section>
 
         <!-- parte 3 -->
-        <div class="w-full overflow-hidden  bg-gradient-to-b from-primary to-option2 text-parrafo mt-0" :class="{ '!to-black': isContrast }">
+        <div class="w-full overflow-hidden  bg-gradient-to-b from-primary to-option2 text-parrafo mt-0"
+            :class="{ '!to-black': isContrast }">
             <div class="flex flex-col md:flex-row md:grid grid-cols-4 gap-4 mt-8 sm:px-10 px-4">
                 <div class="col-span-4 mb-6">
                     <h2 class="flex justify-center text-center text-white" :class="letraSize == -2 ? 'sm:text-2xl text-xl'
@@ -314,7 +337,7 @@ onMounted(() => {
                 <div class="col-span-2 md:col-span-1 mx-auto bg-option2 mb-4 flex flex-wrap flex-col p-4 rounded-xl shadow-xl"
                     :class="{ '!bg-black': isContrast }">
                     <WifiIcon class="w-4/6 flex justify-center mx-auto" />
-                    <p class="flex mt-2 mx-auto text-center" :class="getLetterSize(letraSize)">
+                    <p class="flex mt-2 mx-auto text-center break-words" :class="getLetterSize(letraSize)">
                         Acceso a internet gratis
                     </p>
                 </div>
@@ -322,7 +345,7 @@ onMounted(() => {
                 <div class="col-span-2 md:col-span-1 mx-auto bg-option2 mb-4 flex flex-wrap flex-col p-4 rounded-xl shadow-xl"
                     :class="{ '!bg-black': isContrast }">
                     <ComputerDesktopIcon class="w-4/6 flex justify-center mx-auto" />
-                    <p class="flex mt-2 mx-auto text-center" :class="getLetterSize(letraSize)">
+                    <p class="flex mt-2 mx-auto text-center break-words" :class="getLetterSize(letraSize)">
                         Acceso y disposición de equipos electrónicos
                     </p>
                 </div>
@@ -330,7 +353,7 @@ onMounted(() => {
                 <div class="col-span-2 md:col-span-1 mx-auto bg-option2 mb-4 flex flex-wrap flex-col p-4 rounded-xl shadow-xl"
                     :class="{ '!bg-black': isContrast }">
                     <AcademicCapIcon class="w-4/6 flex justify-center mx-auto" />
-                    <p class="flex mt-2 mx-auto text-center" :class="getLetterSize(letraSize)">
+                    <p class="flex mt-2 mx-auto text-center break-words" :class="getLetterSize(letraSize)">
                         Capacitaciones
                     </p>
                 </div>
@@ -338,7 +361,7 @@ onMounted(() => {
                 <div class="col-span-2 md:col-span-1 mx-auto bg-option2 mb-4 flex flex-wrap flex-col p-4 rounded-xl shadow-xl"
                     :class="{ '!bg-black': isContrast }">
                     <RocketLaunchIcon class="w-4/6 flex justify-center mx-auto" />
-                    <p class="flex mt-2 mx-auto text-center" :class="getLetterSize(letraSize)">
+                    <p class="flex mt-2 mx-auto text-center break-words" :class="getLetterSize(letraSize)">
                         Entretenimiento
                     </p>
                 </div>

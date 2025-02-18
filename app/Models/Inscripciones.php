@@ -30,4 +30,9 @@ class Inscripciones extends Model
         return $this->hasOne(Ofertas::class, 'id', 'id_oferta');
     }
 
+    public function info_user()
+    {
+        return $this->hasOne(info_usuario::class, 'id', 'id_info_user');
+    }
+
 }

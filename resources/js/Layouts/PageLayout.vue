@@ -2,12 +2,12 @@
 
     <div class="flex flex-col overflow-x-hidden bg-option1" :class="{ '!bg-black': HandleContrast }">
 
-        <div class="fixed top-64 w-screen z-10">
-            <div class="xl:w-[5%] sm:w-[6%] w-[10%] sm:ml-[94%] ml-[90%]">
-                <div class="bg-azul w-full py-4 sm:rounded-tl-xl sm:rounded-bl-xl rounded-tl-md rounded-bl-md">
+        <div class="fixed top-64 w-screen" style="z-index: 50; pointer-events: none;">
+            <div class="xl:w-[5%] sm:w-[6%] w-[10%] sm:ml-[95%] ml-[90%]">
+                <div class="bg-azul w-full py-4 sm:rounded-tl-xl sm:rounded-bl-xl rounded-tl-md rounded-bl-md" style="pointer-events: auto;">
                     <!-- contraste -->
                     <button v-tooltip.center="{ value: 'Contraste', autoHide: false }" @click="toggleContrast"
-                        class="flex w-full py-2 lg:px-4 px-2" :class="{ 'bg-[#3366cc]': HandleContrast }">
+                        class="flex w-auto py-2 lg:px-4 px-2" :class="{ 'bg-[#3366cc]': HandleContrast }">
                         <span
                             class="lg:rounded-lg rounded-md lg:w-5/6 w-full flex justify-center shadow-lg lg:p-2 p-1 text-azul bg-white [&>svg]:w-full">
 
@@ -87,6 +87,12 @@
 
                             ]" class="text-parrafo cursor border-r-2 border-l-2 border-secondary px-2 hover:underline">Puntos</a>
                             </li> -->
+
+                            <li><a :href="route('capacitaciones.index')"
+                                    :class="[{ 'underline': route().current('register') }, { '!text-yellow-200 font-bold': HandleContrast }, { '!text-yellow-200 font-bold': HandleContrast }]"
+                                    v-tooltip.bottom="{ value: 'Registro de ingreso al punto', autoHide: false }"
+                                    class="text-parrafo cursor hover:underline border-r-2 border-secondary pe-2">Capacitaciones</a>
+                            </li>
 
                             <li><a :href="route('register')"
                                     :class="[{ 'underline': route().current('register') }, { '!text-yellow-200 font-bold': HandleContrast }, { '!text-yellow-200 font-bold': HandleContrast }]"
@@ -277,5 +283,11 @@ ul.custom-list {
 
 .custom-list li span {
     display: block;
+}
+</style>
+
+<style scoped>
+.isolation-isolate {
+    isolation: isolate;
 }
 </style>

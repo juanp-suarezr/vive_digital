@@ -27,9 +27,22 @@
                 <ClipboardDocumentIcon class="h-6 w-6 text-white" />
                 <span class="mx-3">Registrados </span>
             </nav-link>
+            
             <nav-link :href="route('perfil.index')" :active="route().current().includes('perfil')">
                 <DocumentIcon class="h-6 w-6 text-white" />
                 <span class="mx-3">Editar información </span>
+            </nav-link>
+            <nav-link :href="route('oferts.ofertas')" :active="route().current().includes('oferts')">
+                <AcademicCapIcon class="h-6 w-6 text-white" />
+                <span class="mx-3">Ofertas </span>
+            </nav-link>
+            <nav-link :href="route('gestionInscritos')" :active="route().current().includes('gestionInscritos')">
+                <CheckIcon class="h-6 w-6 text-white" />
+                <span class="mx-3">Gestión inscripciones</span>
+            </nav-link>
+            <nav-link :href="route('totalInscritos')" :active="route().current().includes('totalInscritos')">
+                <ListBulletIcon class="h-6 w-6 text-white" />
+                <span class="mx-3">Total inscritos </span>
             </nav-link>
             <SeparadorMenu v-if="$page.props.user.permissions.includes('rol-listar')">Configuración</SeparadorMenu>
             <nav-link v-if="$page.props.user.permissions.includes('usuarios-listar')" :href="route('users.index')"
@@ -55,7 +68,7 @@ import SeparadorMenu from "@/Components/SeparadorMenu.vue";
 import { Link } from '@inertiajs/vue3';
 import imglogo_w from '/public/assets/img/logo_white.webp'
 import { ref } from 'vue'
-import { FingerPrintIcon, UserGroupIcon, HomeIcon, FireIcon, ClipboardDocumentIcon, BarsArrowDownIcon, DocumentIcon } from '@heroicons/vue/24/solid'
+import { FingerPrintIcon, UserGroupIcon, HomeIcon, FireIcon, ClipboardDocumentIcon, BarsArrowDownIcon, DocumentIcon, AcademicCapIcon, ListBulletIcon, CheckIcon } from '@heroicons/vue/24/solid'
 
 export default {
     components: {
@@ -68,6 +81,9 @@ export default {
         ClipboardDocumentIcon,
         DocumentIcon,
         BarsArrowDownIcon,
+        AcademicCapIcon,
+        ListBulletIcon,
+        CheckIcon,
         SeparadorMenu
     },
 

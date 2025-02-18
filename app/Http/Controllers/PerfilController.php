@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Request as RequestFacade;
 use App\Http\Controllers\Controller;
 use App\Models\Eventos;
+use App\Models\Info_usuario;
 use App\Models\Ofertas;
 use App\Models\Perfil;
 use App\Models\Puntos;
@@ -51,12 +52,19 @@ class PerfilController extends Controller
                 'ofertas' => Ofertas::query()
                     ->when(RequestFacade::input('search'), function ($query, $search) {
                         $query->where('id_puntos', $search);
-                    })->orWhere('id_puntos', $puntosID)
+                    })->orWhere('id_puntos', $puntosID)->with(['inscripciones' => function ($query) {
+                        $query->where('estadoProceso', 'Inscrito'); // Filtrar inscripciones con certificado en 0
+                    }])
                     ->get(),
                 'eventos' => Eventos::query()
                     ->when(RequestFacade::input('search'), function ($query, $search) {
                         $query->where('id_puntos', $search);
                     })->orWhere('id_puntos', $puntosID)
+                    ->get(),
+                'info_usuario' => Info_usuario::query()
+                    ->when(RequestFacade::input('identificacion'), function ($query, $identificacion) {
+                        $query->where('identificacion', $identificacion);
+                    })
                     ->get(),
             ]
         );

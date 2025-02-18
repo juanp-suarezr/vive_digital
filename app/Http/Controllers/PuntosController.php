@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\OfertaActualizada;
 use Illuminate\Support\Facades\Request as RequestFacade;
 use App\Http\Controllers\Controller;
 use App\Models\Eventos;
@@ -70,22 +71,48 @@ class PuntosController extends Controller
         $request->validate([
             'id_oferta' => 'required',
             'identificacion' => 'string|max:15',
-            
-
 
         ]);
+
+        $oferta = Ofertas::find($request->id_oferta);
+
+        // Verificar si la oferta existe
+        if (!$oferta) {
+            return redirect()->back()->withErrors(['error' => 'La oferta no existe.']);
+        }
+
+        // Verificar si la oferta está bloqueada (estado = 0)
+        if ($oferta->estado == 0) {
+            return redirect()->back()->withErrors(['error' => 'Esta oferta ya está bloqueada y no permite más inscripciones.']);
+        }
+
+        // Verificar el número de inscripciones sin certificado (certificado = false)
+        $inscritos = Inscripciones::where('id_oferta', $request->id_oferta)
+            ->where('estadoProceso', 'Inscrito') // Excluir los que ya tienen certificado
+            ->count();
+        // Comparar con el cupo máximo
+        if ($oferta->cupo != null && $inscritos >= $oferta->cupo) {
+            $oferta->estado = 0;
+            $oferta->save();
+            event(new OfertaActualizada($oferta)); // Emitir el evento de Cupo lleno
+            return redirect()->back()->withErrors(['error' => 'El cupo para esta oferta ya está lleno.']);
+        }
 
         $registrados = Info_usuario::where('identificacion', $request->identificacion)->get()->first();
-        
 
-        $inscripciones = Inscripciones::create([
-            'id_oferta' => $request->id_oferta,
-            'id_info_user' => $registrados->id,
-            'identificacion' => $request->identificacion,
-        ]);
+        try {
+            Inscripciones::create([
+                'id_oferta' => $request->id_oferta,
+                'id_info_user' => $registrados->id,
+                'identificacion' => $request->identificacion,
+            ]);
+        } catch (\Illuminate\Database\QueryException $e) {
+            // Manejar el error de clave única
+            return redirect()->back()->withErrors(['error' => 'El usuario ya está inscrito en esta oferta.']);
+        }
 
 
-        return redirect()->route('puntos.index');
+        return redirect()->back();
     }
 
     public function update(Request $request)

@@ -1,11 +1,12 @@
 <template>
     <div class="flex h-screen items-center justify-center bg-option1 px-6" :class="{ '!bg-gray-800': HandleContrast }">
-        <div class="fixed top-24 w-screen z-10">
-            <div class="xl:w-[5%] sm:w-[6%] w-[10%] sm:ml-[94%] ml-[90%]">
-                <div class="bg-azul w-full py-4 sm:rounded-tl-xl sm:rounded-bl-xl rounded-tl-md rounded-bl-md">
+        <div class="fixed top-64 w-screen" style="z-index: 50; pointer-events: none;">
+            <div class="xl:w-[5%] sm:w-[6%] w-[10%] sm:ml-[95%] ml-[90%]">
+                <div class="bg-azul w-full py-4 sm:rounded-tl-xl sm:rounded-bl-xl rounded-tl-md rounded-bl-md"
+                    style="pointer-events: auto;">
                     <!-- contraste -->
                     <button v-tooltip.center="{ value: 'Contraste', autoHide: false }" @click="toggleContrast"
-                        class="flex w-full py-2 lg:px-4 px-2" :class="{ 'bg-[#3366cc]': HandleContrast }">
+                        class="flex w-auto py-2 lg:px-4 px-2" :class="{ 'bg-[#3366cc]': HandleContrast }">
                         <span
                             class="lg:rounded-lg rounded-md lg:w-5/6 w-full flex justify-center shadow-lg lg:p-2 p-1 text-azul bg-white [&>svg]:w-full">
 
@@ -19,7 +20,7 @@
                     <!-- Reducir texto -->
                     <button v-tooltip.center="{ value: 'Reducir letra', autoHide: false }"
                         @click="toggleLetra(HandleLetra - 1, 'reducir')" class="flex w-full py-2 lg:px-4 px-2"
-                        :class="{ 'bg-[#3366cc]': HandleActivated == 'reducir' && !HandleContrast}">
+                        :class="{ 'bg-[#3366cc]': HandleActivated == 'reducir' && !HandleContrast }">
                         <span
                             class="lg:rounded-lg rounded-md lg:w-5/6 w-full flex justify-center shadow-lg lg:p-2 p-1 text-azul bg-white [&>svg]:w-full">
                             <p class="font-extrabold text-xs lg:text-base">A<sup>-</sup></p>

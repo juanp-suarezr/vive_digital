@@ -1,5 +1,10 @@
 <?php
 
+<<<<<<< Updated upstream
+=======
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\CapacitacionesController;
+>>>>>>> Stashed changes
 use Illuminate\Support\Facades\Request as RequestFacade;
 use App\Http\Controllers\EventosController;
 use App\Http\Controllers\OfertasController;
@@ -9,6 +14,12 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PuntosController;
 use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\RoleController;
+<<<<<<< Updated upstream
+=======
+use App\Models\Inscripciones;
+use App\Models\Ofertas;
+use App\Models\PageView;
+>>>>>>> Stashed changes
 use App\Models\Perfil;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -38,6 +49,7 @@ Route::get('/Welcome', function () {
 
 //ruta puntos
 Route::resource('puntos', PuntosController::class);
+
 Route::get('/', function () {
     if (auth()->check()) {
         return redirect()->route('dashboard');
@@ -53,6 +65,10 @@ Route::get('/', function () {
         ]);
     }
 });
+
+//ruta capacitaciones
+Route::resource('capacitaciones', CapacitacionesController::class);
+
 
 Route::get('/home', function () {
     if (auth()->check()) {
@@ -76,7 +92,42 @@ Route::get('/searchRegistrado', [RegistroController::class, 'searchRegistrado'])
 
 
 Route::get('/dashboard', function () {
+<<<<<<< Updated upstream
     return Inertia::render('Dashboard');
+=======
+    $puntosID = [];
+    $registrados = [];
+    $certificados = [];
+    $ofertas = [];
+    $puntos = Puntos::where('id_user', Auth::id())->first();
+    $pageView = PageView::all();
+    
+    if ($puntos) {
+        $puntosID = $puntos->id;
+        $registrados = Registro::whereHas('puntos_vive', function ($query) {
+            $query->where('id_user', Auth::id()); // Filtrar por el ID del usuario autenticado
+        })->count();
+        $ofertas = Ofertas::where('id_puntos', $puntosID)->count();
+        $certificados = Inscripciones::where('estadoProceso', 'Certificado')
+    ->whereHas('oferta', function ($query) use ($puntosID) {
+        $query->where('id_puntos', $puntosID); // Verifica si el id_punto de la oferta coincide
+    })
+    ->count();
+    } else {
+        $puntos = Puntos::count();
+        $registrados = Registro::count();
+        $ofertas = Ofertas::count();
+        $certificados = Inscripciones::where('estadoProceso', 'Certificado')->count();
+    }
+    return Inertia::render('Dashboard', [
+        'registrados' =>  $registrados,
+        'ofertas' => $ofertas,
+        'puntos' => $puntos,
+        'certificados' => $certificados,
+        'views' => $pageView,
+
+    ]);
+>>>>>>> Stashed changes
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
@@ -87,7 +138,19 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     //ACTUALIZAR OFERTAS
+    Route::get('/oferts', [OfertasController::class, 'ofertas'])->name('oferts.ofertas');
+    Route::get('/inscritos', [OfertasController::class, 'inscritos'])->name('oferts.inscritos');
+    Route::get('/totalInscritos', [OfertasController::class, 'totalInscritos'])->name('totalInscritos');
     Route::post('/ActualizarOfertas', [OfertasController::class, 'actuOferts'])->name('ofertas.actuOferts');
+    //certificar
+    Route::post('/certificar', [OfertasController::class, 'certificar'])->name('oferts.certificar');
+    //cancelar certificar
+    Route::post('/cancelar-certificado', [OfertasController::class, 'noCertificar'])->name('oferts.noCertificar');
+
+    //GESTIÓN DE INSCRIPCIONES
+    Route::get('/gestion-inscritos', [CapacitacionesController::class, 'aprobarInscritos'])->name('gestionInscritos');
+    Route::post('/gestion-inscritos', [CapacitacionesController::class, 'aprobarPreInscripciones'])->name('inscripciones.aprobar');
+
     //ACTUALIZAR Eventos
     Route::post('/ActualizarEventos', [EventosController::class, 'actuEvents'])->name('eventos.actuEvents');
 
@@ -95,6 +158,8 @@ Route::middleware('auth')->group(function () {
     Route::patch('/registrado', [RegistroController::class, 'update'])->name('registrados.update');
     //EXCEL
     Route::get('/registrado/exportar', [RegistroController::class, 'excel'])->name('registrados.excel');
+    Route::get('/ofertas/exportar', [OfertasController::class, 'excel'])->name('oferts.excel');
+    Route::get('/totalInscritos/exportar', [OfertasController::class, 'excelInscritos'])->name('totalInscritos.excel');
 });
 
 Route::group(['middleware' => ['auth']], function () {
