@@ -113,13 +113,13 @@ Route::get('/dashboard', function () {
         $puntos = Puntos::count();
         $registrados = Registro::count();
         $ofertas = Ofertas::count();
-        $certificados = Inscripciones::where('estadoProceso', 'Certificado')->count();
+        // $certificados = Inscripciones::where('estadoProceso', 'Certificado')->count();
     }
     return Inertia::render('Dashboard', [
         'registrados' =>  $registrados,
         'ofertas' => $ofertas,
         'puntos' => $puntos,
-        'certificados' => $certificados,
+        // 'certificados' => $certificados,
         // 'views' => $pageView,
 
     ]);
