@@ -96,8 +96,8 @@ Route::get('/dashboard', function () {
     $certificados = [];
     $ofertas = [];
     $puntos = Puntos::where('id_user', Auth::id())->first();
-    $pageView = PageView::all();
-    
+    // $pageView = PageView::all();
+
     if ($puntos) {
         $puntosID = $puntos->id;
         $registrados = Registro::whereHas('puntos_vive', function ($query) {
@@ -120,7 +120,7 @@ Route::get('/dashboard', function () {
         'ofertas' => $ofertas,
         'puntos' => $puntos,
         'certificados' => $certificados,
-        'views' => $pageView,
+        // 'views' => $pageView,
 
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
