@@ -55,7 +55,7 @@ class PerfilController extends Controller
                     })->orWhere('id_puntos', $puntosID)->with(['inscripciones' => function ($query) {
                         $query->where('estadoProceso', 'Inscrito'); // Filtrar inscripciones con certificado en 0
                     }])
-                    ->get(),
+                    ->paginate(5),
                 'eventos' => Eventos::query()
                     ->when(RequestFacade::input('search'), function ($query, $search) {
                         $query->where('id_puntos', $search);

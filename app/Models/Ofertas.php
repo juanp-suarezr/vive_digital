@@ -20,15 +20,11 @@ class Ofertas extends Model
         'nombre',
         'id_puntos',
         'horario',
-        'jornada',
-        'fecha_init',
-        'fecha_fin',
+        'descripcion',
         'estado',
-        'cupo',
-        'tipo',
         'lugar',
         'banner',
-        
+
     ];
 
     public function puntos_vive()

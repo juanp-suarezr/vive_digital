@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CapacitacionesController;
+use App\Http\Controllers\CargueMasivoController;
 use Illuminate\Support\Facades\Request as RequestFacade;
 use App\Http\Controllers\EventosController;
 use App\Http\Controllers\OfertasController;
@@ -155,10 +156,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/registrado/exportar', [RegistroController::class, 'excel'])->name('registrados.excel');
     Route::get('/ofertas/exportar', [OfertasController::class, 'excel'])->name('oferts.excel');
     Route::get('/totalInscritos/exportar', [OfertasController::class, 'excelInscritos'])->name('totalInscritos.excel');
+
+    //PLANTILLA EXCEL para cargue masivo
+    //usuario
+    Route::get('plantillaOF', [CargueMasivoController::class, 'plantillaOF'])->name('plantillaOF.excel');
+
+    //import excel carga masiva
+    //usuarios
+    Route::post('/cargueOfertas', [CargueMasivoController::class, 'cargueOfertas'])->name('cargueOfertas');
 });
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::resource('users', UserController::class)->middleware('auth');
+    Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('perfil', PerfilController::class);
     Route::resource('ofertas', OfertasController::class);

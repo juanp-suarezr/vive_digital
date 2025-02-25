@@ -73,12 +73,12 @@ class OfertasController extends Controller
 
         $this->validate($request, [
             'nombre' => 'required|string',
-            'tipo' => 'required|string',
-            'horario' => 'required|string|max:100',
-            'jornada' => 'required|string|max:100',
+
+            'horario' => 'string|max:100',
+            'descripcion' => 'string|max:300',
             'lugar' => 'string|max:100',
-            'fecha_init' => 'required|string|max:255',
-            'fecha_fin' => 'required|string|max:255',
+
+
         ]);
 
         $fileName = 'NA';
@@ -102,12 +102,9 @@ class OfertasController extends Controller
         $ofertas = Ofertas::create([
             'id_puntos' => $request->input('id_puntos'),
             'nombre' => $request->input('nombre'),
-            'tipo' => $request->input('tipo'),
             'horario' => $request->input('horario'),
-            'jornada' => $request->input('jornada'),
+            'descripcion' => $request->input('descripcion'),
             'lugar' => $request->input('lugar'),
-            'fecha_init' => $request->input('fecha_init'),
-            'fecha_fin' => $request->input('fecha_fin'),
             'banner' => $fileName,
 
         ]);
@@ -133,12 +130,10 @@ class OfertasController extends Controller
 
         $request->validate([
             'nombre' => 'required|string',
-            'tipo' => 'required|string',
-            'horario' => 'required|string|max:100',
-            'jornada' => 'required|string|max:100',
-            'lugar' => '',
-            'fecha_init' => 'required|string|max:255',
-            'fecha_fin' => 'required|string|max:255',
+
+            'horario' => 'string|max:100',
+            'descripcion' => 'string|max:300',
+            'lugar' => 'string',
             'estado' => 'required',
 
 
@@ -146,12 +141,9 @@ class OfertasController extends Controller
 
         $oferta = Ofertas::where('id', $request->id)->first();
         $oferta->nombre = $request->nombre;
-        $oferta->tipo = $request->tipo;
         $oferta->horario = $request->horario;
-        $oferta->jornada = $request->jornada;
+        $oferta->descripcion = $request->descripcion;
         $oferta->lugar = $request->lugar;
-        $oferta->fecha_init = $request->fecha_init;
-        $oferta->fecha_fin = $request->fecha_fin;
         $oferta->estado = $request->estado;
 
 
@@ -192,7 +184,13 @@ class OfertasController extends Controller
         $request->validate([
             'password' => ['required', 'current_password'],
         ]);
-        Ofertas::where('id', $id)->delete();
+        $oferta = Ofertas::find($id);
+        $folder = 'ofertas';
+        // Eliminar el archivo antiguo si existe
+        if ($oferta->banner) {
+            Storage::disk('public')->delete('uploads/' . $folder . '/' . $oferta->banner);
+        }
+        $oferta->delete();
         return redirect()->route('perfil.index')
             ->with('success', 'Recurso eliminado exitosamente');
     }
@@ -307,11 +305,9 @@ class OfertasController extends Controller
         ob_start();
 
         $search = RequestFacade::input('search');
-        $startDate = RequestFacade::input('fecha_init');
-        $endDate = RequestFacade::input('fecha_end');
         $puntosID = RequestFacade::input('punto');
 
-        return Excel::download(new OfertasExports($search, $startDate, $endDate, $puntosID), 'ofertas.xls', \Maatwebsite\Excel\Excel::XLS);
+        return Excel::download(new OfertasExports($search, $puntosID), 'ofertas.xls', \Maatwebsite\Excel\Excel::XLS);
     }
 
     public function excelInscritos()
@@ -320,8 +316,6 @@ class OfertasController extends Controller
         ob_start();
 
         $search = RequestFacade::input('search');
-        $startDate = RequestFacade::input('fecha_init');
-        $endDate = RequestFacade::input('fecha_end');
         $puntosID = RequestFacade::input('punto');
 
         return Excel::download(new InscritosExports(), 'totalInscritos.xls', \Maatwebsite\Excel\Excel::XLS);
