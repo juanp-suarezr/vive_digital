@@ -276,10 +276,10 @@ onMounted(() => {
                     </div>
                     <div class="mt-8 z-30">
                         <Link href="/capacitaciones"
-                            class="bg-primary text-white font-bold py-2 px-4 z-30 rounded mr-2 cursor-pointer">
+                            class="bg-primary text-white font-bold py-2 px-4 z-30 rounded mr-2 cursor-pointer text-2xl">
                         Capacitaciones
                         </Link>
-                        <Link href="/register" class="bg-primary text-white font-bold py-2 px-4 rounded">
+                        <Link href="/register" class="bg-primary text-white font-bold py-2 px-4 rounded text-2xl">
                         Registro
                         </Link>
                     </div>
@@ -384,7 +384,7 @@ onMounted(() => {
 
 .aa_sec {
     position: absolute;
-    top: 0;
+    top: 12vb;
     left: 0;
     width: 100%;
     height: 100vh;

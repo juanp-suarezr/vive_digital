@@ -4,7 +4,8 @@
 
         <div class="fixed top-64 w-screen" style="z-index: 50; pointer-events: none;">
             <div class="xl:w-[5%] sm:w-[6%] w-[10%] sm:ml-[95%] ml-[90%]">
-                <div class="bg-azul w-full py-4 sm:rounded-tl-xl sm:rounded-bl-xl rounded-tl-md rounded-bl-md" style="pointer-events: auto;">
+                <div class="bg-azul w-full py-4 sm:rounded-tl-xl sm:rounded-bl-xl rounded-tl-md rounded-bl-md"
+                    style="pointer-events: auto;">
                     <!-- contraste -->
                     <button v-tooltip.center="{ value: 'Contraste', autoHide: false }" @click="toggleContrast"
                         class="flex w-auto py-2 lg:px-4 px-2" :class="{ 'bg-[#3366cc]': HandleContrast }">
@@ -124,6 +125,10 @@
             <!-- Mobile menu -->
             <div v-if="isMobileMenuOpen" class="md:hidden">
                 <ul class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                    <li><a :href="route('capacitaciones.index')"
+                            :class="[{ 'underline': route().current('register') }, { '!text-yellow-200 font-bold': HandleContrast }]"
+                            class="block text-parrafo hover:underline border-b-2 border-secondary py-2">Capacitaciones</a>
+                    </li>
                     <li>
                         <a :href="route('register')"
                             :class="[{ 'underline': route().current('register') }, { '!text-yellow-200 font-bold': HandleContrast }]"

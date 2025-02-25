@@ -141,7 +141,7 @@ const getImageUrl = (imageName, folder) => {
 const responsiveOptions = ref([
     {
         breakpoint: '1400px',
-        numVisible: 4,
+        numVisible: 3,
         numScroll: 1
     },
     {
@@ -150,15 +150,11 @@ const responsiveOptions = ref([
         numScroll: 1
     },
     {
-        breakpoint: '767px',
-        numVisible: 2,
-        numScroll: 1
-    },
-    {
-        breakpoint: '575px',
+        breakpoint: '860px',
         numVisible: 1,
         numScroll: 1
-    }
+    },
+
 ]);
 
 
@@ -170,17 +166,17 @@ const submit = () => {
             visible.value = false;
             swal({
                 title: "Registro Guardado",
-                text: "proceso de preInscripción realizado, será notificado por gmail si es aprobado para empezar el curso o capacitación " + form.nombre_oferta,
+                text: "proceso de Inscripción realizado, será notificado por gmail si es aprobado para empezar el curso o capacitación " + form.nombre_oferta,
                 icon: "success"
             })
         }, onError: function () {
-        visible.value = false;
-        swal({
-            title: "Registro NO Guardado",
-            text: `Estamos teniendo inconvenientes al guardar el registro, por favor verificar si ya se registro en el curso de ${form.nombre_oferta} o vuelva a intentar más tarde.`,
-            icon: "error"
-        })
-    }
+            visible.value = false;
+            swal({
+                title: "Registro NO Guardado",
+                text: `Estamos teniendo inconvenientes al guardar el registro, por favor verificar si ya se registro en el curso de ${form.nombre_oferta} o vuelva a intentar más tarde.`,
+                icon: "error"
+            })
+        }
     });
 };
 
@@ -198,23 +194,26 @@ const formatField = value => {
 
     <PageLayout>
 
-        <div class="w-full px-12 sm:px-6 mt-0 p-0 bg-gradient-to-b from-option2 to-option1" :class="{ '!bg-gradient-to-b !from-black to-black !text-yellow-200 font-bold': isContrast }">
+        <div class="w-full px-2 sm:px-6 mt-0 p-0 bg-gradient-to-b from-option2 to-option1"
+            :class="{ '!bg-gradient-to-b !from-black to-black !text-yellow-200 font-bold': isContrast }">
 
             <!-- Recorremos las ofertas de cada punto -->
             <div v-for="punto in allOfertas" :key="punto.punto" class="py-6">
-                <h2 class="text-2xl font-bold mb-4">{{ punto.punto }}</h2>
+                <h2 class="text-2xl font-bold mb-4 px-6">{{ punto.punto }}</h2>
 
-                <Carousel :value="punto.ofertas" :numVisible="4" :numScroll="1" :responsiveOptions="responsiveOptions">
+                <Carousel :value="punto.ofertas" :numVisible="4" :numScroll="1" :responsiveOptions="responsiveOptions"
+                    :class="{ 'min-[900px]:px-44': punto.ofertas.length == 1 }">
                     <template #item="slotProps">
                         <div
-                            class="flex flex-col my-auto text-parrafo bg-white surface-border shadow-xl rounded-md sm:m-2 p-3">
+                            class="flex flex-col my-auto text-parrafo bg-white surface-border shadow-md rounded-md sm:m-2 p-3">
                             <!-- imagen y tag con tipo -->
                             <div class="mb-3">
                                 <div class="relative mx-auto">
                                     <img v-if="slotProps.data.banner != 'NA'"
                                         :src="getImageUrl(slotProps.data.banner, 'ofertas')"
-                                        :alt="slotProps.data.nombre" class="w-full rounded-md !h-[40vh]" />
-                                    <div v-else class="w-full !h-[40vh] flex">
+                                        :alt="slotProps.data.nombre"
+                                        class="w-full rounded-md min-[320px]:!h-[20vh] sm:!h-[40vh]" />
+                                    <div v-else class="w-full min-[320px]:!h-[20vh] sm:!h-[40vh] flex">
                                         <h2
                                             class="flex justify-center text-center m-auto text-4xl sm:text-6xl text-parrafo font-bold">
                                             {{ slotProps.data.nombre }}
@@ -255,10 +254,13 @@ const formatField = value => {
                                             : letraSize == 1 ? '!sm:text-lg !text-sm'
                                                 : letraSize == 2 ? '!sm:text-xl !text-base' : ''
                                     ]">
-                                    PRE-INSCRIBIRSE
+                                    INSCRIBIRSE
                                 </button>
                             </div>
                         </div>
+                    </template>
+                    <template #empty>
+                        <div class="px-6 text-secondary font-bold">Actualmente no hay cursos disponibles</div>
                     </template>
                 </Carousel>
             </div>
@@ -307,7 +309,7 @@ const formatField = value => {
                 <primaryButton v-if="info_usuario.find(item => item.identificacion == form.identificacion)"
                     type="button" @click="submit" :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing">
-                    PRE-INSCRIBIRSE
+                    INSCRIBIRSE
                 </primaryButton>
                 <div v-else class="">
                     <em>debe registrarse primero en el punto para realizar el proceso de inscripción al curso. <a
@@ -327,5 +329,19 @@ const formatField = value => {
 <style scoped>
 .inverted {
     transform: scaleY(-1);
+}
+</style>
+
+<style>
+/* Estilos personalizados para el componente Carousel */
+.p-carousel .p-carousel-indicators .p-carousel-indicator button {
+    background-color: #dcabae !important;
+    /* Color de fondo para los elementos no seleccionados */
+
+}
+
+.p-carousel .p-carousel-indicators .p-carousel-indicator.p-highlight button {
+    background-color: #e20613 !important;
+    /* Color de fondo para los elementos seleccionados */
 }
 </style>
