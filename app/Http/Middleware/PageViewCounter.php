@@ -51,12 +51,12 @@ class PageViewCounter
 
         // Lógica de conteo de visitas para las rutas incluidas
         $page = $request->path();
-        // $pageView = PageView::firstOrCreate(
-        //     ['page' => $page],
-        //     ['views' => 0]
-        // );
+        $pageView = PageView::firstOrCreate(
+            ['page' => $page],
+            ['views' => 0]
+        );
 
-        // $pageView->increment('views');
+        $pageView->increment('views');
 
         return $next($request);
     }
