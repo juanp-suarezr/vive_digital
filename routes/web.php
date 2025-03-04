@@ -94,7 +94,7 @@ Route::get('register', [RegisteredUserController::class, 'create'])
 Route::get('/dashboard', function () {
     $puntosID = [];
     $registrados = [];
-    $certificados = [];
+    $certificados = 0;
     $ofertas = [];
     $puntos = Puntos::where('id_user', Auth::id())->first();
     $pageView = PageView::all();
