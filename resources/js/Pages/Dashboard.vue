@@ -74,7 +74,7 @@
                                     {{ puntos.nombre }}</h1>
                                 <div class="group-hover:text-gray-200">
                                     <p>
-                                        {{ certificados.length == 0 ? 0 : certificados }}
+                                        {{ certificados }}
                                     </p>
                                     <p>
                                         Total de Certificados
