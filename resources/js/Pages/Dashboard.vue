@@ -54,9 +54,9 @@
                                 <p>Ofertas</p>
                             </div>
                         </div>
-                        
+
                     </div>
-                    <!-- Puntos -->
+                    <!-- Certificaciones -->
                     <div class="w-full p-2 lg:w-1/4 md:w-1/2 flex">
                         <div
                             class="flex w-full flex-col px-6 py-10 overflow-hidden bg-white border-[#e1e5ea] hover:text-white hover:bg-gradient-to-br hover:from-primary hover:to-secondary rounded-xl border-2 duration-300 hover:shadow-2xl group">
@@ -74,7 +74,7 @@
                                     {{ puntos.nombre }}</h1>
                                 <div class="group-hover:text-gray-200">
                                     <p>
-                                        {{ certificados }}
+                                        {{ certificados.length == 0 ? 0 : certificados }}
                                     </p>
                                     <p>
                                         Total de Certificados
