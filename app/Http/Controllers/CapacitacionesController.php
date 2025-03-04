@@ -16,6 +16,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use App\Jobs\SendInscriptionApprovedMail;
+use App\Jobs\SendInscriptionDisapprovedMail;
 
 class CapacitacionesController extends Controller
 {
@@ -81,179 +82,54 @@ class CapacitacionesController extends Controller
             ->get();
     }
 
-    public function create(Request $request)
-    {
 
-        return Inertia::render('Perfil/AddOferts', [
-            'punto_id' => $request->id,
-        ]);
-    }
-
-    public function store(Request $request)
-    {
-
-        $this->validate($request, [
-            'nombre' => 'required|string',
-            'tipo' => 'required|string',
-            'horario' => 'required|string|max:100',
-            'jornada' => 'required|string|max:100',
-            'lugar' => 'string|max:100',
-            'fecha_init' => 'required|string|max:255',
-            'fecha_fin' => 'required|string|max:255',
-            'cupo' => 'required',
-        ]);
-
-        $fileName = 'NA';
-
-        if ($request->banner) {
-
-            $request->validate([
-
-                'banner' => 'mimes:jpg,png,jpeg,gif,bmp,tiff,svg,web,webp|max:2048',
-
-            ]);
-
-
-            $folder = 'ofertas';
-            $extension = $request->file('banner')->getClientOriginalExtension();
-
-            $fileName = time() . '_oferta_' . $request->nombre . '.' . $extension;
-            $filePath = $request->file('banner')->storeAs('uploads/' . $folder, $fileName, 'public');
-        }
-
-        $ofertas = Ofertas::create([
-            'id_puntos' => $request->input('id_puntos'),
-            'nombre' => $request->input('nombre'),
-            'tipo' => $request->input('tipo'),
-            'horario' => $request->input('horario'),
-            'jornada' => $request->input('jornada'),
-            'lugar' => $request->input('lugar'),
-            'fecha_init' => $request->input('fecha_init'),
-            'fecha_fin' => $request->input('fecha_fin'),
-            'cupo' => $request->input('cupo'),
-            'banner' => $fileName,
-
-        ]);
-
-        return redirect()->route('perfil.index');
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        $oferta = Ofertas::find($id);
-
-        return Inertia::render('Perfil/EditOferts', compact('oferta'));
-    }
-
-    public function actuOferts(Request $request)
-    {
-
-        $request->validate([
-            'nombre' => 'required|string',
-            'tipo' => 'required|string',
-            'horario' => 'required|string|max:100',
-            'jornada' => 'required|string|max:100',
-            'lugar' => '',
-            'fecha_init' => 'required|string|max:255',
-            'fecha_fin' => 'required|string|max:255',
-            'cupo' => 'required',
-            'estado' => 'required',
-
-
-        ]);
-
-        $oferta = Ofertas::where('id', $request->id)->first();
-        $oferta->nombre = $request->nombre;
-        $oferta->tipo = $request->tipo;
-        $oferta->horario = $request->horario;
-        $oferta->jornada = $request->jornada;
-        $oferta->lugar = $request->lugar;
-        $oferta->fecha_init = $request->fecha_init;
-        $oferta->fecha_fin = $request->fecha_fin;
-        $oferta->cupo = $request->cupo;
-        $oferta->estado = $request->estado;
-
-
-
-        if ($request->banner != 'NA' && $request->banner != $oferta->banner) {
-
-            $request->validate([
-
-                'banner' => 'mimes:jpg,png,jpeg,gif,bmp,tiff,svg,web,webp|max:2048',
-
-            ]);
-
-
-            $folder = 'ofertas';
-            $extension = $request->file('banner')->getClientOriginalExtension();
-
-            $fileName = time() . '_oferta_' . $request->nombre . '.' . $extension;
-            $filePath = $request->file('banner')->storeAs('uploads/' . $folder, $fileName, 'public');
-
-            // Eliminar el archivo antiguo si existe
-            if ($oferta->banner) {
-                Storage::disk('public')->delete('uploads/' . $folder . '/' . $oferta->banner);
-            }
-
-            $oferta->banner = $fileName;
-        }
-
-        // Crear y persistir nuevo evento
-        $oferta->save();
-
-
-        return redirect()->route('perfil.index');
-    }
-
-    public function destroy(Request $request, $id)
-    {
-
-        $request->validate([
-            'password' => ['required', 'current_password'],
-        ]);
-        Ofertas::where('id', $id)->delete();
-        return redirect()->route('perfil.index')
-            ->with('success', 'Recurso eliminado exitosamente');
-    }
 
     public function aprobarInscritos(Request $request)
     {
+        // Obtener los filtros de la solicitud
+        $filters = $request->only(['search_user', 'search_oferta', 'punto', 'estado']);
 
-        $filters = $request->only(['search', 'punto', 'estadoProceso']);
-        // Usuario autenticado
+        // Obtener el usuario autenticado
         $user = Auth::user();
 
         // Consulta base con relaciones
-        $inscripciones = Inscripciones::with(['oferta', 'info_user'])
-            ->when($filters['search'] ?? null, function ($query, $search) {
-                // Filtrar por nombre o correo en la relación infoUser
-                $query->whereHas('info_user', function ($q) use ($search) {
-                    $q->where('nombre', 'like', "%$search%")
-                        ->orWhere('correo', 'like', "%$search%");
+        $inscripciones = Inscripciones::with(['oferta.puntos_vive', 'info_user'])
+            ->when($filters['search_user'] ?? null, function ($query, $search_user) {
+                // Filtrar por nombre o correo en la relación info_user
+                $query->whereHas('info_user', function ($q) use ($search_user) {
+                    $q->where('nombres', 'like', "%$search_user%")
+                        ->orWhere('apellidos', 'like', "%$search_user%")
+                        ->orWhere('email', 'like', "%$search_user%");
+                });
+            })
+            ->when($filters['search_oferta'] ?? null, function ($query, $search_oferta) {
+                // Filtrar por nombre de la oferta
+                $query->whereHas('oferta', function ($q) use ($search_oferta) {
+                    $q->where('nombre', 'like', "%$search_oferta%");
                 });
             })
             ->when($filters['punto'] ?? null, function ($query, $punto) use ($user) {
-                // Filtrar por puntos: Si es admin, puede elegir, si no, solo su punto
-                if ($user->roles->contains('name', 'admin')) {
+                // Filtrar por puntos: Si es admin o supervisor, puede elegir, si no, solo su punto
+                if ($user->roles->contains('name', 'Administrador') || $user->roles->contains('name', 'Supervisor')) {
                     $query->whereHas('oferta', function ($q) use ($punto) {
-                        $q->where('punto', $punto);
+                        $q->where('id_puntos', $punto);
                     });
                 } else {
                     $query->whereHas('oferta', function ($q) use ($user) {
-                        $q->where('punto', $user->punto); // Punto del usuario
+                        $q->where('id_puntos', $user->punto); // Punto del usuario
                     });
                 }
-            })->where('estadoProceso', 'En proceso')
-            ->when($filters['estadoProceso'] ?? null, function ($query, $estado) {
+            })
+            ->when($filters['estado'] ?? null, function ($query, $estado) {
                 // Filtrar por estadoProceso
                 $query->where('estadoProceso', $estado);
             })
+            ->where(function ($query) {
+                $query->where('estadoProceso', 'En proceso')
+                    ->orWhere('estadoProceso', 'Rechazado');
+            })
+            ->orderByRaw("FIELD(estadoProceso, 'En proceso') DESC")
+            ->orderBy('created_at', 'asc') // Ordenar por la columna 'created_at' de forma ascendente
             ->paginate(10) // Paginación de 10 resultados
             ->withQueryString(); // Mantener parámetros en la URL
 
@@ -261,7 +137,23 @@ class CapacitacionesController extends Controller
         return Inertia::render('Inscripciones/GestionUsuarios', [
             'inscripciones' => $inscripciones,
             'filters' => $filters,
+            'puntos' => Puntos::all(),
         ]);
+    }
+
+    //añadir comentarios
+    public function addComentario($id, Request $request)
+    {
+
+        $comentario = $request->input('comentario');
+
+
+        $inscripcion = Inscripciones::find($id);
+
+        $inscripcion->comentario = $comentario ?? 'NA';
+        $inscripcion->save();
+
+        return back();
     }
 
     // Asegúrate de tener el siguiente método en tu controlador de inscripciones
@@ -285,6 +177,37 @@ class CapacitacionesController extends Controller
             if ($success) {
                 // Enviar el correo electrónico utilizando colas
                 SendInscriptionApprovedMail::dispatch($inscription);
+            } else {
+                // Manejar el error si la inscripción no se pudo actualizar
+                // Puedes agregar un mensaje de error o realizar alguna otra acción
+                return back()->withErrors(['msg' => 'Ocurrió un error al actualizar la inscripción.']);
+            }
+        }
+
+        return back();
+    }
+
+
+    public function rechazarInscripciones(Request $request)
+    {
+        $ids = $request->input('ids');
+
+        // Obtener las inscripciones que coinciden con los IDs y el id_oferta
+        $inscriptions = Inscripciones::whereIn('id', $ids)
+            ->select('id', 'estadoProceso') // Seleccionar solo las columnas necesarias
+            ->with('info_user')
+            ->with('oferta')
+            ->get();
+
+        foreach ($inscriptions as $inscription) {
+            // Actualizar el estado de la inscripción
+            $inscription->estadoProceso = 'Rechazado';
+            $success = $inscription->save();
+
+            // Verificar que el estado se haya actualizado correctamente
+            if ($success) {
+                // Enviar el correo electrónico utilizando colas
+                SendInscriptionDisapprovedMail::dispatch($inscription);
             } else {
                 // Manejar el error si la inscripción no se pudo actualizar
                 // Puedes agregar un mensaje de error o realizar alguna otra acción

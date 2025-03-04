@@ -31,4 +31,9 @@ class Puntos extends Model
         return $this->hasOne(User::class, 'id', 'id_user');
     }
 
+    // Definir la relación inversa con Ofertas
+    public function ofertas()
+    {
+        return $this->hasMany(Ofertas::class, 'id_puntos', 'id');
+    }
 }

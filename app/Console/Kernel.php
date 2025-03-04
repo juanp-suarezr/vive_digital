@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
         // $schedule->command('inspire')->hourly();
         $schedule->command('sanctum:prune-expired --hours=24')->daily();
         // Ejecutar el Job cada minuto para revisar las fechas de inicio de las ofertas
-        $schedule->job(new \App\Jobs\RevisarFechasOfertas)->everyMinute();
+        // $schedule->job(new \App\Jobs\RevisarFechasOfertas)->everyMinute();
     }
 
     /**

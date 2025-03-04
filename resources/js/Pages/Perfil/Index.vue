@@ -175,25 +175,15 @@
                                                 </th>
                                                 <th
                                                     class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
-                                                    Horario
+                                                    Información Horario
                                                 </th>
-                                                <th
-                                                    class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
-                                                    Jornada
-                                                </th>
-                                                <th
-                                                    class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
-                                                    Fecha inicio
-                                                </th>
-                                                <th
-                                                    class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
-                                                    Fecha fin
-                                                </th>
+
 
                                                 <th
                                                     class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
-                                                    Tipo
+                                                    Descripción
                                                 </th>
+
                                                 <th
                                                     class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
                                                     Lugar
@@ -216,7 +206,7 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr v-for="ofert in ofertas" :key="ofert.id" class="text-gray-700">
+                                            <tr v-for="ofert in ofertas.data" :key="ofert.id" class="text-gray-700">
 
                                                 <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
                                                     <p class="text-gray-900 whitespace-no-wrap">{{ ofert.nombre }} </p>
@@ -225,23 +215,8 @@
                                                     <p class="text-gray-900 whitespace-no-wrap">{{ ofert.horario }}</p>
                                                 </td>
                                                 <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                                                    <p class="text-gray-900 whitespace-no-wrap">{{ ofert.jornada }} </p>
-                                                </td>
-                                                <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                                                    <p class="text-gray-900 whitespace-no-wrap">{{
-                                                        formatField(ofert.fecha_init)
-                                                        }}
-                                                    </p>
-                                                </td>
-                                                <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                                                    <p class="text-gray-900 whitespace-no-wrap">{{
-                                                        formatField(ofert.fecha_fin)
-                                                        }}
-                                                    </p>
-                                                </td>
-
-                                                <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                                                    <p class="text-gray-900 whitespace-no-wrap">{{ ofert.tipo }}</p>
+                                                    <p class="text-gray-900 whitespace-no-wrap">{{ ofert.descripcion ||
+                                                        'no registra' }}</p>
                                                 </td>
                                                 <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
                                                     <p class="text-gray-900 whitespace-no-wrap">{{ ofert.lugar }}</p>
@@ -261,7 +236,8 @@
                                                         Bloqueado
                                                     </span>
                                                 </td>
-                                                <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm gap-x-2 flex flex-wrap">
+                                                <td
+                                                    class="border-b border-gray-200 bg-white px-5 py-5 text-sm gap-x-2 flex flex-wrap">
                                                     <SecondaryButton class="mb-2" @click="abrirModal(2, ofert)">
                                                         Inscribir
                                                     </SecondaryButton>
@@ -833,23 +809,23 @@ const submit1 = () => {
 //INSCRIPCIONES
 const submit2 = () => {
 
-form1.post(route('puntos.store'), {
-    onSuccess: function () {
-        visible.value = false;
-        swal({
-            title: "Registro Guardado",
-            text: "usuario inscrito a la capacitación " + form1.nombre_oferta,
-            icon: "success"
-        })
-    }, onError: function () {
-        visible.value = false;
-        swal({
-            title: "Registro NO Guardado",
-            text: "posiblemente el usuario ya se encuentre inscrito a la oferta: " + form1.nombre_oferta,
-            icon: "error"
-        })
-    }
-});
+    form1.post(route('puntos.store'), {
+        onSuccess: function () {
+            visible.value = false;
+            swal({
+                title: "Registro Guardado",
+                text: "usuario inscrito a la capacitación " + form1.nombre_oferta,
+                icon: "success"
+            })
+        }, onError: function () {
+            visible.value = false;
+            swal({
+                title: "Registro NO Guardado",
+                text: "posiblemente el usuario ya se encuentre inscrito a la oferta: " + form1.nombre_oferta,
+                icon: "error"
+            })
+        }
+    });
 };
 
 const formatField = value => {

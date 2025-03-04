@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CapacitacionesController;
+use App\Http\Controllers\CargueMasivoController;
 use Illuminate\Support\Facades\Request as RequestFacade;
 use App\Http\Controllers\EventosController;
 use App\Http\Controllers\OfertasController;
@@ -96,7 +97,7 @@ Route::get('/dashboard', function () {
     $certificados = [];
     $ofertas = [];
     $puntos = Puntos::where('id_user', Auth::id())->first();
-    // $pageView = PageView::all();
+    $pageView = PageView::all();
 
     if ($puntos) {
         $puntosID = $puntos->id;
@@ -127,7 +128,7 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/about', fn() => Inertia::render('About'))->name('about');
-    Route::get('users', [UserController::class, 'index'])->name('users.index');
+    // Route::get('users', [UserController::class, 'index'])->name('users.index');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -145,6 +146,9 @@ Route::middleware('auth')->group(function () {
     //GESTIÓN DE INSCRIPCIONES
     Route::get('/gestion-inscritos', [CapacitacionesController::class, 'aprobarInscritos'])->name('gestionInscritos');
     Route::post('/gestion-inscritos', [CapacitacionesController::class, 'aprobarPreInscripciones'])->name('inscripciones.aprobar');
+    Route::post('/gestion-inscritos-rechazar', [CapacitacionesController::class, 'rechazarInscripciones'])->name('inscripciones.rechazar');
+    //Añadir comentario
+    Route::put('/inscripciones/updateComment/{id}', [CapacitacionesController::class, 'addComentario'])->name('inscripciones.updateComment');
 
     //ACTUALIZAR Eventos
     Route::post('/ActualizarEventos', [EventosController::class, 'actuEvents'])->name('eventos.actuEvents');
@@ -155,10 +159,18 @@ Route::middleware('auth')->group(function () {
     Route::get('/registrado/exportar', [RegistroController::class, 'excel'])->name('registrados.excel');
     Route::get('/ofertas/exportar', [OfertasController::class, 'excel'])->name('oferts.excel');
     Route::get('/totalInscritos/exportar', [OfertasController::class, 'excelInscritos'])->name('totalInscritos.excel');
+
+    //PLANTILLA EXCEL para cargue masivo
+    //usuario
+    Route::get('plantillaOF', [CargueMasivoController::class, 'plantillaOF'])->name('plantillaOF.excel');
+
+    //import excel carga masiva
+    //usuarios
+    Route::post('/cargueOfertas', [CargueMasivoController::class, 'cargueOfertas'])->name('cargueOfertas');
 });
 
 Route::group(['middleware' => ['auth']], function () {
-    Route::resource('users', UserController::class)->middleware('auth');
+    Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
     Route::resource('perfil', PerfilController::class);
     Route::resource('ofertas', OfertasController::class);

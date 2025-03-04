@@ -54,6 +54,7 @@
                                 <p>Ofertas</p>
                             </div>
                         </div>
+                        
                     </div>
                     <!-- Puntos -->
                     <div class="w-full p-2 lg:w-1/4 md:w-1/2 flex">

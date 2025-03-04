@@ -27,13 +27,7 @@
             </div>
 
             <div class="sm:flex inline-block w-full m-auto gap-3 col-span-5">
-                <!-- fecha inicio -->
-                <Calendar v-model="fecha_init" dateFormat="dd/mm/yy" showButtonBar placeholder="Fecha inicio"
-                    class="my-4 flex justify-center" />
-                <!-- fecha inicio -->
-                <Calendar v-model="fecha_end" dateFormat="dd/mm/yy" showButtonBar placeholder="Fecha fin"
-                    class="my-4 flex justify-center" />
-
+                
                 <div class="flex justify-center my-auto gap-2 inline-block ms-2">
                     <div class="">
                         <PrimaryButton type="submit" @click="handleEnterKey" class="flex justify-center">
@@ -49,7 +43,7 @@
             </div>
 
             <div class="flex justify-end w-full my-auto col-span-2">
-                <a :href="route('oferts.excel', { fecha_init: fecha_init, fecha_end: fecha_end })"
+                <a :href="route('oferts.excel', { search: search })"
                     class="flex text-white bg-green-800 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2">
                     <DocumentArrowDownIcon class="h-6 w-6 me-2" />Exportar
                 </a>
@@ -83,30 +77,20 @@
                                         class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
                                         Nombre oferta
                                     </th>
+
                                     <th
                                         class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
-                                        Tipo
-                                    </th>
-                                    <th
-                                        class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
-                                        Horario
-                                    </th>
-                                    <th
-                                        class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
-                                        Jornada
+                                        Información Horario
                                     </th>
 
                                     <th
                                         class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
                                         Punto vive
                                     </th>
+
                                     <th
                                         class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
-                                        Fecha inicio
-                                    </th>
-                                    <th
-                                        class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
-                                        Fecha fin
+                                        Descripción
                                     </th>
                                     <th
                                         class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
@@ -126,29 +110,22 @@
                                     <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
                                         <p class="text-gray-900 whitespace-no-wrap">{{ oferta.nombre }} </p>
                                     </td>
-                                    <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                                        <p class="text-gray-900 whitespace-no-wrap">{{ oferta.tipo || 'no registrado' }}</p>
-                                    </td>
+
                                     <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
                                         <p class="text-gray-900 whitespace-no-wrap">{{ oferta.horario || 'no registrado' }}</p>
                                     </td>
-                                    <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                                        <p class="text-gray-900 whitespace-no-wrap">{{ oferta.jornada || 'no registrado' }}</p>
-                                    </td>
+
 
                                     <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
                                         <p class="text-gray-900 whitespace-no-wrap"
                                             :class="{ 'bg-blue-200 p-2 rounded-md': puntos.find(item => item.id == oferta.id_puntos).id_user == $page.props.auth.user.id }">
                                             {{ puntos.find(item => item.id == oferta.id_puntos).nombre }} </p>
                                     </td>
+
                                     <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                                        <p class="text-gray-900 whitespace-no-wrap">{{ formatDate(new
-                                            Date(oferta.fecha_init)) || 'no registrado' }}</p>
+                                        <p class="text-gray-900 whitespace-no-wrap">{{ oferta.descripcion || 'no registra' }}</p>
                                     </td>
-                                    <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
-                                        <p class="text-gray-900 whitespace-no-wrap">{{ formatDate(new
-                                            Date(oferta.fecha_fin)) || 'no registrado' }}</p>
-                                    </td>
+
                                     <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
                                         <p :class="{'bg-lime-500':oferta.estado}" class="text-white px-2.5 py-1 rounded whitespace-no-wrap">{{ oferta.estado ? 'Activo' : 'Bloqueado' }}</p>
                                     </td>
@@ -171,7 +148,7 @@
             </div>
         </div>
         <div class="flex flex-col items-center border-t bg-white px-5 py-5 xs:flex-row xs:justify-between">
-            <pagination v-if="ofertas && ofertas.length > 1" :links="props.oferts.links" />
+            <pagination v-if="props.oferts.links" :links="props.oferts.links" />
         </div>
 
     </AuthenticatedLayout>
@@ -220,12 +197,10 @@ const ofertas = ref(props.oferts.data);
 
 
 
-console.log(ofertas.value);
+console.log(props.oferts);
 
 // pass filters in search
 let search = ref(props.filters.search);
-let fecha_init = ref(props.filters.fecha_init ?? "");
-let fecha_end = ref(props.filters.fecha_end ?? "");
 const punto = ref(props.filters.punto ?? "");
 
 
@@ -244,7 +219,7 @@ const handleSelectPuntos = () => {
 const handleEnterKey = () => {
     router.get(
         "/oferts",
-        { search: search.value, fecha_init: fecha_init.value, fecha_end: fecha_end.value, punto: punto.value },
+        { search: search.value, punto: punto.value },
         {
 
             replace: true,
@@ -262,12 +237,11 @@ const handleEnterKey = () => {
 const clearAll = () => {
 
     search.value = '';
-    fecha_init.value = '';
-    fecha_end.value = '';
+    
     punto.value = '';
     router.get(
         "/oferts",
-        { search: search.value, fecha_init: fecha_init.value, fecha_end: fecha_end.value, punto: punto.value },
+        { search: search.value, punto: punto.value },
         {
 
             replace: true,

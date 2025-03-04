@@ -22,11 +22,9 @@ class OfertasExports implements FromCollection, WithHeadings, WithStyles, Should
     protected $endDate;
     protected $puntosID;
 
-    public function __construct($search, $startDate, $endDate, $puntosID)
+    public function __construct($search, $puntosID)
     {
         $this->search = $search;
-        $this->startDate = $startDate;
-        $this->endDate = $endDate;
         $this->puntosID = $puntosID;
     }
 
@@ -39,29 +37,15 @@ class OfertasExports implements FromCollection, WithHeadings, WithStyles, Should
         $ofertas = Ofertas::query()
             ->when($this->search, function ($query) {
                 $query->where('nombre', 'like', '%' . $this->search . '%');
-            })->when($this->startDate || $this->endDate, function ($query) {
-
-                $fecha_init = $this->startDate;
-                $fecha_end = $this->endDate ?? date('Y-m-d');
-
-                // Filtrar ofertas donde la fecha de inicio o fin esté dentro del rango especificado
-                $query->where(function ($query) use ($fecha_init, $fecha_end) {
-                    $query->whereBetween('fecha_init', [$fecha_init, $fecha_end])
-                        ->orWhereBetween('fecha_fin', [$fecha_init, $fecha_end]);
-                });
             })->when($this->puntosID, function ($query) {
                 // Filtrar por id_puntos solo si existe un valor en puntosID
                 $query->where('id_puntos', $this->puntosID);
             })->select(
                 'id_puntos',
                 'nombre',
-                'tipo',
                 'horario',
-                'jornada',
+                'descripcion',
                 'lugar',
-                'fecha_init',
-                'fecha_fin',
-                'cupo',
                 'estado',
 
             )
@@ -74,10 +58,7 @@ class OfertasExports implements FromCollection, WithHeadings, WithStyles, Should
             $oferta->id_puntos = Puntos::where('id', $oferta->id_puntos)->value('nombre') ?? ''; // Asignar el nombre del punto o cadena vacía si no hay punto
 
             $oferta->estado = $oferta->estado == 1 ? 'Activo' : 'Bloqueado';
-            // Formatear las fechas para que tengan un formato más amigable (ejemplo: 15 de octubre, 2024)
-            $oferta->fecha_init = \Carbon\Carbon::parse($oferta->fecha_init)->translatedFormat('d \d\e F, Y');
-            $oferta->fecha_fin = \Carbon\Carbon::parse($oferta->fecha_fin)->translatedFormat('d \d\e F, Y');
-
+            
             return $oferta;
         });
 
@@ -91,13 +72,9 @@ class OfertasExports implements FromCollection, WithHeadings, WithStyles, Should
         return [
             'Punto vive digital',
             'Nombre oferta',
-            'Tipo oferta',
-            'Horario',
-            'Jornada',
+            'Información horario',
+            'Descripción',
             'Lugar',
-            'Fecha inicio',
-            'Fecha fin',
-            'Cupo',
             'Estado',
         ];
         // return array_keys($this->collection()->first()->toArray());

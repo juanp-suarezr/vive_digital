@@ -23,6 +23,8 @@ class Inscripciones extends Model
         'id_oferta',
         'id_info_user',
         'identificacion',
+        'comentario',
+        'estadoProceso',
     ];
 
     public function oferta()

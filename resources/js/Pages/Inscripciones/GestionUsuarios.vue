@@ -8,21 +8,62 @@
         </template>
 
         <!-- Filtros -->
-        <div class="flex gap-4 p-4">
-            <input v-model="filters.nombreOferta" placeholder="Buscar por oferta" class="input-filter" />
-            <input v-model="filters.nombreUsuario" placeholder="Buscar por usuario" class="input-filter" />
-            <select v-model="filters.estado" class="input-filter">
+        <div class="flex flex-wrap gap-4 p-4">
+            <div class="relative">
+                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                    <svg class="w-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                    </svg>
+                </div>
+                <input type="search" @keydown.enter="aplicarFiltros" v-model="filters.search_user" id="search-user"
+                    class="block w-full py-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-0 focus:border-transparent"
+                    placeholder="Búsqueda por usuario" required>
+            </div>
+
+            <div class="relative">
+                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                    <svg class="w-4 text-gray-500 dark:text-gray-400" aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                    </svg>
+                </div>
+                <input type="search" @keydown.enter="aplicarFiltros" v-model="filters.search_oferta" id="search-oferta"
+                    class="block w-full py-3 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-0 focus:border-transparent"
+                    placeholder="Búsqueda por oferta" required>
+            </div>
+
+
+            <select v-model="filters.estado" @change="aplicarFiltros"
+                class="block px-4 py-1 text-base text-gray-900 border border-gray-600 rounded-lg bg-gray-200 focus:ring-blue-500 focus:border-blue-500">
+                <option value="">Todos los estados</option>
                 <option value="En proceso">Pendiente o en proceso</option>
                 <option value="Rechazado">Rechazadas</option>
             </select>
-            <button @click="aplicarFiltros" class="bg-blue-500 text-white px-4 py-2 rounded">Filtrar</button>
+            <!-- solo admin, para elegir punto -->
+            <select
+                v-if="$page.props.user.roles.includes('Administrador') || $page.props.user.roles.includes('Supervisor')"
+                id="puntos" name="puntos" v-model="filters.punto" @change="aplicarFiltros"
+                class="block w-auto px-4 py-1 text-base text-gray-900 border border-gray-600 rounded-lg bg-gray-200 focus:ring-blue-500 focus:border-blue-500">
+                <option selected disabled value="">Seleccionar punto vive digital</option>
+                <option v-for="pt in puntos" :key="pt.id" :value="pt.id">{{ pt.nombre }}</option>
+
+            </select>
+            <button @click="aplicarFiltros" class="bg-blue-500 text-white px-4 py-2 rounded-md">Filtrar</button>
+            <button @click="clearFiltros" class="border border-gray-600 px-4 py-2 rounded-md">Limpiar</button>
         </div>
 
-        <!-- Aprobación Masiva -->
-        <div class="flex justify-end p-4">
+        <!-- Aprobación/Rechazo Masivo -->
+        <div class="flex justify-end p-4 gap-4">
             <button @click="confirmarAprobacion" class="bg-green-500 text-white px-4 py-2 rounded"
                 :disabled="!selectedInscripciones.length">
                 Aprobar Seleccionados
+            </button>
+            <button @click="confirmarRechazo" class="bg-red-500 text-white px-4 py-2 rounded"
+                :disabled="!selectedInscripciones.length">
+                Rechazar Seleccionados
             </button>
         </div>
 
@@ -45,24 +86,43 @@
                                 <th class="px-5 py-3">Nombre usuario</th>
                                 <th class="px-5 py-3">Identificación</th>
                                 <th class="px-5 py-3">Teléfono</th>
+                                <th class="px-5 py-3">Tiempo de espera</th>
+                                <th v-if="$page.props.user.roles.includes('Administrador') || $page.props.user.roles.includes('Supervisor')"
+                                    class="px-5 py-3">Punto vive</th>
                                 <th class="px-5 py-3">Estado</th>
+                                <th class="px-5 py-3">Comentario</th>
                             </tr>
                         </thead>
                         <tbody>
                             <tr v-for="ins in props.inscripciones.data" :key="ins.id" class="text-gray-700">
-                                <td class="px-5 py-5">
+                                <td class="px-3 py-5">
                                     <input type="checkbox" v-model="selectedInscripciones" :value="ins.id" />
                                 </td>
-                                <td class="px-5 py-5">{{ ins.oferta.nombre }}</td>
-                                <td class="px-5 py-5">{{ ins.info_user.nombres }} {{ ins.info_user.apellidos }}</td>
-                                <td class="px-5 py-5">{{ ins.identificacion }}</td>
-                                <td class="px-5 py-5">{{ ins.info_user.telefono }}</td>
+                                <td class="px-3 py-5">{{ ins.oferta.nombre }}</td>
+                                <td class="px-3 py-5">{{ ins.info_user.nombres }} {{ ins.info_user.apellidos }}</td>
+                                <td class="px-3 py-5">{{ ins.identificacion }}</td>
+                                <td class="px-3 py-5">{{ ins.info_user.telefono }}</td>
                                 <td class="px-5 py-5">
+                                    <Tag :severity="calcularTiempoEspera(ins.created_at).color"
+                                        :value="calcularTiempoEspera(ins.created_at).texto">
+                                    </Tag>
+                                </td>
+                                <td v-if="$page.props.user.roles.includes('Administrador') || $page.props.user.roles.includes('Supervisor')"
+                                    class="px-3 py-5 break-words">{{ ins.oferta.puntos_vive.nombre }}</td>
+                                <td class="px-3 py-5 whitespace-nowrap">
                                     <span :class="{
                                         '!bg-secondary': ins.estadoProceso === 'Rechazado',
-                                    }" class="text-white bg-orange-600 px-2.5 py-0.5 rounded-md">
+                                    }" class="text-white text-sm bg-orange-600 px-2.5 py-0.5 rounded-md">
                                         {{ ins.estadoProceso }}
                                     </span>
+                                </td>
+                                <td class="py-5 flex justify-center items-center">
+                                    <button @click="editComment(ins)"
+                                        v-tooltip.left="{ value: ins.comentario, offset: 8 }"
+                                        class="text-white xs:text-xs !p-2 !bg-azul hover:scale-105 !rounded-full mb-2 cursor-pointer">
+                                        <ChatBubbleBottomCenterTextIcon class="w-6 h-6" />
+                                    </button>
+
                                 </td>
                             </tr>
                         </tbody>
@@ -76,7 +136,7 @@
             </div>
         </div>
 
-        <!-- Modal de Confirmación -->
+        <!-- Modal de Confirmación de Aprobación -->
         <div v-if="showModal" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center">
             <div class="bg-white p-6 rounded shadow-lg w-1/3">
                 <h3 class="text-lg font-semibold">Confirmar Aprobación</h3>
@@ -94,15 +154,57 @@
             </div>
         </div>
 
+        <!-- Modal de Confirmación de Rechazo -->
+        <div v-if="showRechazoModal" class="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center">
+            <div class="bg-white p-6 rounded shadow-lg w-1/3">
+                <h3 class="text-lg font-semibold">Confirmar Rechazo</h3>
+                <p>¿Está seguro de que desea rechazar las pre-inscripciones seleccionadas?</p>
+                <div class="flex justify-end gap-4 mt-4">
+                    <button @click="cancelarRechazo" :disabled="isLoading"
+                        class="bg-gray-400 disabled:bg-gray-500/60 text-white px-4 py-2 rounded">Cancelar</button>
+                    <button @click="rechazarInscripciones"
+                        class="bg-red-500 disabled:bg-red-500/40 text-white px-4 py-2 rounded" :disabled="isLoading">
+                        Confirmar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Modal de Comentario -->
+        <Dialog header="Editar Comentario" v-model:visible="showCommentModal" :modal="true" :closable="false">
+            <div class="p-fluid">
+                <div class="field">
+                    <label for="comentario">Comentario</label>
+                    <Textarea id="comentario" v-model="currentComment" rows="5" cols="30" />
+                    <p class="text-gray-500 text-sm mt-2" :class="{ 'text-red-500': isMaxPalabras1 }">
+                        {{ palabrasEnDescripcion }} caracteres <span v-if="isMaxPalabras1">Limite de caracteres
+                            superado</span>
+                    </p>
+                </div>
+                <div class="flex justify-end gap-4 mt-4">
+                    <Button label="Cancelar" icon="pi pi-times" class="p-button-text" @click="cancelComment" />
+                    <Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="saveComment" />
+                </div>
+            </div>
+        </Dialog>
+
     </AuthenticatedLayout>
 </template>
 
 <script setup>
-import { defineProps, ref, watch, inject } from 'vue';
-import { router } from '@inertiajs/vue3';
+import { defineProps, ref, watch, inject, computed } from 'vue';
+import { router, Head } from '@inertiajs/vue3';
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout.vue';
 import Pagination from '@/Components/Pagination.vue';
+import Tag from 'primevue/tag';
+import Dialog from 'primevue/dialog';
+import Button from 'primevue/button';
+import Textarea from 'primevue/textarea';
+import dayjs from "dayjs";
+import "dayjs/locale/es";
+import { ChatBubbleBottomCenterTextIcon } from '@heroicons/vue/24/solid';
 
+dayjs.locale("es");
 const swal = inject('$swal');
 
 const props = defineProps({
@@ -111,25 +213,48 @@ const props = defineProps({
         type: Object,
         default: () => ({}),
     },
+    puntos: {
+        type: Array,
+        default: () => [],
+    },
 });
 
+console.log(props);
+
 const filters = ref({
-    nombreOferta: '',
-    nombreUsuario: '',
+    search_user: '',
+    search_oferta: '',
     estado: '',
+    punto: '',
 });
 
 const selectedInscripciones = ref([]);
 const selectAll = ref(false);
 const showModal = ref(false);
+const showRechazoModal = ref(false);
+const showCommentModal = ref(false);
+const currentComment = ref('');
+const currentInscripcion = ref(null);
 const errorMessage = ref('');
 const isLoading = ref(false);
+
+const isMaxPalabras1 = ref(false);
 
 const aplicarFiltros = () => {
     router.get(route('gestionInscritos'), filters.value, {
         preserveState: true,
         replace: true,
     });
+};
+
+const clearFiltros = () => {
+    filters.value = {
+        search_user: '',
+        search_oferta: '',
+        estado: '',
+        punto: '',
+    };
+    aplicarFiltros();
 };
 
 const toggleSelectAll = () => {
@@ -151,7 +276,7 @@ const cancelarAprobacion = () => {
 const aprobarInscripciones = async () => {
     isLoading.value = true;
 
-    router.post(route('inscripciones.aprobar'), { ids: selectedInscripciones.value}, {
+    router.post(route('inscripciones.aprobar'), { ids: selectedInscripciones.value }, {
         onSuccess: () => {
             showModal.value = false;
             isLoading.value = false;
@@ -181,14 +306,138 @@ const aprobarInscripciones = async () => {
     });
 };
 
+const confirmarRechazo = () => {
+    showRechazoModal.value = true;
+};
+
+const cancelarRechazo = () => {
+    showRechazoModal.value = false;
+};
+
+const rechazarInscripciones = async () => {
+    isLoading.value = true;
+
+    router.post(route('inscripciones.rechazar'), { ids: selectedInscripciones.value }, {
+        onSuccess: () => {
+            showRechazoModal.value = false;
+            isLoading.value = false;
+            selectedInscripciones.value = []; // Limpiar selección
+            swal({
+                title: 'Éxito',
+                text: 'Las inscripciones han sido rechazadas correctamente.',
+                icon: 'success',
+                button: 'OK',
+            }).then(() => {
+                window.location.reload(); // Recargar la página
+            });
+        },
+        onError: (errors) => {
+            errorMessage.value = 'Ocurrió un error al rechazar las inscripciones. Por favor, inténtelo de nuevo.';
+            showRechazoModal.value = false;
+            swal({
+                title: 'Error',
+                text: errorMessage.value,
+                icon: 'error',
+                button: 'OK',
+            });
+        },
+        onFinish: () => {
+            isLoading.value = false;
+        }
+    });
+};
+
+const editComment = (inscripcion) => {
+    currentInscripcion.value = inscripcion;
+    currentComment.value = inscripcion.comentario || '';
+    showCommentModal.value = true;
+};
+
+const cancelComment = () => {
+    showCommentModal.value = false;
+    currentComment.value = '';
+    currentInscripcion.value = null;
+};
+
+
+
+const saveComment = async () => {
+    if (!currentInscripcion.value) return;
+
+    isLoading.value = true;
+
+    router.put(route('inscripciones.updateComment', currentInscripcion.value.id), { comentario: currentComment.value }, {
+        onSuccess: () => {
+            showCommentModal.value = false;
+            isLoading.value = false;
+            swal({
+                title: 'Éxito',
+                text: 'El comentario ha sido guardado correctamente.',
+                icon: 'success',
+                button: 'OK',
+            }).then(() => {
+                window.location.reload(); // Recargar la página
+            });
+        },
+        onError: (errors) => {
+            errorMessage.value = 'Ocurrió un error al guardar el comentario. Por favor, inténtelo de nuevo.';
+            showCommentModal.value = false;
+            swal({
+                title: 'Error',
+                text: errorMessage.value,
+                icon: 'error',
+                button: 'OK',
+            });
+        },
+        onFinish: () => {
+            isLoading.value = false;
+        }
+    });
+};
+
+// Limite palabras
+const palabrasEnDescripcion = computed(() => {
+    const palabras = currentComment.value.trim();
+    const result = palabras.length;
+
+    if (result >= 100) {
+        isMaxPalabras1.value = true;
+    } else {
+        isMaxPalabras1.value = false;
+    }
+
+    return result;
+});
+
+watch(palabrasEnDescripcion, () => {
+    currentComment.value = currentComment.value.trim(); // Asegúrate de que no haya espacios al principio o al final
+});
+
 watch(selectedInscripciones, () => {
     selectAll.value = selectedInscripciones.value.length === props.inscripciones.data.length;
 });
+
+// Calculate waiting time
+const calcularTiempoEspera = (createdAt) => {
+    if (!createdAt) return { texto: "Desconocido", color: "secondary" };
+
+    const ahora = dayjs();
+    const creado = dayjs(createdAt);
+    const dias = ahora.diff(creado, "days");
+    const horas = ahora.diff(creado, "hours") % 24;
+
+    let color = "secondary";
+    if (dias >= 1 && dias <= 3) {
+        color = "success";
+    } else if (dias >= 4 && dias <= 6) {
+        color = "warn";
+    } else if (dias >= 7) {
+        color = "danger";
+    }
+
+    return { texto: `${dias} días`, color };
+};
+
 </script>
 
-<style scoped>
-.input-filter {
-    @apply border border-gray-300 rounded px-2 py-1;
-}
-
-</style>
+<style scoped></style>
