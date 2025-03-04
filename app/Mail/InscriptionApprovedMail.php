@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Mail;
 
 use App\Models\Inscripciones;
@@ -29,11 +30,13 @@ class InscriptionApprovedMail extends Mailable
      */
     public function build()
     {
-        
-        return $this->view('emails.inscription_approved')
-                    ->with([
-                        'name' => $this->inscription->info_user->nombres.' '.$this->inscription->info_user->apellidos,
-                        'offer' => $this->inscription->oferta->nombre
-                        ]);
+
+        return $this
+            ->subject('Estado de tu solicitud de inscripción curso ' . $this->inscription->oferta->nombre)
+            ->view('emails.inscription_approved')
+            ->with([
+                'name' => $this->inscription->info_user->nombres . ' ' . $this->inscription->info_user->apellidos,
+                'offer' => $this->inscription->oferta->nombre
+            ]);
     }
 }

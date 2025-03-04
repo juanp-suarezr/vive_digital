@@ -128,7 +128,7 @@ Route::get('/dashboard', function () {
 
 Route::middleware('auth')->group(function () {
     Route::get('/about', fn() => Inertia::render('About'))->name('about');
-    Route::get('users', [UserController::class, 'index'])->name('users.index');
+    // Route::get('users', [UserController::class, 'index'])->name('users.index');
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
@@ -146,6 +146,9 @@ Route::middleware('auth')->group(function () {
     //GESTIÓN DE INSCRIPCIONES
     Route::get('/gestion-inscritos', [CapacitacionesController::class, 'aprobarInscritos'])->name('gestionInscritos');
     Route::post('/gestion-inscritos', [CapacitacionesController::class, 'aprobarPreInscripciones'])->name('inscripciones.aprobar');
+    Route::post('/gestion-inscritos-rechazar', [CapacitacionesController::class, 'rechazarInscripciones'])->name('inscripciones.rechazar');
+    //Añadir comentario
+    Route::put('/inscripciones/updateComment/{id}', [CapacitacionesController::class, 'addComentario'])->name('inscripciones.updateComment');
 
     //ACTUALIZAR Eventos
     Route::post('/ActualizarEventos', [EventosController::class, 'actuEvents'])->name('eventos.actuEvents');

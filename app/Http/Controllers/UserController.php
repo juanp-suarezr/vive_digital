@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Support\Facades\Request as RequestFacade;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\Rule;
@@ -22,7 +23,7 @@ class UserController extends Controller
      */
     function __construct()
     {
-        $this->middleware('permission:usuarios-listar', ['only' => ['index']]);
+        $this->middleware('permission:usuarios-listar|usuarios-crear|usuarios-editar|usuarios-eliminar', ['only' => ['index', 'store']]);
         $this->middleware('permission:usuarios-crear', ['only' => ['create', 'store']]);
         $this->middleware('permission:usuarios-editar', ['only' => ['edit', 'update']]);
         $this->middleware('permission:usuarios-eliminar', ['only' => ['destroy']]);

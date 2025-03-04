@@ -15,9 +15,9 @@
                         Nueva oferta
                     </h3>
                     <div class="text-right">
-                        <SecondaryLink :href="route('perfil.index')">
+                        <SecondaryButtonReturn>
                             Regresar
-                        </SecondaryLink>
+                        </SecondaryButtonReturn>
                     </div>
 
                 </div>
@@ -170,7 +170,7 @@ import InputLabel from '@/Components/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/TextInput.vue';
 import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
-import SecondaryLink from "@/Components/SecondaryLink.vue";
+import SecondaryButtonReturn from "@/Components/SecondaryButtonReturn.vue";
 import { inject, ref, computed, watch } from 'vue';
 import DataView from 'primevue/dataview';
 import Calendar from 'primevue/calendar';
@@ -305,8 +305,8 @@ const cargueMasivo = () => {
     form.post(route('cargueOfertas'), {
         forceFormData: true,
         onSuccess: () => {
-            
-            
+
+
             // Verificar si la propiedad 'success' está presente en la respuesta
             if (usePage().props.flash.success !== undefined) {
 
@@ -324,7 +324,7 @@ const cargueMasivo = () => {
                     text: "Se han importado los registros de forma masiva",
                     icon: "success",
                     didClose: () => {
-                        
+
                         window.location.reload();
                     }
                 });

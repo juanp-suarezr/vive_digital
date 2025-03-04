@@ -80,7 +80,7 @@ class PlantillaOfertas implements FromCollection, WithHeadings, WithStyles, Shou
                 $sheet->insertNewRowBefore(1, 1);
                 $sheet->setCellValue('A1', 'Nota: en la fila de id_puntos debe poner el numero que está en la parte derecha del nombre de cada punto vive digital ubicado en el recuadro amarillo.');
                 $sheet->mergeCells('A1:E1');
-                
+
                 $sheet->getStyle('A1:E1')->applyFromArray([
                     'font' => ['italic' => true, 'color' => ['rgb' => 'FF0000']],
                     'fill' => [
@@ -107,7 +107,7 @@ class PlantillaOfertas implements FromCollection, WithHeadings, WithStyles, Shou
                     ],
                 ]);
 
-                
+
 
                 // Ajustar el ancho de las columnas para que el texto se ajuste
                 $sheet->getColumnDimension('F')->setAutoSize(true);
@@ -115,9 +115,11 @@ class PlantillaOfertas implements FromCollection, WithHeadings, WithStyles, Shou
 
                 // Agregar datos de los puntos
                 $row = 5;
+                $puntoIds = [];
                 foreach ($puntos as $punto) {
                     $sheet->setCellValue('F' . $row, $punto->nombre);
                     $sheet->setCellValue('G' . $row, $punto->id);
+                    $puntoIds[] = $punto->id;
                     $row++;
                 }
 
@@ -134,19 +136,23 @@ class PlantillaOfertas implements FromCollection, WithHeadings, WithStyles, Shou
                 ]);
 
                 // Agregar validación de datos para la columna id_puntos
-                for ($i = 3; $i <= 2000; $i++) { // Ajustar el índice de fila para la validación
-                    $sheet->getCell('B' . $i)->getDataValidation()
-                        ->setType(\PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_WHOLE)
-                        ->setErrorStyle(\PhpOffice\PhpSpreadsheet\Cell\DataValidation::STYLE_STOP)
-                        ->setAllowBlank(true)
-                        ->setShowInputMessage(true)
-                        ->setShowErrorMessage(true)
-                        ->setErrorTitle('Error de entrada')
-                        ->setError('Solo se permiten números.')
-                        ->setPromptTitle('Entrada de número')
-                        ->setPrompt('Por favor, ingrese un número.');
+                $puntoIdsString = implode(',', $puntoIds);
+                for ($i = 3; $i <= 3000; $i++) { // Ajustar el índice de fila para la validación
+                    $validation = $sheet->getCell('B' . $i)->getDataValidation();
+                    $validation->setType(\PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_LIST);
+                    $validation->setErrorStyle(\PhpOffice\PhpSpreadsheet\Cell\DataValidation::STYLE_STOP);
+                    $validation->setAllowBlank(true);
+                    $validation->setShowInputMessage(true);
+                    $validation->setShowErrorMessage(true);
+                    $validation->setErrorTitle('Error de entrada');
+                    $validation->setError('Solo se permiten los IDs de los puntos.');
+                    $validation->setPromptTitle('Entrada de ID');
+                    $validation->setPrompt('Por favor, ingrese un ID de punto válido.');
+                    $validation->setFormula1('"' . $puntoIdsString . '"');
                 }
             },
         ];
+
+
     }
 }

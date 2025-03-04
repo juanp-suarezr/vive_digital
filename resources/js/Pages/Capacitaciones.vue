@@ -74,7 +74,7 @@ watch(() => usePage().props.accesibilidad.letra, (newVal) => {
 
 // Computed properties para agrupar las ofertas por punto
 const allOfertas = computed(() => [
-    { punto: 'CENTRO CULUTRAL LUCY TEJADA', ofertas: props.ofertas_lucy },
+    { punto: 'CENTRO CULTURAL LUCY TEJADA', ofertas: props.ofertas_lucy },
     { punto: 'SAN FERNANDO CUBA', ofertas: props.ofertas_fernando },
     { punto: 'Centro Administrativo La Bella', ofertas: props.ofertas_bella },
     { punto: 'Centro de Desarrollo Vecinal Villa Consota', ofertas: props.ofertas_consota },
@@ -166,7 +166,7 @@ const submit = () => {
             visible.value = false;
             swal({
                 title: "Registro Guardado",
-                text: "proceso de Inscripción realizado, será notificado por gmail si es aprobado para empezar el curso o capacitación " + form.nombre_oferta,
+                text: "proceso de Inscripción realizado, será notificado por Correo electrónico si es aprobado para empezar el curso o capacitación " + form.nombre_oferta,
                 icon: "success"
             })
         }, onError: function () {
@@ -205,7 +205,7 @@ const formatField = value => {
                     :class="{ 'min-[900px]:px-44': punto.ofertas.length == 1 }">
                     <template #item="slotProps">
                         <div
-                            class="flex flex-col my-auto text-parrafo bg-white surface-border shadow-md rounded-md sm:m-2 p-3">
+                            class="flex flex-col my-auto text-parrafo bg-white surface-border shadow-md rounded-md sm:m-2 p-3 h-full">
                             <!-- imagen y tag con tipo -->
                             <div class="mb-3">
                                 <div class="relative mx-auto">
@@ -219,9 +219,8 @@ const formatField = value => {
                                             {{ slotProps.data.nombre }}
                                         </h2>
                                     </div>
-                                    <Tag :value="slotProps.data.tipo"
-                                        class="absolute bg-primary text-base sm:text-xl text-white"
-                                        style="left:5px; top: 5px" />
+                                    <Tag :value="punto.punto"
+                                        class="absolute bg-primary text-[8px] sm:text-sm text-white sm:top-[5px] sm:left-[5px] top-[-10px]" />
                                 </div>
                             </div>
                             <!-- info general -->
@@ -230,17 +229,13 @@ const formatField = value => {
                                 <div class="">
                                     <div class="mb-3 font-medium p-2 bg-azul rounded-md shadow-md text-white">{{
                                         slotProps.data.nombre }}</div>
-                                    <div class="mb-3"><b>Jornada:</b> {{ slotProps.data.jornada }}</div>
-                                    <div class="mb-3"><b>Horario:</b> {{ slotProps.data.horario }}</div>
-                                    <div class="mb-3"><b>Lugar:</b> {{ slotProps.data.lugar }}</div>
+                                    <div class="mb-3"><b>Información Horario:</b> {{ slotProps.data.horario }}</div>
+                                    <div class="mb-3"><b>Descripción:</b> {{ slotProps.data.descripcion }}</div>
                                 </div>
                                 <!-- cupo, fecha inicio, fin -->
                                 <div class="">
 
-                                    <div class="mb-3"><b>Fecha inicio:</b> {{ formatField(slotProps.data.fecha_init) }}
-                                    </div>
-                                    <div class="mb-3"><b>Fecha fin:</b> {{ formatField(slotProps.data.fecha_fin) }}
-                                    </div>
+                                    <div class="mb-3"><b>Lugar:</b> {{ slotProps.data.lugar }}</div>
                                 </div>
                             </div>
 

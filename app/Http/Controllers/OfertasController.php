@@ -11,6 +11,7 @@ use App\Models\Puntos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Pagination\Paginator;
 use Inertia\Inertia;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\OfertasExports;
@@ -133,8 +134,8 @@ class OfertasController extends Controller
 
             'horario' => 'string|max:100',
             'descripcion' => 'string|max:300',
-            'lugar' => 'string',
-            'estado' => 'required',
+            'lugar' => 'string|max:100',
+            'estado',
 
 
         ]);
@@ -204,9 +205,7 @@ class OfertasController extends Controller
         $puntos = Puntos::where('id_user', Auth::id())->get();
         if (Auth::user()->roles[0]->name == 'Administrador' || Auth::user()->roles[0]->name == 'Supervisor') {
             $puntos = Puntos::all();
-            if (RequestFacade::input('punto')) {
-                # code...
-            }
+
             $puntosID = RequestFacade::input('punto');
         } else {
             $puntosID = $puntos[0]->id;
@@ -221,23 +220,13 @@ class OfertasController extends Controller
                 'oferts' => Ofertas::query()
                     ->when(RequestFacade::input('search'), function ($query, $search) {
                         $query->where('nombre', 'like', '%' . $search . '%');
-                    })->when(RequestFacade::input('fecha_init') || RequestFacade::input('fecha_end'), function ($query) {
-
-                        $fecha_init = RequestFacade::input('fecha_init');
-                        $fecha_end = RequestFacade::input('fecha_end') ?? date('Y-m-d');
-
-                        // Filtrar ofertas donde la fecha de inicio o fin esté dentro del rango especificado
-                        $query->where(function ($query) use ($fecha_init, $fecha_end) {
-                            $query->whereBetween('fecha_init', [$fecha_init, $fecha_end])
-                                ->orWhereBetween('fecha_fin', [$fecha_init, $fecha_end]);
-                        });
                     })->when($puntosID, function ($query, $puntosID) {
                         // Filtrar por id_puntos solo si existe un valor en puntosID
                         $query->where('id_puntos', $puntosID);
                     })
                     ->paginate(5)
                     ->withQueryString(),
-                'filters' => RequestFacade::only(['search', 'punto', 'fecha_init', 'fecha_end'])
+                'filters' => RequestFacade::only(['search', 'punto'])
             ]
         );
     }
@@ -320,4 +309,5 @@ class OfertasController extends Controller
 
         return Excel::download(new InscritosExports(), 'totalInscritos.xls', \Maatwebsite\Excel\Excel::XLS);
     }
+
 }

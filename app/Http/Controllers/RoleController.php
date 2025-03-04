@@ -22,13 +22,13 @@ class RoleController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    function __construct()
-    {
-        $this->middleware('permission:rol-listar', ['only' => ['index']]);
-        $this->middleware('permission:rol-crear', ['only' => ['create', 'store']]);
-        $this->middleware('permission:rol-editar', ['only' => ['edit', 'update']]);
-        $this->middleware('permission:rol-eliminar', ['only' => ['destroy']]);
-    }
+    // function __construct()
+    // {
+    //     $this->middleware('permission:rol-listar', ['only' => ['index']]);
+    //     $this->middleware('permission:rol-crear', ['only' => ['create', 'store']]);
+    //     $this->middleware('permission:rol-editar', ['only' => ['edit', 'update']]);
+    //     $this->middleware('permission:rol-eliminar', ['only' => ['destroy']]);
+    // }
 
 
     /**
@@ -113,7 +113,7 @@ class RoleController extends Controller
     public function update(Request $request, $id)
     {
         $this->validate($request, [
-            'name' => 'required|unique:roles,name,' . $id . ',id,id_tenant,' . session('tenant_id'),
+            'name' => 'required|unique:roles,name,' . $id,
             'permisos' => 'required',
         ]);
 
@@ -127,6 +127,8 @@ class RoleController extends Controller
         //Alert::info('Success', 'Rol has been updated !');
         return Redirect::route('roles.edit', $id)->with('message', 'Registro actualizado');
     }
+
+    
 
 
     public function destroy(Request $request,$id){
