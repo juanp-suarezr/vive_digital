@@ -105,16 +105,16 @@ Route::get('/dashboard', function () {
             $query->where('id_user', Auth::id()); // Filtrar por el ID del usuario autenticado
         })->count();
         $ofertas = Ofertas::where('id_puntos', $puntosID)->count();
-    //     $certificados = Inscripciones::where('estadoProceso', 'Certificado')
-    // ->whereHas('oferta', function ($query) use ($puntosID) {
-    //     $query->where('id_puntos', $puntosID); // Verifica si el id_punto de la oferta coincide
-    // })
-    // ->count();
+        $certificados = Inscripciones::where('estadoProceso', 'Certificado')
+            ->whereHas('oferta', function ($query) use ($puntosID) {
+                $query->where('id_puntos', $puntosID); // Verifica si el id_punto de la oferta coincide
+            })
+            ->count();
     } else {
         $puntos = Puntos::count();
         $registrados = Registro::count();
         $ofertas = Ofertas::count();
-        // $certificados = Inscripciones::where('estadoProceso', 'Certificado')->count();
+        $certificados = Inscripciones::where('estadoProceso', 'Certificado')->count();
     }
     return Inertia::render('Dashboard', [
         'registrados' =>  $registrados,
