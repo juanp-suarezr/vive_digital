@@ -120,8 +120,8 @@ Route::get('/dashboard', function () {
         'registrados' =>  $registrados,
         'ofertas' => $ofertas,
         'puntos' => $puntos,
-        // 'certificados' => $certificados,
-        // 'views' => $pageView,
+        'certificados' => $certificados,
+        'views' => $pageView,
 
     ]);
 })->middleware(['auth', 'verified'])->name('dashboard');
