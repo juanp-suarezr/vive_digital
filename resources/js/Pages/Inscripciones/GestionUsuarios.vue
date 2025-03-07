@@ -85,6 +85,7 @@
                                 <th class="px-5 py-3">Nombre oferta</th>
                                 <th class="px-5 py-3">Nombre usuario</th>
                                 <th class="px-5 py-3">Identificación</th>
+                                <th class="px-5 py-3">Edad</th>
                                 <th class="px-5 py-3">Teléfono</th>
                                 <th class="px-5 py-3">Tiempo de espera</th>
                                 <th v-if="$page.props.user.roles.includes('Administrador') || $page.props.user.roles.includes('Supervisor')"
@@ -101,6 +102,7 @@
                                 <td class="px-3 py-5">{{ ins.oferta.nombre }}</td>
                                 <td class="px-3 py-5">{{ ins.info_user.nombres }} {{ ins.info_user.apellidos }}</td>
                                 <td class="px-3 py-5">{{ ins.identificacion }}</td>
+                                <td class="px-3 py-5">{{ ins.info_user.edad }}</td>
                                 <td class="px-3 py-5">{{ ins.info_user.telefono }}</td>
                                 <td class="px-5 py-5">
                                     <Tag :severity="calcularTiempoEspera(ins.created_at).color"
