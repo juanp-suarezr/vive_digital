@@ -66,6 +66,7 @@ class PuntosController extends Controller
         );
     }
 
+    //inscripcion a oferta
     public function store(Request $request)
     {
         $request->validate([
@@ -86,19 +87,17 @@ class PuntosController extends Controller
             return redirect()->back()->withErrors(['error' => 'Esta oferta ya está bloqueada y no permite más inscripciones.']);
         }
 
-        // Verificar el número de inscripciones sin certificado (certificado = false)
-        $inscritos = Inscripciones::where('id_oferta', $request->id_oferta)
-            ->where('estadoProceso', 'Inscrito') // Excluir los que ya tienen certificado
-            ->count();
-        // Comparar con el cupo máximo
-        if ($oferta->cupo != null && $inscritos >= $oferta->cupo) {
-            $oferta->estado = 0;
-            $oferta->save();
-            event(new OfertaActualizada($oferta)); // Emitir el evento de Cupo lleno
-            return redirect()->back()->withErrors(['error' => 'El cupo para esta oferta ya está lleno.']);
-        }
+
 
         $registrados = Info_usuario::where('identificacion', $request->identificacion)->get()->first();
+
+        $inscripcion = Inscripciones::where('estadoProceso', '!=', 'Rechazado')
+        ->where('id_oferta', $request->id_oferta)
+        ->where('id_info_user', $registrados->id)->get()->first();
+
+        if($inscripcion) {
+            return redirect()->back()->withErrors(['error' => 'Usted ya tiene una inscripción registrada en esta oferta. Por favor revisar o estar pendiente del correo electrónico.']);
+        }
 
         try {
             Inscripciones::create([
