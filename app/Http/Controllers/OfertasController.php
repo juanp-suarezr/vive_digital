@@ -107,6 +107,7 @@ class OfertasController extends Controller
             'descripcion' => $request->input('descripcion'),
             'lugar' => $request->input('lugar'),
             'banner' => $fileName,
+            'estado' => 1,
 
         ]);
 
@@ -293,8 +294,16 @@ class OfertasController extends Controller
         ob_end_clean();
         ob_start();
 
+        $puntosID = [];
+        $puntos = Puntos::where('id_user', Auth::id())->get();
+        if (Auth::user()->roles[0]->name == 'Administrador' || Auth::user()->roles[0]->name == 'Supervisor') {
+            $puntosID = RequestFacade::input('punto');
+        } else {
+            $puntosID = $puntos[0]->id;
+        }
+
         $search = RequestFacade::input('search');
-        $puntosID = RequestFacade::input('punto');
+
 
         return Excel::download(new OfertasExports($search, $puntosID), 'ofertas.xls', \Maatwebsite\Excel\Excel::XLS);
     }

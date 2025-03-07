@@ -43,7 +43,7 @@
                         <div class="col-span-2">
                             <InputLabel for="horario"
                                 value="Información horario de la oferta (opcional - max 100 caracteres)" />
-                            <textarea id="horario" class="mt-1 block w-full" v-model="form.horario" required
+                            <textarea id="horario" class="mt-1 block w-full" v-model="form.horario"
                                 placeholder="lunes, martes y miércoles" autocomplete="horario"></textarea>
                             <p class="text-gray-500 text-sm mt-2" :class="{ 'text-red-500': isMaxPalabras }">
                                 {{ palabrasEnHorario }} caracteres <span v-if="isMaxPalabras">Limite de caracteres
@@ -56,7 +56,7 @@
                         <div class="col-span-2">
                             <InputLabel for="descripcion"
                                 value="Descripción de la oferta (opcional - max 300 caracteres)" />
-                            <textarea id="descripcion" class="mt-1 block w-full" v-model="form.descripcion" required
+                            <textarea id="descripcion" class="mt-1 block w-full" v-model="form.descripcion"
                                 placeholder="Descripción detallada de la oferta" autocomplete="descripcion"></textarea>
                             <p class="text-gray-500 text-sm mt-2" :class="{ 'text-red-500': isMaxPalabras1 }">
                                 {{ palabrasEnDescripcion }} caracteres <span v-if="isMaxPalabras1">Limite de caracteres

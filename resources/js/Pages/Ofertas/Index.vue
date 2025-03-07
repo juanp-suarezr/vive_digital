@@ -27,7 +27,7 @@
             </div>
 
             <div class="sm:flex inline-block w-full m-auto gap-3 col-span-5">
-                
+
                 <div class="flex justify-center my-auto gap-2 inline-block ms-2">
                     <div class="">
                         <PrimaryButton type="submit" @click="handleEnterKey" class="flex justify-center">
@@ -43,7 +43,7 @@
             </div>
 
             <div class="flex justify-end w-full my-auto col-span-2">
-                <a :href="route('oferts.excel', { search: search })"
+                <a :href="route('oferts.excel', { search: search.value, punto: punto.value })"
                     class="flex text-white bg-green-800 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2">
                     <DocumentArrowDownIcon class="h-6 w-6 me-2" />Exportar
                 </a>
@@ -237,7 +237,7 @@ const handleEnterKey = () => {
 const clearAll = () => {
 
     search.value = '';
-    
+
     punto.value = '';
     router.get(
         "/oferts",
