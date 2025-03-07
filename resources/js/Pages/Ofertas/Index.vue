@@ -43,7 +43,7 @@
             </div>
 
             <div class="flex justify-end w-full my-auto col-span-2">
-                <a :href="route('oferts.excel', { search: search.value, punto: punto.value })"
+                <a :href="route('oferts.excel', { search: search, punto: punto })"
                     class="flex text-white bg-green-800 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2">
                     <DocumentArrowDownIcon class="h-6 w-6 me-2" />Exportar
                 </a>
