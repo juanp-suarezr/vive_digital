@@ -289,6 +289,17 @@ class OfertasController extends Controller
         );
     }
 
+    //cargue masivo inscritos
+    public function inscritosMasivos() {
+
+        return Inertia::render(
+
+            'InscripcionesMasivo/Index',
+            []
+        );
+
+    }
+
     public function excel()
     {
         ob_end_clean();
