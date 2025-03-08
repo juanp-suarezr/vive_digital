@@ -27,7 +27,7 @@
                 <ClipboardDocumentIcon class="h-6 w-6 text-white" />
                 <span class="mx-3">Registrados </span>
             </nav-link>
-            
+
             <nav-link :href="route('perfil.index')" :active="route().current().includes('perfil')">
                 <DocumentIcon class="h-6 w-6 text-white" />
                 <span class="mx-3">Editar información </span>
@@ -39,6 +39,10 @@
             <nav-link :href="route('gestionInscritos')" :active="route().current().includes('gestionInscritos')">
                 <CheckIcon class="h-6 w-6 text-white" />
                 <span class="mx-3">Gestión inscripciones</span>
+            </nav-link>
+            <nav-link :href="route('inscritosMasivos.index')" :active="route().current().includes('inscritosMasivos')">
+                <DocumentArrowUpIcon class="h-6 w-6 text-white" />
+                <span class="mx-3">Cargue masivo inscritos</span>
             </nav-link>
             <nav-link :href="route('totalInscritos')" :active="route().current().includes('totalInscritos')">
                 <ListBulletIcon class="h-6 w-6 text-white" />
@@ -68,7 +72,7 @@ import SeparadorMenu from "@/Components/SeparadorMenu.vue";
 import { Link } from '@inertiajs/vue3';
 import imglogo_w from '/public/assets/img/logo_white.webp'
 import { ref } from 'vue'
-import { FingerPrintIcon, UserGroupIcon, HomeIcon, FireIcon, ClipboardDocumentIcon, BarsArrowDownIcon, DocumentIcon, AcademicCapIcon, ListBulletIcon, CheckIcon } from '@heroicons/vue/24/solid'
+import { FingerPrintIcon, UserGroupIcon, HomeIcon, FireIcon, ClipboardDocumentIcon, DocumentIcon, AcademicCapIcon, ListBulletIcon, CheckIcon, DocumentArrowUpIcon } from '@heroicons/vue/24/solid'
 
 export default {
     components: {
@@ -80,10 +84,10 @@ export default {
         FireIcon,
         ClipboardDocumentIcon,
         DocumentIcon,
-        BarsArrowDownIcon,
         AcademicCapIcon,
         ListBulletIcon,
         CheckIcon,
+        DocumentArrowUpIcon,
         SeparadorMenu
     },
 

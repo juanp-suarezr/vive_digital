@@ -229,13 +229,13 @@ const formatField = value => {
                                 <div class="">
                                     <div class="mb-3 font-medium p-2 bg-azul rounded-md shadow-md text-white">{{
                                         slotProps.data.nombre }}</div>
-                                    <div class="mb-3"><b>Información Horario:</b> {{ slotProps.data.horario }}</div>
-                                    <div class="mb-3"><b>Descripción:</b> {{ slotProps.data.descripcion }}</div>
+                                    <div class="mb-3"><b>Información Horario:</b> {{ slotProps.data.horario || 'no contiene información' }}</div>
+                                    <div class="mb-3"><b>Descripción:</b> {{ slotProps.data.descripcion || 'no contiene información' }}</div>
                                 </div>
                                 <!-- cupo, fecha inicio, fin -->
                                 <div class="">
 
-                                    <div class="mb-3"><b>Lugar:</b> {{ slotProps.data.lugar }}</div>
+                                    <div class="mb-3" v-if="slotProps.data.lugar != 'NA'"><b>Lugar:</b> {{ slotProps.data.lugar }}</div>
                                 </div>
                             </div>
 

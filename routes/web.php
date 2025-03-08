@@ -160,13 +160,19 @@ Route::middleware('auth')->group(function () {
     Route::get('/ofertas/exportar', [OfertasController::class, 'excel'])->name('oferts.excel');
     Route::get('/totalInscritos/exportar', [OfertasController::class, 'excelInscritos'])->name('totalInscritos.excel');
 
+    //INSCRITOS MASIVOS
+    Route::get('/inscritosMasivos', [OfertasController::class, 'inscritosMasivos'])->name('inscritosMasivos.index');
     //PLANTILLA EXCEL para cargue masivo
-    //usuario
+    //ofertas
     Route::get('plantillaOF', [CargueMasivoController::class, 'plantillaOF'])->name('plantillaOF.excel');
+    //inscritos
+    Route::get('plantillaIns', [CargueMasivoController::class, 'plantillaIns'])->name('plantillaIns.excel');
 
     //import excel carga masiva
-    //usuarios
+    //ofertas
     Route::post('/cargueOfertas', [CargueMasivoController::class, 'cargueOfertas'])->name('cargueOfertas');
+    //inscritos
+    Route::post('/cargueInscritos', [CargueMasivoController::class, 'cargueInscritos'])->name('cargueInscritos');
 });
 
 Route::group(['middleware' => ['auth']], function () {
