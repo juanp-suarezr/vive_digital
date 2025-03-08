@@ -334,7 +334,7 @@ onMounted(() => {
                     </h2>
                 </div>
                 <!-- banner 1 -->
-                <div class="col-span-2 md:col-span-1 mx-auto bg-option2 mb-4 flex flex-wrap flex-col p-4 rounded-xl shadow-xl"
+                <div class="col-span-2 md:col-span-1 mx-auto bg-option2 mb-4 flex flex-col p-4 rounded-xl shadow-xl"
                     :class="{ '!bg-black': isContrast }">
                     <WifiIcon class="w-4/6 flex justify-center mx-auto" />
                     <p class="flex mt-2 mx-auto text-center break-words" :class="getLetterSize(letraSize)">
@@ -342,7 +342,7 @@ onMounted(() => {
                     </p>
                 </div>
                 <!-- banner 2 -->
-                <div class="col-span-2 md:col-span-1 mx-auto bg-option2 mb-4 flex flex-wrap flex-col p-4 rounded-xl shadow-xl"
+                <div class="col-span-2 md:col-span-1 mx-auto bg-option2 mb-4 flex flex-col p-4 rounded-xl shadow-xl"
                     :class="{ '!bg-black': isContrast }">
                     <ComputerDesktopIcon class="w-4/6 flex justify-center mx-auto" />
                     <p class="flex mt-2 mx-auto text-center break-words" :class="getLetterSize(letraSize)">
@@ -350,7 +350,7 @@ onMounted(() => {
                     </p>
                 </div>
                 <!-- banner 3 -->
-                <div class="col-span-2 md:col-span-1 mx-auto bg-option2 mb-4 flex flex-wrap flex-col p-4 rounded-xl shadow-xl"
+                <div class="col-span-2 md:col-span-1 mx-auto bg-option2 mb-4 flex flex-col p-4 rounded-xl shadow-xl"
                     :class="{ '!bg-black': isContrast }">
                     <AcademicCapIcon class="w-4/6 flex justify-center mx-auto" />
                     <p class="flex mt-2 mx-auto text-center break-words" :class="getLetterSize(letraSize)">
@@ -358,7 +358,7 @@ onMounted(() => {
                     </p>
                 </div>
                 <!-- banner 4 -->
-                <div class="col-span-2 md:col-span-1 mx-auto bg-option2 mb-4 flex flex-wrap flex-col p-4 rounded-xl shadow-xl"
+                <div class="col-span-2 md:col-span-1 mx-auto bg-option2 mb-4 flex flex-col p-4 rounded-xl shadow-xl"
                     :class="{ '!bg-black': isContrast }">
                     <RocketLaunchIcon class="w-4/6 flex justify-center mx-auto" />
                     <p class="flex mt-2 mx-auto text-center break-words" :class="getLetterSize(letraSize)">
