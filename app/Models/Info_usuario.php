@@ -17,6 +17,7 @@ class Info_usuario extends Model
      * @var array<int, string>
      */
     protected $fillable = [
+        'id',
         'nombres',
         'apellidos',
         'edad',
@@ -29,8 +30,7 @@ class Info_usuario extends Model
         'genero',
         'condicion',
         'etnia',
-        'nivel_estudio',
-        'id_puntos',
+
     ];
 
 
