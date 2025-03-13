@@ -142,6 +142,11 @@ const getImageUrl = (imageName, folder) => {
 
 const responsiveOptions = ref([
     {
+        breakpoint: '1800px',
+        numVisible: 4,
+        numScroll: 1
+    },
+    {
         breakpoint: '1400px',
         numVisible: 3,
         numScroll: 1
@@ -217,7 +222,7 @@ const formatField = value => {
             <div v-for="punto in allOfertas" :key="punto.punto" class="py-6">
                 <h2 class="text-2xl font-bold mb-4 px-6">{{ punto.punto }}</h2>
 
-                <Carousel :value="punto.ofertas" :numVisible="4" :numScroll="1" :responsiveOptions="responsiveOptions"
+                <Carousel :value="punto.ofertas" :numVisible="3" :numScroll="1" :responsiveOptions="responsiveOptions"
                     :class="{ 'min-[900px]:px-44': punto.ofertas.length == 1 }">
                     <template #item="slotProps">
                         <div
@@ -228,7 +233,7 @@ const formatField = value => {
                                     <img v-if="slotProps.data.banner != 'NA'"
                                         :src="getImageUrl(slotProps.data.banner, 'ofertas')"
                                         :alt="slotProps.data.nombre"
-                                        class="w-full rounded-md min-[320px]:!h-[20vh] sm:!h-[40vh]" />
+                                        class="w-full rounded-md min-[320px]:!h-[20vh] sm:!h-[40vh] object-cover aspect-[16/9]" />
                                     <div v-else class="w-full min-[320px]:!h-[20vh] sm:!h-[40vh] flex flex-wrap px-2 break-words">
                                         <h2
                                             class="flex justify-center text-center m-auto text-2xl sm:text-6xl text-parrafo font-bold break-words">
