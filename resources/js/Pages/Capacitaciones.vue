@@ -226,7 +226,7 @@ const formatField = value => {
                     :class="{ 'min-[900px]:px-44': punto.ofertas.length == 1 }">
                     <template #item="slotProps">
                         <div
-                            class="flex flex-col my-auto text-parrafo bg-white surface-border shadow-md rounded-md sm:m-2 p-3 h-full">
+                            class="flex flex-col my-auto text-parrafo bg-white surface-border shadow-md rounded-md sm:m-2 p-3 h-full w-full">
                             <!-- imagen y tag con tipo -->
                             <div class="mb-3">
                                 <div class="relative mx-auto">
@@ -236,7 +236,7 @@ const formatField = value => {
                                         class="w-full rounded-md min-[320px]:!h-[20vh] sm:!h-[40vh] object-cover aspect-[16/9]" />
                                     <div v-else class="w-full min-[320px]:!h-[20vh] sm:!h-[40vh] flex flex-wrap px-2 break-words object-cover aspect-[16/9]">
                                         <h2
-                                            class="flex justify-center text-center m-auto text-2xl sm:text-4xl lg:text-6xl text-parrafo font-bold break-words">
+                                            class="flex justify-center text-center m-auto text-2xl sm:text-4xl text-parrafo font-bold break-words">
                                             {{ slotProps.data.nombre }}
                                         </h2>
                                     </div>
