@@ -89,6 +89,11 @@ Route::get('/searchRegistrado', [RegistroController::class, 'searchRegistrado'])
 Route::get('register', [RegisteredUserController::class, 'create'])
     ->name('register');
 
+Route::get('/inscribir-capacitaciones', [CapacitacionesController::class, 'inscripcionCapacitacion'])
+    ->name('inscribir-capacitaciones');
+Route::post('/inscribir-capacitaciones', [CapacitacionesController::class, 'inscripcionCapacitacion']);
+
+Route::post('/inscribirCurso', [CapacitacionesController::class, 'createInfoInscripcion'])->name('inscribirCurso');
 
 
 Route::get('/dashboard', function () {

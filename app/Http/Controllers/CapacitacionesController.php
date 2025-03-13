@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use App\Jobs\SendInscriptionApprovedMail;
 use App\Jobs\SendInscriptionDisapprovedMail;
+use Illuminate\Support\Facades\DB;
 
 class CapacitacionesController extends Controller
 {
@@ -82,6 +83,133 @@ class CapacitacionesController extends Controller
             ->get();
     }
 
+    //vista de formulario de inscripcion
+    public function inscripcionCapacitacion(Request $request)
+    {
+        // Si la petición es POST, guardamos los datos en la sesión
+        if ($request->isMethod('post')) {
+            session(['info' => $request->all()]);
+
+            return redirect()->route('inscribir-capacitaciones'); // Redirige a GET
+        }
+
+
+        // Si es GET, recuperamos los datos de la sesión
+        $info = session('info', []);
+        
+
+        return Inertia::render('Capacitaciones/Inscribir', [
+            'info' => $info,
+        ]);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function createInfoInscripcion(Request $request)
+    {
+        // Validación de los datos del request
+        $request->validate([
+            'nombres' => 'required|string|max:100',
+            'apellidos' => 'required|string|max:100',
+            'edad' => 'required',
+            'tipo_documento' => 'required',
+            'identificacion' => 'required|max:20',
+            'direccion' => 'required|string|max:100',
+            'sector' => 'required',
+            'telefono' => 'required|max:15',
+            'email' => 'required|string|lowercase|email|max:100',
+            'genero' => 'required',
+            'condicion' => 'required',
+            'etnia' => 'required',
+            'nivel_estudio' => 'required',
+            'id_oferta' => 'required',
+
+        ]);
+
+        DB::transaction(function () use ($request) {
+
+
+
+            // Verificar si ya existe un registro con la misma identificación en la tabla 'info_usuario'
+            $existingUser = Info_usuario::where('identificacion', $request->identificacion)->first();
+
+            if (!$existingUser) {
+                // Crear el registro en la tabla 'info_usuario' solo si no existe
+                Info_usuario::create([
+                    'nombres' => $request->nombres,
+                    'apellidos' => $request->apellidos,
+                    'edad' => $request->edad,
+                    'tipo_documento' => $request->tipo_documento,
+                    'identificacion' => $request->identificacion,
+                    'direccion' => $request->direccion,
+                    'sector' => $request->sector,
+                    'telefono' => $request->telefono,
+                    'email' => $request->email,
+                    'genero' => $request->genero,
+                    'condicion' => $request->condicion,
+                    'etnia' => $request->etnia,
+                    'nivel_estudio' => $request->nivel_estudio,
+                ]);
+            } else {
+                // Actualizar el registro existente con la nueva información
+                $existingUser->update([
+                    'nombres' => $request->nombres,
+                    'apellidos' => $request->apellidos,
+                    'edad' => $request->edad,
+                    'tipo_documento' => $request->tipo_documento,
+                    'direccion' => $request->direccion,
+                    'sector' => $request->sector,
+                    'telefono' => $request->telefono,
+                    'email' => $request->email,
+                    'genero' => $request->genero,
+                    'condicion' => $request->condicion,
+                    'etnia' => $request->etnia,
+                    'nivel_estudio' => $request->nivel_estudio,
+                ]);
+            }
+
+            $oferta = Ofertas::find($request->id_oferta);
+
+            // Verificar si la oferta existe
+            if (!$oferta) {
+                return redirect()->back()->withErrors(['error' => 'La oferta no existe.']);
+            }
+
+            // Verificar si la oferta está bloqueada (estado = 0)
+            if ($oferta->estado == 0) {
+                return redirect()->back()->withErrors(['error' => 'Esta oferta ya está bloqueada y no permite más inscripciones.']);
+            }
+
+
+
+            $registrados = Info_usuario::where('identificacion', $request->identificacion)->get()->first();
+
+            $inscripcion = Inscripciones::where('estadoProceso', '!=', 'Rechazado')
+                ->where('id_oferta', $request->id_oferta)
+                ->where('id_info_user', $registrados->id)->get()->first();
+
+            if ($inscripcion) {
+                return redirect()->back()->withErrors(['error' => 'Usted ya tiene una inscripción registrada en esta oferta. Por favor revisar o estar pendiente del correo electrónico.']);
+            }
+
+            try {
+                Inscripciones::create([
+                    'id_oferta' => $request->id_oferta,
+                    'id_info_user' => $registrados->id,
+                    'identificacion' => $request->identificacion,
+                ]);
+            } catch (\Illuminate\Database\QueryException $e) {
+                // Manejar el error de clave única
+                return redirect()->back()->withErrors(['error' => 'El usuario ya está inscrito en esta oferta.']);
+            }
+        });
+
+        return redirect()->back();
+    }
 
 
     public function aprobarInscritos(Request $request)

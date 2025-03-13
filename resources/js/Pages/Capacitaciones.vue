@@ -72,6 +72,8 @@ watch(() => usePage().props.accesibilidad.letra, (newVal) => {
 
 });
 
+
+
 // Computed properties para agrupar las ofertas por punto
 const allOfertas = computed(() => [
     { punto: 'CENTRO CULTURAL LUCY TEJADA', ofertas: props.ofertas_lucy },
@@ -161,7 +163,9 @@ const responsiveOptions = ref([
 //INSCRIPCIONES
 const submit = () => {
 
-    form.post(route('puntos.store'), {
+    if (props.info_usuario.find(item => item.identificacion == form.identificacion)) {
+
+        form.post(route('puntos.store'), {
         onSuccess: function () {
             visible.value = false;
             swal({
@@ -178,6 +182,18 @@ const submit = () => {
             })
         }
     });
+
+    } else {
+        visible.value = false;
+        form.post(route('inscribir-capacitaciones'), {
+        onSuccess: () => {
+            form.reset(); // Solo se ejecuta si la petición es exitosa
+        },
+    });
+
+    }
+
+
 };
 
 const formatField = value => {
@@ -213,9 +229,9 @@ const formatField = value => {
                                         :src="getImageUrl(slotProps.data.banner, 'ofertas')"
                                         :alt="slotProps.data.nombre"
                                         class="w-full rounded-md min-[320px]:!h-[20vh] sm:!h-[40vh]" />
-                                    <div v-else class="w-full min-[320px]:!h-[20vh] sm:!h-[40vh] flex">
+                                    <div v-else class="w-full min-[320px]:!h-[20vh] sm:!h-[40vh] flex flex-wrap px-2 break-words">
                                         <h2
-                                            class="flex justify-center text-center m-auto text-4xl sm:text-6xl text-parrafo font-bold">
+                                            class="flex justify-center text-center m-auto text-2xl sm:text-6xl text-parrafo font-bold break-words">
                                             {{ slotProps.data.nombre }}
                                         </h2>
                                     </div>
@@ -229,8 +245,8 @@ const formatField = value => {
                                 <div class="">
                                     <div class="mb-3 font-medium p-2 bg-azul rounded-md shadow-md text-white">{{
                                         slotProps.data.nombre }}</div>
-                                    <div class="mb-3"><b>Información Horario:</b> {{ slotProps.data.horario || 'no contiene información' }}</div>
-                                    <div class="mb-3"><b>Descripción:</b> {{ slotProps.data.descripcion || 'no contiene información' }}</div>
+                                    <div class="mb-3 break-words px-2"><b>Información Horario:</b> {{ slotProps.data.horario || 'no contiene información' }}</div>
+                                    <div class="mb-3 break-words px-2"><b>Descripción:</b> {{ slotProps.data.descripcion || 'no contiene información' }}</div>
                                 </div>
                                 <!-- cupo, fecha inicio, fin -->
                                 <div class="">
@@ -274,11 +290,11 @@ const formatField = value => {
     </PageLayout>
 
     <!-- MODAL Inscripcion -->
-    <Dialog v-model:visible="visible" modal position="center" header="PRESCRIPCIÓN" class="max-w-xl mx-2 sm:mx-4 flex">
+    <Dialog v-model:visible="visible" modal position="center" header="INSCRIPCIÓN" class="max-w-xl mx-2 sm:mx-4 flex">
 
         <div class="m-auto">
             <p class="text-lg">
-                Ingrese la cédula para validar su información
+                Ingrese su documento de identificación para validar su información.
             </p>
 
             <div class="flex w-full justify-center">
@@ -301,16 +317,12 @@ const formatField = value => {
             <!-- next button -->
             <div class="flex justify-center items-center justify-end mt-6 z-20" v-if="6 < form.identificacion">
 
-                <primaryButton v-if="info_usuario.find(item => item.identificacion == form.identificacion)"
+                <primaryButton
                     type="button" @click="submit" :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing">
                     INSCRIBIRSE
                 </primaryButton>
-                <div v-else class="">
-                    <em>debe registrarse primero en el punto para realizar el proceso de inscripción al curso. <a
-                            :href="route('register')" class="bg-blue-400 underline">click
-                            aquí</a> para registrarse</em>
-                </div>
+
             </div>
 
         </div>
