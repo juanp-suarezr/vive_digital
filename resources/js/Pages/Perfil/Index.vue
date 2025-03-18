@@ -1078,6 +1078,7 @@ const handleSelectPuntos = () => {
         { search: punto.value },
         {
             replace: true,
+            preserveScroll: true,
         }
     );
 };
@@ -1200,6 +1201,7 @@ watch(palabrasEnTestimonio, () => {
 //guardar banner inicial bd
 const submit = () => {
     form.post(route("perfil.store"), {
+        preserveScroll: true,
         onSuccess: function () {
             cerrarModal();
             swal({
@@ -1217,6 +1219,7 @@ const submit = () => {
 //guardar info en bd
 const submit1 = () => {
     form.patch(route("perfil.update", props.infoPunto[0].id), {
+        preserveScroll: true,
         onSuccess: function () {
             cerrarModal();
             swal({
@@ -1239,6 +1242,7 @@ const submit2 = () => {
         )
     ) {
         form1.post(route("puntos.store"), {
+            preserveScroll: true,
             onSuccess: function () {
                 visible.value = false;
                 swal({
@@ -1263,6 +1267,7 @@ const submit2 = () => {
     } else {
         visible.value = false;
         form1.post(route("inscribir-capacitaciones"), {
+            preserveScroll: true,
             onSuccess: () => {
                 form.reset(); // Solo se ejecuta si la petición es exitosa
             },
