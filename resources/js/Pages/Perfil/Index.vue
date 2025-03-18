@@ -530,6 +530,7 @@
                         <pagination
                             v-if="ofertas.links"
                             :links="ofertas.links"
+                            :search="punto"
                         />
                     </div>
                 </div>
