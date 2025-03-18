@@ -18,12 +18,21 @@ defineProps({
         default: () => ({}),
     },
 });
+
+const breadcrumbLinks = [
+    { url: '/users', text: 'Listado de usuarios' },
+    { url: '', text: 'Editar Usuario' },
+];
+
 </script>
 
 <template>
     <Head title="Editar Usuario" />
 
-    <AuthenticatedLayout>
+    <AuthenticatedLayout :breadCrumbLinks="breadcrumbLinks">
+        <template #header>
+            Editar Usuario
+        </template>
         <div class="py-2">
             <div class="overflow-hidden shadow-sm sm:rounded-lg space-y-6 w-2/4">
                 <div class="p-6 sm:p-8 bg-white shadow sm:rounded-lg">

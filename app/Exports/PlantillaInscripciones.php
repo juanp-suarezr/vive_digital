@@ -30,7 +30,7 @@ class PlantillaInscripciones implements FromCollection, WithHeadings, WithStyles
             [
                 'identificacion' => '1004734004',
                 'id_oferta' => $this->ofertas[0]->id,
-
+                'estado_inscripcion' => 'En proceso',
             ],
         ]);
     }
@@ -40,7 +40,7 @@ class PlantillaInscripciones implements FromCollection, WithHeadings, WithStyles
         return [
             'identificacion',
             'id_oferta',
-
+            'estado_inscripcion',
         ];
     }
 
@@ -69,15 +69,14 @@ class PlantillaInscripciones implements FromCollection, WithHeadings, WithStyles
                 $sheet->getProtection()->setSheet(true);
 
                 // Desbloquear todas las celdas
-                $sheet->getStyle('A3:B10000')->getProtection()->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_UNPROTECTED);
-
+                $sheet->getStyle('A3:C10000')->getProtection()->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_UNPROTECTED);
 
                 // Agregar una fila adicional con una nota explicativa
                 $sheet->insertNewRowBefore(1, 1);
                 $sheet->setCellValue('A1', 'Nota: en la fila de id_oferta debe poner el numero que está en la parte derecha del nombre de cada oferta ubicado en el recuadro amarillo.');
-                $sheet->mergeCells('A1:E1');
+                $sheet->mergeCells('A1:J1');
 
-                $sheet->getStyle('A1:E1')->applyFromArray([
+                $sheet->getStyle('A1:J1')->applyFromArray([
                     'font' => ['italic' => true, 'color' => ['rgb' => 'FF0000']],
                     'fill' => [
                         'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
@@ -86,16 +85,15 @@ class PlantillaInscripciones implements FromCollection, WithHeadings, WithStyles
                 ]);
 
                 // Bloquear la celda con la nota explicativa
-                $sheet->getStyle('A1:E1')->getProtection()->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_PROTECTED);
+                $sheet->getStyle('A1:J1')->getProtection()->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_PROTECTED);
 
-
-                // Obtener los puntos
+                // Obtener las ofertas
                 $ofertas = $this->ofertas;
 
                 // Agregar título y subtítulo
-                $sheet->setCellValue('D3', 'OFERTAS');
-                $sheet->setCellValue('E3', 'ID');
-                $sheet->getStyle('D3:E3')->applyFromArray([
+                $sheet->setCellValue('E3', 'OFERTAS');
+                $sheet->setCellValue('F3', 'ID');
+                $sheet->getStyle('E3:F3')->applyFromArray([
                     'font' => ['bold' => true, 'size' => 14],
                     'fill' => [
                         'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
@@ -103,28 +101,25 @@ class PlantillaInscripciones implements FromCollection, WithHeadings, WithStyles
                     ],
                 ]);
 
-
-
                 // Ajustar el ancho de las columnas para que el texto se ajuste
-                $sheet->getColumnDimension('D')->setAutoSize(true);
                 $sheet->getColumnDimension('E')->setAutoSize(true);
+                $sheet->getColumnDimension('F')->setAutoSize(true);
 
-                // Agregar datos de los puntos
-                $row = 3;
+                // Agregar datos de las ofertas
+                $row = 4;
                 $ofertaID = [];
                 foreach ($ofertas as $oferta) {
-                    $sheet->setCellValue('D2' . $row, $oferta->nombre);
-                    $sheet->setCellValue('E2' . $row, $oferta->id);
+                    $sheet->setCellValue('E' . $row, $oferta->nombre);
+                    $sheet->setCellValue('F' . $row, $oferta->id);
                     $ofertaID[] = $oferta->id;
                     $row++;
                 }
 
-                // Bloquear la celda con la nota explicativa
-                $sheet->getStyle('D2:G' . ($row - 1))->getProtection()->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_PROTECTED);
-
+                // Bloquear las celdas de las ofertas
+                $sheet->getStyle('E3:F' . ($row - 1))->getProtection()->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_PROTECTED);
 
                 // Aplicar estilo a las celdas de las ofertas
-                $sheet->getStyle('D2:G' . ($row - 1))->applyFromArray([
+                $sheet->getStyle('E4:F' . ($row - 1))->applyFromArray([
                     'fill' => [
                         'fillType' => \PhpOffice\PhpSpreadsheet\Style\Fill::FILL_SOLID,
                         'startColor' => ['rgb' => 'FFFF00'], // Color de fondo amarillo
@@ -146,9 +141,28 @@ class PlantillaInscripciones implements FromCollection, WithHeadings, WithStyles
                     $validation->setPrompt('Por favor, ingrese un ID de oferta valido.');
                     $validation->setFormula1('"' . $ofertaIDString . '"');
                 }
+
+                // Agregar validación de datos para la columna estado
+                $estadoOptions = '"En proceso,Inscrito,Certificado,No certificado,Rechazado"';
+                for ($i = 3; $i <= 10000; $i++) {
+                    $validation = $sheet->getCell('C' . $i)->getDataValidation();
+                    $validation->setType(\PhpOffice\PhpSpreadsheet\Cell\DataValidation::TYPE_LIST);
+                    $validation->setErrorStyle(\PhpOffice\PhpSpreadsheet\Cell\DataValidation::STYLE_STOP);
+                    $validation->setAllowBlank(false);
+                    $validation->setShowInputMessage(true);
+                    $validation->setShowErrorMessage(true);
+                    $validation->setErrorTitle('Error de entrada');
+                    $validation->setError('Solo se permiten estados válidos.');
+                    $validation->setPromptTitle('Entrada de Estado');
+                    $validation->setPrompt('Por favor, seleccione un estado válido. entre --> En proceso, Inscrito, Certificado, No certificado, Rechazado');
+                    $validation->setFormula1($estadoOptions);
+
+                    // Establecer el valor predeterminado en "En proceso" solo si hay información en la columna A
+                    if ($sheet->getCell('A' . $i)->getValue()) {
+                        $sheet->setCellValue('C' . $i, 'En proceso');
+                    }
+                }
             },
         ];
-
-
     }
 }

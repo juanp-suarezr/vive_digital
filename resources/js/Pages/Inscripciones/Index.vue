@@ -1,8 +1,8 @@
 <template>
 
-    <Head title="Oferta" />
+    <Head title="Inscripciones" />
 
-    <AuthenticatedLayout>
+    <AuthenticatedLayout :breadCrumbLinks="breadcrumbLinks">
         <template #header>
             Total Inscripciones
         </template>
@@ -12,7 +12,7 @@
 
 
             <div class="flex justify-end w-full my-auto col-span-2">
-                <a :href="route('totalInscritos.excel', { fecha_init: fecha_init, fecha_end: fecha_end })"
+                <a :href="route('totalInscritos.excel')"
                     class="flex text-white bg-green-800 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2">
                     <DocumentArrowDownIcon class="h-6 w-6 me-2" />Exportar
                 </a>
@@ -93,7 +93,7 @@
         </div>
 
         <!-- Gráfica y resumen -->
-        <div class="flex flex-col md:flex-row gap-4 mt-8">
+        <div class="flex flex-col md:flex-row gap-4 mt-8" v-if="props.inscripciones.data.length > 0">
             <!-- Gráfica -->
             <div class="w-full md:w-1/2">
                 <Chart type="doughnut" :data="chartData" :options="chartOptions" />
@@ -151,19 +151,23 @@ const props = defineProps({
         default: () => ({}),
     },
     certificados: {
-        type: Object,
+        type: Number,
         default: () => (0),
     },
     procesos: {
-        type: Object,
+        type: Number,
         default: () => (0),
     },
     noCertificados: {
-        type: Object,
+        type: Number,
         default: () => (0),
     },
 
 });
+
+const breadcrumbLinks = [
+    { url: '', text: 'Total inscripciones' },
+];
 
 console.log(props.inscripciones);
 

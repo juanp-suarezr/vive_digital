@@ -29,6 +29,7 @@
         "date-fns": "^3.6.0",
         "laravel-echo": "^1.16.1",
         "particles.js": "^2.0.0",
+        "pinia": "^3.0.1",
         "primevue": "^3.48.1",
         "dayjs": "^1.11.13",
         "pusher-js": "^8.4.0-rc2",

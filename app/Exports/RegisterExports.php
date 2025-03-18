@@ -67,11 +67,11 @@ class RegisterExports implements FromCollection, WithHeadings, WithStyles, Shoul
                 $users = Registro::when($this->startDate || $this->endDate, function ($query) {
                     $fecha_init = $this->startDate;
                     $fecha_end = $this->endDate;
-        
+
                     if($fecha_end == null) {
                         $fecha_end = date('Y-m-d');
                     }
-        
+
                     $query->whereBetween('created_at', [$fecha_init, $fecha_end]);
                 })->with('puntos_vive')
                     ->select(
@@ -104,7 +104,7 @@ class RegisterExports implements FromCollection, WithHeadings, WithStyles, Shoul
             return $user;
         });
 
-        
+
 
         return $users;
     }

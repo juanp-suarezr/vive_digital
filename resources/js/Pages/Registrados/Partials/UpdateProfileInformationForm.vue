@@ -94,7 +94,7 @@ const tipoServ = ref([
     { id: '3', nombre: "Préstamo de aulas", code: 'prestamo aulas' },
     { id: '4', nombre: "Tramites", code: 'tramites' },
     { id: '5', nombre: "Videojuegos", code: 'videojuegos' },
-    
+
 ]);
 
 
@@ -288,22 +288,12 @@ const submit = () => {
 
                 <!-- Tipo servicios -->
                 <div class="mb-4">
-                            <InputLabel :class="[isContrast ? '!text-yellow-200 font-bold' : '',
-                            letraSize == -2 ? '!sm:text-[0.65rem] !text-[0.55rem]'
-                                : letraSize == -1 ? '!sm:text-xs !text-[0.65rem]'
-                                    : letraSize == 1 ? '!sm:text-lg !text-sm'
-                                        : letraSize == 2 ? '!sm:text-xl !text-base' : ''
-                            ]" for="tipo_servicios" value="Tipo de servicio a usar"
+                            <InputLabel for="tipo_servicios" value="Tipo de servicio a usar"
                                 class="text-neutral-500 sm:text-sm text-xs" />
-                            <select id="tipo_servicios" name="tipo_servicios" v-model="form.tipo_servicio" :class="[isContrast ? '!text-yellow-200 font-bold bg-black' : '',
-                            letraSize == -2 ? '!text-[0.65rem]'
-                                : letraSize == -1 ? '!text-sm'
-                                    : letraSize == 1 ? '!text-lg'
-                                        : letraSize == 2 ? '!text-xl' : ''
-                            ]"
+                            <select id="tipo_servicios" name="tipo_servicios" v-model="form.tipo_servicio"
                                 class="block w-full sm:px-4 sm:py-2 p-0 mt-1 text-base text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-blue-500 focus:border-blue-500">
 
-                                <option class="text-black" :class="[isContrast ? '!text-yellow-200 font-bold' : '']"
+                                <option class="text-black"
                                     v-for="niv in tipoServ" :key="niv.id" :value="niv.code">
                                     {{ niv.nombre }}
                                 </option>

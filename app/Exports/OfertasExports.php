@@ -57,8 +57,7 @@ class OfertasExports implements FromCollection, WithHeadings, WithStyles, Should
         $ofertas->transform(function ($oferta) {
             $oferta->id_puntos = Puntos::where('id', $oferta->id_puntos)->value('nombre') ?? ''; // Asignar el nombre del punto o cadena vacía si no hay punto
 
-            $oferta->estado = $oferta->estado == 1 ? 'Activo' : 'Bloqueado';
-            
+
             return $oferta;
         });
 

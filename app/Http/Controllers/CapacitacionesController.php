@@ -66,17 +66,8 @@ class CapacitacionesController extends Controller
             })
             ->when(RequestFacade::input('search'), function ($query, $search) {
                 $query->where('nombre', 'LIKE', "%{$search}%");
-            })->when(RequestFacade::input('fecha_init') || RequestFacade::input('fecha_fin'), function ($query) {
-                $fecha_init = RequestFacade::input('fecha_init');
-                $fecha_end = RequestFacade::input('fecha_end');
-
-                if ($fecha_end == null) {
-                    $fecha_end = date('Y-m-d');
-                }
-
-                $query->whereBetween('created_at', [$fecha_init, $fecha_end]);
             })->Where('id_puntos', $num)
-            ->Where('estado', 1)->with(['inscripciones' => function ($query) {
+            ->Where('estado', 'Activo')->with(['inscripciones' => function ($query) {
                 $query->where('estadoProceso', 'Inscrito'); // Filtrar inscripciones con certificado en 0
             }])
             ->orderBy('created_at', 'desc') // Ordenar por la columna 'created_at' de forma descendente
@@ -96,7 +87,7 @@ class CapacitacionesController extends Controller
 
         // Si es GET, recuperamos los datos de la sesión
         $info = session('info', []);
-        
+
 
         return Inertia::render('Capacitaciones/Inscribir', [
             'info' => $info,
@@ -179,8 +170,8 @@ class CapacitacionesController extends Controller
                 return redirect()->back()->withErrors(['error' => 'La oferta no existe.']);
             }
 
-            // Verificar si la oferta está bloqueada (estado = 0)
-            if ($oferta->estado == 0) {
+            // Verificar si la oferta no esta activa
+            if ($oferta->estado != 'Activo') {
                 return redirect()->back()->withErrors(['error' => 'Esta oferta ya está bloqueada y no permite más inscripciones.']);
             }
 

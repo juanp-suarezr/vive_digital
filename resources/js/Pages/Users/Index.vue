@@ -1,7 +1,7 @@
 <template>
     <Head title="Usuarios" />
 
-    <AuthenticatedLayout>
+    <AuthenticatedLayout :breadCrumbLinks="breadcrumbLinks">
         <template #header>
             Usuarios
         </template>
@@ -140,6 +140,12 @@ const props = defineProps({
         default: () => ({}),
     },
 });
+
+const breadcrumbLinks = [
+
+    { url: '', text: 'Usuarios' },
+];
+
 
 // pass filters in search
 let search = ref(props.filters.search);

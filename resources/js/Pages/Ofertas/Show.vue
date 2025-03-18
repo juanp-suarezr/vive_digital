@@ -2,7 +2,7 @@
 
     <Head title="Oferta" />
 
-    <AuthenticatedLayout>
+    <AuthenticatedLayout :breadCrumbLinks="breadcrumbLinks">
         <template #header>
             Inscripciones
         </template>
@@ -116,7 +116,7 @@
         </div>
 
         <!-- Gráfica y resumen -->
-        <div class="flex flex-col md:flex-row gap-4 mt-8">
+        <div class="flex flex-col md:flex-row gap-4 mt-8" v-if="props.inscripciones.data.length > 0">
             <!-- Gráfica -->
             <div class="w-full md:w-1/2">
                 <Chart type="doughnut" :data="chartData" :options="chartOptions" />
@@ -172,20 +172,25 @@ const props = defineProps({
         default: () => ({}),
     },
     certificados: {
-        type: Object,
+        type: Number,
         default: () => (0),
     },
     procesos: {
-        type: Object,
+        type: Number,
         default: () => (0),
     },
     noCertificados: {
-        type: Object,
+        type: Number,
         default: () => (0),
     },
 });
 
 console.log(props);
+
+const breadcrumbLinks = [
+    { url: `/oferts`, text: 'Listado de ofertas' },
+    { url: '', text: 'Inscripciones' },
+];
 
 const chartData = ref();
 const chartOptions = ref(null);

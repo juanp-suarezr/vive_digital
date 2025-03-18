@@ -153,8 +153,8 @@ const props = defineProps({
         default: () => ({}),
     },
     certificados: {
-        type: Object,
-        default: () => ({}),
+        type: Number,
+        default: () => (0),
     },
 });
 

@@ -59,9 +59,9 @@ class CargueMasivoController extends Controller
         $ofertas = [];
         $puntos = Puntos::where('id_user', Auth::id())->get();
         if (Auth::user()->roles[0]->name == 'Administrador' || Auth::user()->roles[0]->name == 'Supervisor') {
-            $ofertas = Ofertas::select('id', 'nombre')->where('estado', 1)->get();
+            $ofertas = Ofertas::select('id', 'nombre')->where('estado', 'Activo')->get();
         } else {
-            $ofertas = Ofertas::select('id', 'nombre')->where('estado', 1)->where('id_puntos', $puntos[0]->id)->get();
+            $ofertas = Ofertas::select('id', 'nombre')->where('estado', 'Activo')->where('id_puntos', $puntos[0]->id)->get();
 
         }
 
@@ -84,9 +84,10 @@ class CargueMasivoController extends Controller
 
             // Obtener el número de registros insertados correctamente
             $numRegistrosInsertados = $import->getNumRegistrosInsertados();
+            $noRegistrados = $import->getIdentificacionesNoRegistradas();
 
-            Log::info($numRegistrosInsertados);
-            return back()->with('success', 'Se han cargado ' . $numRegistrosInsertados . ' inscritos correctamente');
+            Log::info($noRegistrados);
+            return back()->with('success', 'Se han cargado ' . $numRegistrosInsertados . ' inscritos correctamente. No se han cargado los siguientes registros: ' . implode(', ', $noRegistrados));
 
         } else {
             Log::error('No se ha seleccionado un archivo para cargar');

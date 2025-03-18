@@ -1,7 +1,7 @@
 <template>
     <Head title="Editar información" />
 
-    <AuthenticatedLayout>
+    <AuthenticatedLayout :breadCrumbLinks="breadcrumbLinks">
         <template #header> Editar información </template>
 
         <div class="inline-block w-full mt-4">
@@ -366,6 +366,11 @@
                                                 <th
                                                     class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"
                                                 >
+                                                    ID Oferta
+                                                </th>
+                                                <th
+                                                    class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"
+                                                >
                                                     Estado
                                                 </th>
 
@@ -380,7 +385,7 @@
                                             <tr
                                                 v-for="ofert in ofertas.data"
                                                 :key="ofert.id"
-                                                class="text-gray-700"
+                                                class="text-gray-700 bg-white"
                                             >
                                                 <td
                                                     class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
@@ -412,6 +417,7 @@
                                                         }}
                                                     </p>
                                                 </td>
+
                                                 <td
                                                     class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                                 >
@@ -435,19 +441,48 @@
                                                     </p>
                                                 </td>
                                                 <td
+                                                    class="border-b border-gray-200 bg-white px-2 py-5 text-sm"
+                                                >
+                                                    <p
+                                                        class="text-gray-900 whitespace-no-wrap"
+                                                    >
+                                                        {{
+                                                            ofert.id ||
+                                                            "no registra"
+                                                        }}
+                                                    </p>
+                                                </td>
+                                                <td
                                                     class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
                                                 >
                                                     <span
-                                                        v-if="ofert.estado == 1"
+                                                        v-if="
+                                                            ofert.estado ==
+                                                            'Activo'
+                                                        "
                                                         class="bg-lime-500 text-white text-sm font-medium me-2 px-2.5 py-0.5 rounded"
                                                     >
-                                                        Activo
+                                                        {{ ofert.estado }}
                                                     </span>
                                                     <span
-                                                        v-if="ofert.estado == 0"
+                                                        v-if="
+                                                            ofert.estado ==
+                                                            'En proceso'
+                                                        "
+                                                        class="bg-blue-400 text-white text-sm font-medium me-2 px-2.5 py-0.5 rounded"
+                                                    >
+                                                        {{ ofert.estado }}
+                                                    </span>
+                                                    <span
+                                                        v-if="
+                                                            ofert.estado ==
+                                                                'Cancelado' ||
+                                                            ofert.estado ==
+                                                                'Finalizado'
+                                                        "
                                                         class="bg-red-500 text-white text-sm font-medium me-2 px-2.5 py-0.5 rounded dark:bg-red-500"
                                                     >
-                                                        Bloqueado
+                                                        {{ ofert.estado }}
                                                     </span>
                                                 </td>
                                                 <td
@@ -988,6 +1023,11 @@ const props = defineProps({
         default: [],
     },
 });
+
+const breadcrumbLinks = [
+    { url: '/perfil', text: 'Editar información' },
+
+];
 
 // Modal de eliminacion ofertas
 const confirmingDeletion = ref(false);

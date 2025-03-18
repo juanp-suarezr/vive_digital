@@ -107,7 +107,7 @@ class OfertasController extends Controller
             'descripcion' => $request->input('descripcion'),
             'lugar' => $request->input('lugar'),
             'banner' => $fileName,
-            'estado' => 1,
+            'estado' => $request->input('estado'),
 
         ]);
 

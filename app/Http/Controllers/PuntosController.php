@@ -82,8 +82,8 @@ class PuntosController extends Controller
             return redirect()->back()->withErrors(['error' => 'La oferta no existe.']);
         }
 
-        // Verificar si la oferta está bloqueada (estado = 0)
-        if ($oferta->estado == 0) {
+        // Verificar si la oferta no esta activa
+        if ($oferta->estado != 'Activo') {
             return redirect()->back()->withErrors(['error' => 'Esta oferta ya está bloqueada y no permite más inscripciones.']);
         }
 

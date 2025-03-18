@@ -2,7 +2,7 @@
 
     <Head title="Aprobación de PRE-Inscripciones" />
 
-    <AuthenticatedLayout>
+    <AuthenticatedLayout :breadCrumbLinks="breadcrumbLinks">
         <template #header>
             Aprobación de PRE-Inscripciones
         </template>
@@ -220,6 +220,11 @@ const props = defineProps({
         default: () => [],
     },
 });
+
+const breadcrumbLinks = [
+    { url: '', text: 'Gestión de inscripciones' },
+
+];
 
 console.log(props);
 

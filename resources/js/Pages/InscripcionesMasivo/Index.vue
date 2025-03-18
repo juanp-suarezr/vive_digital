@@ -2,7 +2,7 @@
 
     <Head title="Oferta" />
 
-    <AuthenticatedLayout>
+    <AuthenticatedLayout :breadCrumbLinks="breadcrumbLinks">
         <template #header>
             CARGUE MASIVO INSCRITOS OFERTAS
         </template>
@@ -98,6 +98,10 @@ const form = useForm({
     inscritos: '', // Variable para almacenar el archivo de inscritos MASIVO
 });
 
+const breadcrumbLinks = [
+    { url: '', text: 'Cargue Masivo Inscritos' },
+];
+
 const validateFile = (event) => {
     const file = event.target.files[0];
 
@@ -108,10 +112,10 @@ const validateFile = (event) => {
     }
 
     // Validar el tamaño del archivo (en bytes)
-    if (file.size > 2 * 1024 * 1024) { // 2 MB en bytes
-        form.errors.inscritos = "El archivo no debe ser mayor a 2 MB.";
-        return;
-    }
+    // if (file.size > 2 * 1024 * 1024) { // 2 MB en bytes
+    //     form.errors.inscritos = "El archivo no debe ser mayor a 2 MB.";
+    //     return;
+    // }
 
     // Reiniciar errores si la validación es exitosa
     form.errors.inscritos = null;

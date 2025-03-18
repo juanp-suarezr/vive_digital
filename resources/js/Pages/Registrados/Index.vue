@@ -2,9 +2,9 @@
 
     <Head title="Usuarios" />
 
-    <AuthenticatedLayout>
+    <AuthenticatedLayout :breadCrumbLinks="breadcrumbLinks">
         <template #header>
-            Usuarios
+            Registros
         </template>
 
         <div class="flex inline-block min-w-full overflow-hidden mb-3 grid md:grid-cols-10 gap-4">
@@ -208,7 +208,7 @@ import SecondaryLink from "@/Components/SecondaryLink.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import { DocumentArrowDownIcon } from '@heroicons/vue/24/solid';
 import Calendar from 'primevue/calendar';
-
+import InputLabel from "@/Components/InputLabel.vue";
 
 
 
@@ -232,6 +232,11 @@ const props = defineProps({
     }
 
 });
+
+const breadcrumbLinks = [
+    { url: '/registrados', text: 'listado de registros' },
+
+];
 
 console.log(props.filters);
 

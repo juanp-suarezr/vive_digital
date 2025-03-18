@@ -2,15 +2,15 @@
 
     <Head title="Editar oferta" />
 
-    <AuthenticatedLayout>
+    <AuthenticatedLayout :breadCrumbLinks="breadcrumbLinks">
         <template #header>
-            Editar oferta
+            Editar oferta -- {{ oferta.nombre }}
         </template>
 
         <div class="flex flex-col bg-white border shadow-sm rounded-xl lg:w-full md:w-2/3">
             <div class="bg-gray-100 border-b rounded-t-xl py-3 px-4 md:py-4 md:px-5 grid grid-cols-2 gap-4">
                 <h3 class="mt-1 text-gray-500">
-                    Editar oferta
+                    Editar oferta -- {{ oferta.id }}
                 </h3>
                 <div class="text-right">
                     <SecondaryButtonReturn>
@@ -70,9 +70,10 @@
                         <select id="estado" name="estado" v-model="form.estado"
                             class="block mt-1 w-full px-4 py-2 text-base text-gray-900 rounded-md bg-white focus:ring-blue-500 focus:border-blue-500">
                             <option selected disabled value="0">Seleccionar estado del curso</option>
-                            <option value=1>Activo</option>
-                            <option value=0>Bloqueado</option>
-
+                            <option value="Activo">Activo</option>
+                            <option value="En formación">En formación</option>
+                            <option value="Finalizado">Finalizado</option>
+                            <option value="Cancelado">Cancelado</option>
 
                         </select>
                         <InputError class="mt-2" :message="form.errors.estado" />
@@ -152,6 +153,10 @@ const form = useForm({
     banner: props.oferta ? props.oferta.banner : '',
 });
 
+const breadcrumbLinks = [
+    { url: `/perfil?search=${props.oferta.id_puntos}`, text: 'Editar perfil' },
+    { url: '', text: 'editar oferta -- '+props.oferta.id },
+];
 
 //max palabras
 const isMaxPalabras = ref(false);

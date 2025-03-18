@@ -1,7 +1,7 @@
 <template>
     <Head title="Agregar usuario" />
 
-    <AuthenticatedLayout>
+    <AuthenticatedLayout :breadCrumbLinks="breadcrumbLinks">
         <template #header>
             Nuevo usuario
         </template>
@@ -93,6 +93,12 @@ const props = defineProps({
         default: () => ({}),
     }
 });
+
+const breadcrumbLinks = [
+    { url: '/users', text: 'Listado de usuarios' },
+    { url: '', text: 'Agregar Usuario' },
+];
+
 
 const form = useForm({
     name: '',

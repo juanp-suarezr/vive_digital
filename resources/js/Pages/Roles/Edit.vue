@@ -17,6 +17,10 @@ const props = defineProps({
     rolePermissions: Object,
 });
 
+const breadcrumbLinks = [
+    { url: '/roles', text: 'Roles' },
+    { url: '', text: 'Editar Rol' },
+];
 
 const selectedPermissions = Object.values(props.rolePermissions);
 const form = useForm({
@@ -60,7 +64,7 @@ const colorPorModulo = (modulo) => {
         usuarios: "bg-azul text-white",
         rol: "bg-parrafo text-white",
         registrados: "bg-primary text-white",
-        
+
         // Agrega más colores para otros módulos si es necesario
     };
     return colores[modulo] || "bg-gray-200"; // Color predeterminado
@@ -72,9 +76,9 @@ const colorPorModulo = (modulo) => {
 
     <Head title="Editar Rol" />
 
-    <AuthenticatedLayout>
+    <AuthenticatedLayout :breadCrumbLinks="breadcrumbLinks">
         <template #header>
-            <!-- <Link class="text-sky-400 hover:text-sky-600" href="/roles"> Roles </Link> / {{ form.name }} -->
+            <Link class="text-sky-400 hover:text-sky-600" href="/roles"> Roles </Link> / {{ form.name }}
 
         </template>
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">

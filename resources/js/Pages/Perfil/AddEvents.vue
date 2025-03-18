@@ -2,7 +2,7 @@
 
     <Head title="Agregar evento" />
 
-    <AuthenticatedLayout>
+    <AuthenticatedLayout :breadCrumbLinks="breadcrumbLinks">
         <template #header>
             Nuevo evento
         </template>
@@ -135,6 +135,11 @@ const form = useForm({
     banner: '',
 });
 
+const breadcrumbLinks = [
+    { url: `/perfil?search=${props.punto_id}`, text: 'Editar perfil' },
+    { url: '', text: 'Añadir evento' },
+];
+
 //variable de imagen
 const imageUrl = ref(null);
 
@@ -156,7 +161,7 @@ const palabrasEnTestimonio = computed(() => {
     return result;
 });
 
-//IMAGEN 
+//IMAGEN
 const getImageUrl = (imageName) => {
     // Si las imágenes están almacenadas en la carpeta public/images, la ruta sería algo como esto:
     return `/storage/uploads/ofertas/${imageName}`;
