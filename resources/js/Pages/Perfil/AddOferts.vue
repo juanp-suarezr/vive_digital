@@ -409,11 +409,11 @@ const validateFile = (event) => {
     }
 
     // Validar el tamaño del archivo (en bytes)
-    if (file.size > 2 * 1024 * 1024) {
-        // 2 MB en bytes
-        form.errors.ofertas = "El archivo no debe ser mayor a 2 MB.";
-        return;
-    }
+    // if (file.size > 2 * 1024 * 1024) {
+    //     // 2 MB en bytes
+    //     form.errors.ofertas = "El archivo no debe ser mayor a 2 MB.";
+    //     return;
+    // }
 
     // Reiniciar errores si la validación es exitosa
     form.errors.ofertas = null;

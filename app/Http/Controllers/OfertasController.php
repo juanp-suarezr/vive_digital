@@ -75,8 +75,8 @@ class OfertasController extends Controller
         $this->validate($request, [
             'nombre' => 'required|string',
 
-            'horario' => 'string|max:100',
-            'descripcion' => 'string|max:300',
+            'horario' => 'max:100',
+            'descripcion' => 'max:300',
             'lugar' => 'string|max:100',
 
 
