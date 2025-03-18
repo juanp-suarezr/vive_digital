@@ -1024,10 +1024,7 @@ const props = defineProps({
     },
 });
 
-const breadcrumbLinks = [
-    { url: '/perfil', text: 'Editar información' },
-
-];
+const breadcrumbLinks = [{ url: "/perfil", text: "Editar información" }];
 
 // Modal de eliminacion ofertas
 const confirmingDeletion = ref(false);
@@ -1079,6 +1076,7 @@ const handleSelectPuntos = () => {
         {
             replace: true,
             preserveScroll: true,
+            preserveState: true, // Mantener el estado del componente
         }
     );
 };
@@ -1123,6 +1121,7 @@ const confirmUserDeletion = (id) => {
 const deleteOfert = () => {
     form.delete(route("ofertas.destroy", ofert_id.value), {
         preserveScroll: true,
+        preserveState: true, // Mantener el estado del componente
         onSuccess: () => {
             cerrarModal();
             swal({
@@ -1144,6 +1143,7 @@ const confirmEventDeletion = (id) => {
 const deleteEvent = () => {
     form.delete(route("eventos.destroy", event_id.value), {
         preserveScroll: true,
+        preserveState: true, // Mantener el estado del componente
         onSuccess: () => {
             cerrarModal();
             swal({
@@ -1202,6 +1202,7 @@ watch(palabrasEnTestimonio, () => {
 const submit = () => {
     form.post(route("perfil.store"), {
         preserveScroll: true,
+        preserveState: true, // Mantener el estado del componente
         onSuccess: function () {
             cerrarModal();
             swal({
@@ -1220,6 +1221,7 @@ const submit = () => {
 const submit1 = () => {
     form.patch(route("perfil.update", props.infoPunto[0].id), {
         preserveScroll: true,
+        preserveState: true, // Mantener el estado del componente
         onSuccess: function () {
             cerrarModal();
             swal({
@@ -1243,6 +1245,7 @@ const submit2 = () => {
     ) {
         form1.post(route("puntos.store"), {
             preserveScroll: true,
+            preserveState: true, // Mantener el estado del componente
             onSuccess: function () {
                 visible.value = false;
                 swal({
@@ -1268,6 +1271,7 @@ const submit2 = () => {
         visible.value = false;
         form1.post(route("inscribir-capacitaciones"), {
             preserveScroll: true,
+            preserveState: true, // Mantener el estado del componente
             onSuccess: () => {
                 form.reset(); // Solo se ejecuta si la petición es exitosa
             },
