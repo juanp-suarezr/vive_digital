@@ -142,12 +142,12 @@ const getImageUrl = (imageName, folder) => {
 
 const responsiveOptions = ref([
     {
-        breakpoint: '1800px',
+        breakpoint: '2000px',
         numVisible: 4,
         numScroll: 1
     },
     {
-        breakpoint: '1400px',
+        breakpoint: '1800px',
         numVisible: 3,
         numScroll: 1
     },
