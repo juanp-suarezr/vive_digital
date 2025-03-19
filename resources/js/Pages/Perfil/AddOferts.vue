@@ -129,7 +129,7 @@
                                     Seleccionar estado del curso
                                 </option>
                                 <option value="Activo">Activo</option>
-                                <option value="En formación">
+                                <option value="En formacion">
                                     En formación
                                 </option>
                                 <option value="Finalizado">Finalizado</option>

@@ -71,7 +71,7 @@
                             class="block mt-1 w-full px-4 py-2 text-base text-gray-900 rounded-md bg-white focus:ring-blue-500 focus:border-blue-500">
                             <option selected disabled value="0">Seleccionar estado del curso</option>
                             <option value="Activo">Activo</option>
-                            <option value="En formación">En formación</option>
+                            <option value="En formacion">En formación</option>
                             <option value="Finalizado">Finalizado</option>
                             <option value="Cancelado">Cancelado</option>
 
