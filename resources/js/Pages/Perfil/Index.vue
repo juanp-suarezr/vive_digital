@@ -467,7 +467,7 @@
                                                     <span
                                                         v-if="
                                                             ofert.estado ==
-                                                            'En proceso'
+                                                            'En formacion'
                                                         "
                                                         class="bg-blue-400 text-white text-sm font-medium me-2 px-2.5 py-0.5 rounded"
                                                     >

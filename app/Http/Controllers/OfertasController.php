@@ -103,9 +103,9 @@ class OfertasController extends Controller
         $ofertas = Ofertas::create([
             'id_puntos' => $request->input('id_puntos'),
             'nombre' => $request->input('nombre'),
-            'horario' => $request->input('horario'),
-            'descripcion' => $request->input('descripcion'),
-            'lugar' => $request->input('lugar'),
+            'horario' => $request->input('horario') || 'NA',
+            'descripcion' => $request->input('descripcion') || 'NA',
+            'lugar' => $request->input('lugar') || 'NA',
             'banner' => $fileName,
             'estado' => $request->input('estado'),
 
