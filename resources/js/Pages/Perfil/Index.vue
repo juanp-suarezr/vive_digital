@@ -1077,7 +1077,7 @@ const handleSelectPuntos = () => {
         {
             replace: true,
             preserveScroll: true,
-            preserveState: true, // Mantener el estado del componente
+
         }
     );
 };
