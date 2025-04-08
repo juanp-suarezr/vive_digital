@@ -27,6 +27,10 @@
                 <ClipboardDocumentIcon class="h-6 w-6 text-white" />
                 <span class="mx-3">Registrados </span>
             </nav-link>
+            <nav-link v-if="$page.props.user.permissions.includes('rol-listar')" :href="route('registradosUnicos.index')" :active="route().current().includes('registradosUnicos')">
+                <ClipboardDocumentIcon class="h-6 w-6 text-white" />
+                <span class="mx-3">Tabla unica de registros </span>
+            </nav-link>
 
             <nav-link :href="route('perfil.index')" :active="route().current().includes('perfil')">
                 <DocumentIcon class="h-6 w-6 text-white" />

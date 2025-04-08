@@ -11,6 +11,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\PuntosController;
 use App\Http\Controllers\RegistroController;
+use App\Http\Controllers\RegistrosGemelosController;
 use App\Http\Controllers\RoleController;
 use App\Models\Inscripciones;
 use App\Models\Ofertas;
@@ -162,8 +163,10 @@ Route::middleware('auth')->group(function () {
     Route::patch('/registrado', [RegistroController::class, 'update'])->name('registrados.update');
     //EXCEL
     Route::get('/registrado/exportar', [RegistroController::class, 'excel'])->name('registrados.excel');
+    Route::get('/registradosUnicos/exportar', [RegistrosGemelosController::class, 'excel'])->name('registradosUnicos.excel');
     Route::get('/ofertas/exportar', [OfertasController::class, 'excel'])->name('oferts.excel');
     Route::get('/totalInscritos/exportar', [OfertasController::class, 'excelInscritos'])->name('totalInscritos.excel');
+    Route::get('/totalInscritosXOferta/exportar', [OfertasController::class, 'excelInscritosXOferta'])->name('totalInscritosXOferta.excel');
 
     //INSCRITOS MASIVOS
     Route::get('/inscritosMasivos', [OfertasController::class, 'inscritosMasivos'])->name('inscritosMasivos.index');
@@ -186,6 +189,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('perfil', PerfilController::class);
     Route::resource('ofertas', OfertasController::class);
     Route::resource('eventos', EventosController::class);
+    Route::resource('registradosUnicos', RegistrosGemelosController::class);
 });
 
 

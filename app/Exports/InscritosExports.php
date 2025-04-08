@@ -18,6 +18,12 @@ class InscritosExports implements FromCollection, WithHeadings, WithStyles, Shou
 {
 
 
+    protected $puntosID;
+
+    public function __construct($puntosID)
+    {
+        $this->puntosID = $puntosID;
+    }
 
     /**
      * @return \Illuminate\Support\Collection
@@ -25,7 +31,12 @@ class InscritosExports implements FromCollection, WithHeadings, WithStyles, Shou
 
     public function collection()
     {
-        $inscripciones = Inscripciones::with('info_user')->with('oferta')->select(
+        
+        $inscripciones = Inscripciones::query()->when($this->puntosID, function ($query, $puntosID) {
+            $query->whereHas('oferta', function ($subQuery) use ($puntosID) {
+                $subQuery->where('id_puntos', $puntosID); // Filtrar por puntosID
+            });
+        })->with('info_user')->with('oferta')->select(
             'id_oferta',
             'created_at',
             'id_info_user',
@@ -41,10 +52,10 @@ class InscritosExports implements FromCollection, WithHeadings, WithStyles, Shou
             $ins->id_oferta = $ins->oferta->nombre ?? '';
             $ins->created_at = Puntos::where('id', $ins->oferta->id_puntos)->value('nombre') ?? '';
             $ins->id_info_user = $ins->info_user->nombres. ' '.$ins->info_user->apellidos ?? '';
-            unset($user->oferta); // Eliminar la relación ya que no la necesitamos en la exportación
-            unset($user->info_user);
-            
-            
+            unset($ins->oferta); // Eliminar la relación ya que no la necesitamos en la exportación
+            unset($ins->info_user);
+
+
             return $ins;
         });
 

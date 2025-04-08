@@ -69,7 +69,7 @@ class PlantillaInscripciones implements FromCollection, WithHeadings, WithStyles
                 $sheet->getProtection()->setSheet(true);
 
                 // Desbloquear todas las celdas
-                $sheet->getStyle('A3:C10000')->getProtection()->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_UNPROTECTED);
+                $sheet->getStyle('A2:C10000')->getProtection()->setLocked(\PhpOffice\PhpSpreadsheet\Style\Protection::PROTECTION_UNPROTECTED);
 
                 // Agregar una fila adicional con una nota explicativa
                 $sheet->insertNewRowBefore(1, 1);

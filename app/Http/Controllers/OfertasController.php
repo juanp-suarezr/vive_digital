@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Exports\InscritosExports;
+use App\Exports\InscritosXOfertaExports;
 use Illuminate\Support\Facades\Request as RequestFacade;
 use App\Http\Controllers\Controller;
 use App\Models\Ofertas;
@@ -233,12 +234,15 @@ class OfertasController extends Controller
     }
     //Mostrar inscritos
     public function inscritos()
+
     {
+
         return Inertia::render(
 
             'Ofertas/Show',
 
             [
+                'OfertaID' => RequestFacade::input('id'),
                 'inscripciones' => Inscripciones::Where('id_oferta', RequestFacade::input('id'))->Where('estadoProceso', '!=', 'En proceso')->Where('estadoProceso', '!=', 'Rechazado')->with('info_user')->with('oferta')->paginate(5),
                 'certificados' => Inscripciones::Where('id_oferta', RequestFacade::input('id'))->Where('estadoProceso', 'Certificado')->count(),
                 'procesos' => Inscripciones::Where('id_oferta', RequestFacade::input('id'))->Where('estadoProceso', 'Inscrito')->count(),
@@ -276,15 +280,56 @@ class OfertasController extends Controller
     //Mostrar total inscritos
     public function totalInscritos()
     {
+        $puntosID = [];
+        $puntos = Puntos::where('id_user', Auth::id())->get();
+
+        if (Auth::user()->roles[0]->name == 'Administrador' || Auth::user()->roles[0]->name == 'Supervisor') {
+            $puntos = Puntos::all();
+            $puntosID = RequestFacade::input('punto'); // Obtener el punto seleccionado desde la solicitud
+        } else {
+            $puntosID = $puntos[0]->id; // Usar el punto asociado al usuario autenticado
+        }
+
         return Inertia::render(
-
             'Inscripciones/Index',
-
             [
-                'inscripciones' => Inscripciones::Where('estadoProceso', '!=', 'En proceso')->Where('estadoProceso', '!=', 'Rechazado')->with('info_user')->with('oferta')->paginate(5),
-                'certificados' => Inscripciones::Where('estadoProceso', 'Certificado')->count(),
-                'procesos' => Inscripciones::Where('estadoProceso', 'Inscrito')->count(),
-                'noCertificados' => Inscripciones::Where('estadoProceso', 'No certificado')->count(),
+                'filters' => RequestFacade::only(['search', 'punto']),
+                'puntos' => $puntos,
+                'inscripciones' => Inscripciones::query()
+                    ->where('estadoProceso', '!=', 'En proceso')
+                    ->where('estadoProceso', '!=', 'Rechazado')
+                    ->when($puntosID, function ($query, $puntosID) {
+                        $query->whereHas('oferta', function ($subQuery) use ($puntosID) {
+                            $subQuery->where('id_puntos', $puntosID); // Filtrar por puntosID
+                        });
+                    })
+                    ->with('info_user')
+                    ->with('oferta')
+                    ->paginate(5),
+                'certificados' => Inscripciones::query()
+                    ->where('estadoProceso', 'Certificado')
+                    ->when($puntosID, function ($query, $puntosID) {
+                        $query->whereHas('oferta', function ($subQuery) use ($puntosID) {
+                            $subQuery->where('id_puntos', $puntosID); // Filtrar por puntosID
+                        });
+                    })
+                    ->count(),
+                'procesos' => Inscripciones::query()
+                    ->where('estadoProceso', 'Inscrito')
+                    ->when($puntosID, function ($query, $puntosID) {
+                        $query->whereHas('oferta', function ($subQuery) use ($puntosID) {
+                            $subQuery->where('id_puntos', $puntosID); // Filtrar por puntosID
+                        });
+                    })
+                    ->count(),
+                'noCertificados' => Inscripciones::query()
+                    ->where('estadoProceso', 'No certificado')
+                    ->when($puntosID, function ($query, $puntosID) {
+                        $query->whereHas('oferta', function ($subQuery) use ($puntosID) {
+                            $subQuery->where('id_puntos', $puntosID); // Filtrar por puntosID
+                        });
+                    })
+                    ->count(),
             ]
         );
     }
@@ -324,10 +369,30 @@ class OfertasController extends Controller
         ob_end_clean();
         ob_start();
 
-        $search = RequestFacade::input('search');
-        $puntosID = RequestFacade::input('punto');
 
-        return Excel::download(new InscritosExports(), 'totalInscritos.xls', \Maatwebsite\Excel\Excel::XLS);
+        $puntosID = [];
+        $puntos = Puntos::where('id_user', Auth::id())->get();
+
+        if (Auth::user()->roles[0]->name == 'Administrador' || Auth::user()->roles[0]->name == 'Supervisor') {
+            $puntosID = RequestFacade::input('punto'); // Obtener el punto seleccionado desde la solicitud
+        } else {
+            $puntosID = $puntos[0]->id; // Usar el punto asociado al usuario autenticado
+        }
+
+        return Excel::download(new InscritosExports($puntosID), 'totalInscritos.xls', \Maatwebsite\Excel\Excel::XLS);
     }
+
+    public function excelInscritosXOferta()
+    {
+        ob_end_clean();
+        ob_start();
+        
+
+        $ofertaID = RequestFacade::input('ofertaId');
+
+        return Excel::download(new InscritosXOfertaExports($ofertaID), 'totalInscritosXOferta.xls', \Maatwebsite\Excel\Excel::XLS);
+    }
+
+
 
 }
