@@ -31,7 +31,7 @@ const getLinkWithSearch = (url) => {
   }
   // Añadir el parámetro OfertaID si está definido
   if (props.OfertaID) {
-    urlObj.searchParams.set("OfertaID", props.OfertaID);
+    urlObj.searchParams.set("id", props.OfertaID);
   }
   return urlObj.toString();
 };
