@@ -20,6 +20,7 @@ import { computed } from "vue";
 const props = defineProps({
   links: Array,
   search: [String, Number], // Añadir el parámetro search
+  OfertaID: [String, Number], // Añadir el parámetro OfertaID como opcional
 });
 
 const getLinkWithSearch = (url) => {
@@ -27,6 +28,10 @@ const getLinkWithSearch = (url) => {
   const urlObj = new URL(url, window.location.origin);
   if (props.search) {
     urlObj.searchParams.set('search', props.search);
+  }
+  // Añadir el parámetro OfertaID si está definido
+  if (props.OfertaID) {
+    urlObj.searchParams.set("OfertaID", props.OfertaID);
   }
   return urlObj.toString();
 };
