@@ -189,11 +189,7 @@
       >
         <pagination
           v-if="props.inscripciones && props.inscripciones.data.length > 1"
-          :links="props.inscripciones.links" <pagination
-  v-if="props.inscripciones && props.inscripciones.data.length > 1"
-  :links="props.inscripciones.links"
-  :OfertaID="OfertaID"
-/>
+          :links="props.inscripciones.links" :OfertaID="OfertaID"
         />
       </div>
     </div>
