@@ -212,6 +212,7 @@ class CapacitacionesController extends Controller
         $user = Auth::user();
         $puntoID = Puntos::select('id')->where('id_user', $user->id)->first();
 
+        dd($puntoID->id);
 
         // Consulta base con relaciones
         $inscripciones = Inscripciones::with(['oferta.puntos_vive', 'info_user'])
