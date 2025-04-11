@@ -233,11 +233,11 @@ class CapacitacionesController extends Controller
             ->when($filters['punto'] ?? null, function ($query, $punto) use ($user, $puntoID) {
                 // Filtrar por puntos: Si es admin o supervisor, puede elegir, si no, solo su punto
                 if ($user->roles->contains('name', 'Administrador') || $user->roles->contains('name', 'Supervisor')) {
+                    dd($punto);
                     $query->whereHas('oferta', function ($q) use ($punto) {
                         $q->where('id_puntos', $punto);
                     });
                 } else {
-                    dd($puntoID);
                     $query->whereHas('oferta', function ($q) use ($puntoID) {
                         $q->where('id_puntos', $puntoID->id); // Punto del usuario
                     });
