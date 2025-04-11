@@ -228,9 +228,9 @@ class CapacitacionesController extends Controller
                     $q->where('nombre', 'like', "%$search_oferta%");
                 });
             })
-            ->when(function ($query, $punto) use ($user, $puntoID) {
+            ->when($filters['punto'] ?? null, function ($query, $punto) use ($user, $puntoID) {
                 // Filtrar por puntos: Si es admin o supervisor, puede elegir, si no, solo su punto
-                if ($filters['punto'] ?? null && ($user->roles->contains('name', 'Administrador') || $user->roles->contains('name', 'Supervisor'))) {
+                if ($user->roles->contains('name', 'Administrador') || $user->roles->contains('name', 'Supervisor')) {
                     $query->whereHas('oferta', function ($q) use ($punto) {
                         $q->where('id_puntos', $punto);
                     });
