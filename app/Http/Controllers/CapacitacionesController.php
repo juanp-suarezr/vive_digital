@@ -210,6 +210,7 @@ class CapacitacionesController extends Controller
 
         // Obtener el usuario autenticado
         $user = Auth::user();
+        $puntoID = Puntos::select('id')->where('id_user', $user->id)->first();
 
         // Consulta base con relaciones
         $inscripciones = Inscripciones::with(['oferta.puntos_vive', 'info_user'])
@@ -227,15 +228,15 @@ class CapacitacionesController extends Controller
                     $q->where('nombre', 'like', "%$search_oferta%");
                 });
             })
-            ->when($filters['punto'] ?? null, function ($query, $punto) use ($user) {
+            ->when(function ($query, $punto) use ($user, $puntoID) {
                 // Filtrar por puntos: Si es admin o supervisor, puede elegir, si no, solo su punto
-                if ($user->roles->contains('name', 'Administrador') || $user->roles->contains('name', 'Supervisor')) {
+                if ($filters['punto'] ?? null && ($user->roles->contains('name', 'Administrador') || $user->roles->contains('name', 'Supervisor'))) {
                     $query->whereHas('oferta', function ($q) use ($punto) {
                         $q->where('id_puntos', $punto);
                     });
                 } else {
-                    $query->whereHas('oferta', function ($q) use ($user) {
-                        $q->where('id_puntos', $user->punto); // Punto del usuario
+                    $query->whereHas('oferta', function ($q) use ($puntoID) {
+                        $q->where('id_puntos', $puntoID); // Punto del usuario
                     });
                 }
             })
