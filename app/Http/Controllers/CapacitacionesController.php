@@ -211,7 +211,7 @@ class CapacitacionesController extends Controller
         // Obtener el usuario autenticado
         $user = Auth::user();
         $puntoID = Puntos::select('id')->where('id_user', $user->id)->first();
-        dd($puntoID->id);
+
 
 
         // Consulta base con relaciones
@@ -243,9 +243,9 @@ class CapacitacionesController extends Controller
                 }
             })
             // Aquí puedes manejar el caso en el que no se cumpla la condición
-            ->orWhere(function ($query) use ($user) {
+            ->orWhere(function ($query) use ($user, $puntoID) {
                 if (!$user->roles->contains('name', 'Administrador') && !$user->roles->contains('name', 'Supervisor')) {
-                    $query->whereHas('oferta', function ($q) {
+                    $query->whereHas('oferta', function ($q) use ($puntoID) {
                         $q->where('id_puntos', $puntoID->id); // Punto del usuario
                     });
                 }
