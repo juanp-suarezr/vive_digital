@@ -29,6 +29,31 @@
                         <InputError class="mt-2" :message="form.errors.nombre" />
                     </div>
 
+                    <!-- tipo oferta -->
+                    <div class="mb-4">
+                            <InputLabel for="tipo" value="Tipo de oferta" />
+                            <select
+                                id="tipo"
+                                name="tipo"
+                                v-model="form.tipo"
+                                class="block mt-1 w-full px-4 py-2 text-base text-gray-900 rounded-md bg-white focus:ring-blue-500 focus:border-blue-500"
+                            >
+                                <option selected disabled value="0">
+                                    Seleccionar tipo de la oferta
+                                </option>
+                                <option value="Curso">Curso</option>
+                                <option value="Técnico">
+                                    Técnico
+                                </option>
+                                <option value="Tecnología">Tecnología</option>
+
+                            </select>
+                            <InputError
+                                class="mt-2"
+                                :message="form.errors.tipo"
+                            />
+                        </div>
+
                     <!-- lugar -->
                     <div class="mb-4">
                         <InputLabel for="lugar" value="Lugar del curso (opcional)" />
@@ -145,6 +170,7 @@ console.log(props.oferta);
 const form = useForm({
     id: props.oferta.id,
     nombre: props.oferta ? props.oferta.nombre : '',
+    tipo: props.oferta ? props.oferta.tipo : '',
     horario: props.oferta ? props.oferta.horario : '',
     descripcion: props.oferta ? props.oferta.descripcion : '',
     estado: props.oferta ? props.oferta.estado : '',

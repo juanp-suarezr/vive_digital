@@ -40,6 +40,31 @@
                             />
                         </div>
 
+                        <!-- tipo oferta -->
+                        <div class="mb-4">
+                            <InputLabel for="tipo" value="Tipo de oferta" />
+                            <select
+                                id="tipo"
+                                name="tipo"
+                                v-model="form.tipo"
+                                class="block mt-1 w-full px-4 py-2 text-base text-gray-900 rounded-md bg-white focus:ring-blue-500 focus:border-blue-500"
+                            >
+                                <option selected disabled value="0">
+                                    Seleccionar tipo de la oferta
+                                </option>
+                                <option value="Curso">Curso</option>
+                                <option value="Técnico">
+                                    Técnico
+                                </option>
+                                <option value="Tecnología">Tecnología</option>
+
+                            </select>
+                            <InputError
+                                class="mt-2"
+                                :message="form.errors.tipo"
+                            />
+                        </div>
+
                         <!-- lugar -->
                         <div>
                             <InputLabel
@@ -297,6 +322,7 @@ const props = defineProps({
 
 const form = useForm({
     nombre: "",
+    tipo: "",
     horario: "",
     descripcion: "",
     estado: "Activo",

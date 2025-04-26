@@ -225,7 +225,7 @@ const formatField = value => {
                 <Carousel :value="punto.ofertas" :numVisible="3" :numScroll="1" :responsiveOptions="responsiveOptions"
                     :class="{ 'min-[900px]:px-44': punto.ofertas.length == 1 }">
                     <template #item="slotProps">
-                        <div
+                        <a :href="slotProps.data.tipo !== 'Curso' ? route('capacitaciones.show', { id: slotProps.data.id }) : null" :class="[slotProps.data.tipo !== 'Curso' ? 'cursor-pointer' : '']"
                             class="flex flex-col my-auto text-parrafo bg-white surface-border shadow-md rounded-md sm:m-2 p-3 h-full">
                             <!-- imagen y tag con tipo -->
                             <div class="mb-3">
@@ -250,6 +250,10 @@ const formatField = value => {
                                 <div class="">
                                     <div class="mb-3 font-medium p-2 bg-azul rounded-md shadow-md text-white">{{
                                         slotProps.data.nombre }}</div>
+                                        <div class="mb-3 break-words px-2">
+                                            <b>Tipo:</b> {{
+                                            slotProps.data.tipo }}
+                                            </div>
                                     <div class="mb-3 break-words px-2"><b>Información Horario:</b> {{ slotProps.data.horario || 'no contiene información' }}</div>
                                     <div class="mb-3 break-words px-2"><b>Descripción:</b> {{ slotProps.data.descripcion || 'no contiene información' }}</div>
                                 </div>
@@ -273,7 +277,7 @@ const formatField = value => {
                                     INSCRIBIRSE
                                 </button>
                             </div>
-                        </div>
+                        </a>
                     </template>
                     <template #empty>
                         <div class="px-6 text-secondary font-bold">Actualmente no hay cursos disponibles</div>

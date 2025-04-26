@@ -43,6 +43,7 @@ class OfertasExports implements FromCollection, WithHeadings, WithStyles, Should
             })->select(
                 'id_puntos',
                 'nombre',
+                'tipo',
                 'horario',
                 'descripcion',
                 'lugar',
@@ -71,6 +72,7 @@ class OfertasExports implements FromCollection, WithHeadings, WithStyles, Should
         return [
             'Punto vive digital',
             'Nombre oferta',
+            'Tipo oferta',
             'Información horario',
             'Descripción',
             'Lugar',

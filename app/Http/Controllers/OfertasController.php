@@ -79,6 +79,7 @@ class OfertasController extends Controller
             'horario' => 'max:100',
             'descripcion' => 'max:300',
             'lugar' => 'string|max:100',
+            'tipo' => 'string|max:100',
 
 
         ]);
@@ -107,6 +108,7 @@ class OfertasController extends Controller
             'horario' => $request->input('horario') || 'NA',
             'descripcion' => $request->input('descripcion') || 'NA',
             'lugar' => $request->input('lugar') || 'NA',
+            'tipo' => $request->input('tipo') || 'Curso',
             'banner' => $fileName,
             'estado' => $request->input('estado'),
 
@@ -138,6 +140,7 @@ class OfertasController extends Controller
             'descripcion' => 'string|max:300',
             'lugar' => 'string|max:100',
             'estado',
+            'tipo' => 'string|max:100',
 
 
         ]);
@@ -148,6 +151,7 @@ class OfertasController extends Controller
         $oferta->descripcion = $request->descripcion;
         $oferta->lugar = $request->lugar;
         $oferta->estado = $request->estado;
+        $oferta->tipo = $request->tipo;
 
 
 
@@ -386,7 +390,7 @@ class OfertasController extends Controller
     {
         ob_end_clean();
         ob_start();
-        
+
 
         $ofertaID = RequestFacade::input('ofertaId');
 

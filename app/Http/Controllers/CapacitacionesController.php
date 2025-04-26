@@ -74,6 +74,25 @@ class CapacitacionesController extends Controller
             ->get();
     }
 
+    public function show($id)
+    {
+        $puntos = Puntos::all();
+
+        return Inertia::render('VerDetallesTecnico', [
+            'puntos' => $puntos,
+            'info_usuario' => Info_usuario::query()
+                ->when(RequestFacade::input('identificacion'), function ($query, $identificacion) {
+                    $query->where('identificacion', $identificacion);
+                })
+                ->get(),
+            'oferta' => Ofertas::where('id', $id)
+                ->Where('estado', 'Activo')->with(['inscripciones' => function ($query) {
+                    $query->where('estadoProceso', 'Inscrito'); // Filtrar inscripciones con certificado en 0
+                }])
+                ->first(),
+        ]);
+    }
+
     //vista de formulario de inscripcion
     public function inscripcionCapacitacion(Request $request)
     {
