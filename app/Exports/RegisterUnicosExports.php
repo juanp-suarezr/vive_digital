@@ -24,6 +24,13 @@ class RegisterUnicosExports implements FromCollection, WithHeadings, WithStyles,
         $this->endDate = $endDate;
     }
 
+    // Limpia los datos eliminando emojis y caracteres especiales
+    private function removeEmojis($string)
+    {
+        // Elimina emojis y caracteres no compatibles
+        return preg_replace('/[^\x{0000}-\x{FFFF}]/u', '', $string);
+    }
+
     /**
      * @return \Illuminate\Support\Collection
      */
@@ -34,7 +41,7 @@ class RegisterUnicosExports implements FromCollection, WithHeadings, WithStyles,
             $fecha_init = $this->startDate;
             $fecha_end = $this->endDate;
 
-            if($fecha_end == null) {
+            if ($fecha_end == null) {
                 $fecha_end = date('Y-m-d');
             }
 
@@ -59,37 +66,48 @@ class RegisterUnicosExports implements FromCollection, WithHeadings, WithStyles,
             ->latest('created_at')
             ->get();
 
-            if ($users->isEmpty()) {
-                $users = Info_usuario::when($this->startDate || $this->endDate, function ($query) {
-                    $fecha_init = $this->startDate;
-                    $fecha_end = $this->endDate;
+        if ($users->isEmpty()) {
+            $users = Info_usuario::when($this->startDate || $this->endDate, function ($query) {
+                $fecha_init = $this->startDate;
+                $fecha_end = $this->endDate;
 
-                    if($fecha_end == null) {
-                        $fecha_end = date('Y-m-d');
-                    }
+                if ($fecha_end == null) {
+                    $fecha_end = date('Y-m-d');
+                }
 
-                    $query->whereBetween('created_at', [$fecha_init, $fecha_end]);
-                })->select(
-                        'nombres',
-                        'apellidos',
-                        'edad',
-                        'tipo_documento',
-                        'identificacion',
-                        'direccion',
-                        'sector',
-                        'telefono',
-                        'email',
-                        'genero',
-                        'condicion',
-                        'etnia',
-                        'nivel_estudio',
-                        'created_at'
-                    )
-                    ->latest('created_at')
-                    ->get();
-            }
+                $query->whereBetween('created_at', [$fecha_init, $fecha_end]);
+            })->select(
+                'nombres',
+                'apellidos',
+                'edad',
+                'tipo_documento',
+                'identificacion',
+                'direccion',
+                'sector',
+                'telefono',
+                'email',
+                'genero',
+                'condicion',
+                'etnia',
+                'nivel_estudio',
+                'created_at'
+            )
+                ->latest('created_at')
+                ->get();
+        }
 
 
+        // Reemplazar el ID de puntos con el nombre del punto
+        $users->transform(function ($user) {
+            $user->nombres = $this->removeEmojis($user->nombres);
+            $user->apellidos = $this->removeEmojis($user->apellidos);
+            $user->direccion = $this->removeEmojis($user->direccion);
+            $user->sector = $this->removeEmojis($user->sector);
+            $user->email = $this->removeEmojis($user->email);
+            
+
+            return $user;
+        });
         return $users;
     }
 
