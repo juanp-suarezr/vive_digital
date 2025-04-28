@@ -99,7 +99,7 @@ class RegisterExports implements FromCollection, WithHeadings, WithStyles, Shoul
         // Reemplazar el ID de puntos con el nombre del punto
         $users->transform(function ($user) {
             $user->id_puntos = $user->puntos_vive->nombre ?? ''; // Asignar el nombre del punto o cadena vacía si no hay punto
-            $user->created_at = \PhpOffice\PhpSpreadsheet\Shared\Date::PHPToExcel( $user->created_at );
+            // $user->created_at = \PhpOffice\PhpSpreadsheet\Shared\Date::PHPToExcel( $user->created_at );
             unset($user->puntos_vive); // Eliminar la relación ya que no la necesitamos en la exportación
             return $user;
         });
