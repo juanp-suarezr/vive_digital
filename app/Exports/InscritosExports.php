@@ -40,6 +40,7 @@ class InscritosExports implements FromCollection, WithHeadings, WithStyles, Shou
             'comentario',
             'created_at',
             'id_info_user',
+            'updated_at',
             'identificacion',
             'id_oferta',
             'estadoProceso',
@@ -52,7 +53,9 @@ class InscritosExports implements FromCollection, WithHeadings, WithStyles, Shou
         $inscripciones->transform(function ($ins) {
             $ins->comentario = $ins->oferta->nombre ?? '';
             $ins->created_at = Puntos::where('id', $ins->oferta->id_puntos)->value('nombre') ?? '';
+
             $ins->id_info_user = $ins->info_user->nombres. ' '.$ins->info_user->apellidos ?? '';
+            $ins->updated_at = $ins->info_user->telefono ?? '';
             unset($ins->oferta); // Eliminar la relación ya que no la necesitamos en la exportación
             unset($ins->info_user);
 
@@ -71,6 +74,7 @@ class InscritosExports implements FromCollection, WithHeadings, WithStyles, Shou
             'Nombre oferta',
             'Punto vive digital',
             'Nombre inscrito',
+            'Teléfono',
             'Identificación',
             'id_oferta',
             'Estado',
