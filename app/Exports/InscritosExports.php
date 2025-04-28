@@ -31,16 +31,17 @@ class InscritosExports implements FromCollection, WithHeadings, WithStyles, Shou
 
     public function collection()
     {
-        
+
         $inscripciones = Inscripciones::query()->when($this->puntosID, function ($query, $puntosID) {
             $query->whereHas('oferta', function ($subQuery) use ($puntosID) {
                 $subQuery->where('id_puntos', $puntosID); // Filtrar por puntosID
             });
         })->with('info_user')->with('oferta')->select(
-            'id_oferta',
+            'comentario',
             'created_at',
             'id_info_user',
             'identificacion',
+            'id_oferta',
             'estadoProceso',
         )
             ->get();
@@ -49,7 +50,7 @@ class InscritosExports implements FromCollection, WithHeadings, WithStyles, Shou
 
         // Reemplazar el ID de puntos con el nombre del punto
         $inscripciones->transform(function ($ins) {
-            $ins->id_oferta = $ins->oferta->nombre ?? '';
+            $ins->comentario = $ins->oferta->nombre ?? '';
             $ins->created_at = Puntos::where('id', $ins->oferta->id_puntos)->value('nombre') ?? '';
             $ins->id_info_user = $ins->info_user->nombres. ' '.$ins->info_user->apellidos ?? '';
             unset($ins->oferta); // Eliminar la relación ya que no la necesitamos en la exportación
@@ -71,6 +72,7 @@ class InscritosExports implements FromCollection, WithHeadings, WithStyles, Shou
             'Punto vive digital',
             'Nombre inscrito',
             'Identificación',
+            'id_oferta'
             'Estado',
         ];
         // return array_keys($this->collection()->first()->toArray());
