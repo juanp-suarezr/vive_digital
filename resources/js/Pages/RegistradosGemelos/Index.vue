@@ -219,7 +219,7 @@ let fecha_end = ref(props.filters.fecha_end ?? "");
 const punto = ref(props.filters.punto ?? "");
 const handleEnterKey = () => {
     router.get(
-        "/registradosGemelos",
+        "/registradosUnicos",
         { search: search.value, fecha_init: fecha_init.value, fecha_end: fecha_end.value, punto: punto.value },
         {
 
@@ -242,7 +242,7 @@ const clearAll = () => {
     fecha_end.value = '';
     punto.value = '';
     router.get(
-        "/registradosGemelos",
+        "/registradosUnicos",
         { search: search.value, fecha_init: fecha_init.value, fecha_end: fecha_end.value, punto: punto.value },
         {
 
