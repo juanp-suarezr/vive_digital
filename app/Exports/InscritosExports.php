@@ -72,7 +72,7 @@ class InscritosExports implements FromCollection, WithHeadings, WithStyles, Shou
             'Punto vive digital',
             'Nombre inscrito',
             'Identificación',
-            'id_oferta'
+            'id_oferta',
             'Estado',
         ];
         // return array_keys($this->collection()->first()->toArray());
