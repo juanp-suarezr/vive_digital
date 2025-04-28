@@ -23,6 +23,13 @@ class RegisterExports implements FromCollection, WithHeadings, WithStyles, Shoul
         $this->endDate = $endDate;
     }
 
+    // Limpia los datos eliminando emojis y caracteres especiales
+    private function removeEmojis($string)
+    {
+        // Elimina emojis y caracteres no compatibles
+        return preg_replace('/[^\x{0000}-\x{FFFF}]/u', '', $string);
+    }
+
     /**
      * @return \Illuminate\Support\Collection
      */
@@ -98,6 +105,11 @@ class RegisterExports implements FromCollection, WithHeadings, WithStyles, Shoul
 
         // Reemplazar el ID de puntos con el nombre del punto
         $users->transform(function ($user) {
+            $user->nombres = $this->removeEmojis($user->nombres);
+            $user->apellidos = $this->removeEmojis($user->apellidos);
+            $user->direccion = $this->removeEmojis($user->direccion);
+            $user->sector = $this->removeEmojis($user->sector);
+            $user->email = $this->removeEmojis($user->email);
             $user->id_puntos = $user->puntos_vive->nombre ?? ''; // Asignar el nombre del punto o cadena vacía si no hay punto
             // $user->created_at = \PhpOffice\PhpSpreadsheet\Shared\Date::PHPToExcel( $user->created_at );
             unset($user->puntos_vive); // Eliminar la relación ya que no la necesitamos en la exportación
