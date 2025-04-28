@@ -35,7 +35,7 @@ class RegisterExports implements FromCollection, WithHeadings, WithStyles, Shoul
             $fecha_init = $this->startDate;
             $fecha_end = $this->endDate;
 
-            if($fecha_end == null) {
+            if ($fecha_end == null) {
                 $fecha_end = date('Y-m-d');
             }
 
@@ -63,43 +63,43 @@ class RegisterExports implements FromCollection, WithHeadings, WithStyles, Shoul
             ->latest('created_at')
             ->get();
 
-            if ($users->isEmpty()) {
-                $users = Registro::when($this->startDate || $this->endDate, function ($query) {
-                    $fecha_init = $this->startDate;
-                    $fecha_end = $this->endDate;
+        if ($users->isEmpty()) {
+            $users = Registro::when($this->startDate || $this->endDate, function ($query) {
+                $fecha_init = $this->startDate;
+                $fecha_end = $this->endDate;
 
-                    if($fecha_end == null) {
-                        $fecha_end = date('Y-m-d');
-                    }
+                if ($fecha_end == null) {
+                    $fecha_end = date('Y-m-d');
+                }
 
-                    $query->whereBetween('created_at', [$fecha_init, $fecha_end]);
-                })->with('puntos_vive')
-                    ->select(
-                        'nombres',
-                        'apellidos',
-                        'edad',
-                        'tipo_documento',
-                        'identificacion',
-                        'direccion',
-                        'sector',
-                        'telefono',
-                        'email',
-                        'genero',
-                        'condicion',
-                        'etnia',
-                        'nivel_estudio',
-                        'tipo_servicio',
-                        'id_puntos', // Necesario para la relación
-                        'created_at'
-                    )
-                    ->latest('created_at')
-                    ->get();
-            }
+                $query->whereBetween('created_at', [$fecha_init, $fecha_end]);
+            })->with('puntos_vive')
+                ->select(
+                    'nombres',
+                    'apellidos',
+                    'edad',
+                    'tipo_documento',
+                    'identificacion',
+                    'direccion',
+                    'sector',
+                    'telefono',
+                    'email',
+                    'genero',
+                    'condicion',
+                    'etnia',
+                    'nivel_estudio',
+                    'tipo_servicio',
+                    'id_puntos', // Necesario para la relación
+                    'created_at'
+                )
+                ->latest('created_at')
+                ->get();
+        }
 
         // Reemplazar el ID de puntos con el nombre del punto
         $users->transform(function ($user) {
             $user->id_puntos = $user->puntos_vive->nombre ?? ''; // Asignar el nombre del punto o cadena vacía si no hay punto
-            // $user->created_at = \PhpOffice\PhpSpreadsheet\Shared\Date::PHPToExcel( $user->created_at );
+            $user->created_at = \PhpOffice\PhpSpreadsheet\Shared\Date::PHPToExcel( $user->created_at );
             unset($user->puntos_vive); // Eliminar la relación ya que no la necesitamos en la exportación
             return $user;
         });
@@ -128,7 +128,25 @@ class RegisterExports implements FromCollection, WithHeadings, WithStyles, Shoul
         //     'punto',
         //     'fecha_registro'
         // ];
-        return array_keys($this->collection()->first()->toArray());
+        $firstRow = $this->collection()->first();
+        return $firstRow ? array_keys($firstRow->toArray()) : [
+            'nombres',
+            'apellidos',
+            'edad',
+            'tipo_documento',
+            'identificacion',
+            'direccion',
+            'sector',
+            'telefono',
+            'email',
+            'genero',
+            'condicion',
+            'etnia',
+            'nivel_estudio',
+            'tipo_servicio',
+            'punto',
+            'fecha_registro'
+        ];
     }
 
     public function styles(Worksheet $sheet)
