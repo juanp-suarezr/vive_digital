@@ -58,7 +58,7 @@ class CargaMasivaInscritos implements ToModel, WithStartRow
             ->first();
 
         // Validar si el usuario ya está inscrito en estado diferente a "En proceso"
-        if ($inscripciones && ($inscripciones->estadoProceso != 'En proceso' || $inscripciones->estadoProceso == 'Rechazado')) {
+        if ($inscripciones && ($inscripciones->estadoProceso != 'En proceso' || $inscripciones->estadoProceso != 'Rechazado')) {
             $this->identificacionesNoRegistradas[] = $row[0];
             return null;
         }

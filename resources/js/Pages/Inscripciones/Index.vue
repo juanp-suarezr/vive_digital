@@ -67,6 +67,11 @@
                       Nombre oferta
                     </th>
                     <th
+                      class="border-b-2 border-gray-200 bg-gray-100 px-2 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"
+                    >
+                      Id_oferta
+                    </th>
+                    <th
                       class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"
                     >
                       Nombre usuario
@@ -99,6 +104,13 @@
                     >
                       <p class="text-gray-900 whitespace-no-wrap">
                         {{ ins.oferta.nombre }}
+                      </p>
+                    </td>
+                    <td
+                      class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                    >
+                      <p class="text-gray-900 whitespace-no-wrap">
+                        {{ ins.oferta.id }}
                       </p>
                     </td>
                     <td
@@ -170,7 +182,8 @@
       <div class="w-full md:w-1/2 bg-white p-4 rounded-lg shadow">
         <h2 class="text-xl font-semibold mb-4">Resumen de Inscripciones</h2>
         <table class="w-full text-left text-sm">
-          <tr>
+            <tbody>
+                <tr>
             <td class="py-2 font-semibold">Total de Inscritos:</td>
             <td>{{ totalInscritos }}</td>
           </tr>
@@ -186,6 +199,8 @@
             <td class="py-2 font-semibold">No Certificados:</td>
             <td>{{ noCertificados }}</td>
           </tr>
+            </tbody>
+
         </table>
       </div>
     </div>

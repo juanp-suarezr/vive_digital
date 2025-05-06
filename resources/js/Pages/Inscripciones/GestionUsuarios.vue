@@ -83,6 +83,7 @@
                                     <input type="checkbox" v-model="selectAll" @change="toggleSelectAll" />
                                 </th>
                                 <th class="px-5 py-3">Nombre oferta</th>
+                                <th class="px-2 py-3">Id_oferta</th>
                                 <th class="px-5 py-3">Nombre usuario</th>
                                 <th class="px-5 py-3">Identificación</th>
                                 <th class="px-5 py-3">Edad</th>
@@ -96,10 +97,12 @@
                         </thead>
                         <tbody>
                             <tr v-for="ins in props.inscripciones.data" :key="ins.id" class="text-gray-700">
+
                                 <td class="px-3 py-5">
                                     <input type="checkbox" v-model="selectedInscripciones" :value="ins.id" />
                                 </td>
                                 <td class="px-3 py-5">{{ ins.oferta.nombre }}</td>
+                                <td class="px-2 py-5">{{ ins.oferta.id }}</td>
                                 <td class="px-3 py-5">{{ ins.info_user.nombres }} {{ ins.info_user.apellidos }}</td>
                                 <td class="px-3 py-5">{{ ins.identificacion }}</td>
                                 <td class="px-3 py-5">{{ ins.info_user.edad }}</td>
