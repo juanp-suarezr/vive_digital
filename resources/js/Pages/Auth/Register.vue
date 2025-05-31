@@ -566,7 +566,7 @@ const fetchUserInfo = debounce((newVal) => {
                     form.checked = info_usuario.value ? true : form.checked;
                     form.tipo_servicio = info_usuario.value ? info_usuario.value.tipo_servicio : form.tipo_servicio;
 
-                    
+
             })
             .catch((error) => {
                 console.error("Error loading:", error);
@@ -610,11 +610,11 @@ const tipoIden = ref([
 //ITEMS DE CONDICIONES
 const condiciones = ref([
     { id: '0', nombre: 'Sin condición', code: 'NA' },
-    { id: '1', nombre: 'Discapacitado', code: 'discapacitado' },
+    { id: '1', nombre: 'Persona con discapacidad', code: 'discapacitado' },
     { id: '2', nombre: 'Desplazados', code: 'desplazados' },
-    { id: '3', nombre: 'Victimas conflicto armado interno', code: 'victimasConfArm' },
+    { id: '3', nombre: 'Victimas', code: 'victimasConfArm' },
     { id: '4', nombre: 'Mujer cabeza de hogar', code: 'mujerCabHogar' },
-    { id: '5', nombre: 'Diversidad sexual', code: 'diversidadSex' },
+    { id: '5', nombre: 'Padre cabeza de hogar', code: 'hombreCabHogar' },
     { id: '6', nombre: 'Habitante de calle', code: 'habitanteCalle' },
     { id: '7', nombre: 'Migrante', code: 'migrante' },
 ]);
@@ -623,10 +623,10 @@ const condiciones = ref([
 const etnias = ref([
     { id: '0', nombre: 'No aplica', code: 'NA' },
     { id: '1', nombre: 'Mestizo', code: 'mestizo' },
-    { id: '2', nombre: 'Afrocolombiano', code: 'afro' },
+    { id: '2', nombre: 'Afrodescendiente', code: 'afro' },
     { id: '3', nombre: 'Indígena', code: 'indigena' },
     { id: '4', nombre: 'Palanquero', code: 'palanquero' },
-    { id: '5', nombre: 'Razal', code: 'razal' },
+    { id: '5', nombre: 'Raizal', code: 'raizal' },
     { id: '6', nombre: 'ROM', code: 'rom' },
 ]);
 
@@ -649,7 +649,7 @@ const tipoServ = ref([
     { id: '3', nombre: "Préstamo de aulas", code: 'prestamo aulas' },
     { id: '4', nombre: "Tramites", code: 'tramites' },
     { id: '5', nombre: "Videojuegos", code: 'videojuegos' },
-    
+
 ]);
 
 //step activo
@@ -716,7 +716,7 @@ const nextStep = num => {
         if (!form.telefono) {
             form.errors.telefono = 'Este campo es requerido.';
         }
-        
+
 
     }
 
