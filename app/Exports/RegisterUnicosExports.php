@@ -61,6 +61,7 @@ class RegisterUnicosExports implements FromCollection, WithHeadings, WithStyles,
                 'condicion',
                 'etnia',
                 'nivel_estudio',
+                'dignatario',
                 'created_at'
             )
             ->latest('created_at')
@@ -90,6 +91,7 @@ class RegisterUnicosExports implements FromCollection, WithHeadings, WithStyles,
                 'condicion',
                 'etnia',
                 'nivel_estudio',
+                'dignatario',
                 'created_at'
             )
                 ->latest('created_at')
@@ -104,7 +106,7 @@ class RegisterUnicosExports implements FromCollection, WithHeadings, WithStyles,
             $user->direccion = $this->removeEmojis($user->direccion);
             $user->sector = $this->removeEmojis($user->sector);
             $user->email = $this->removeEmojis($user->email);
-            
+
 
             return $user;
         });

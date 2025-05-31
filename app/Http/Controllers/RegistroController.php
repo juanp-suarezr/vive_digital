@@ -167,6 +167,7 @@ class RegistroController extends Controller
             'nivel_estudio' => 'required',
             'codePunto' => 'required',
             'tipo_servicio' => 'required',
+            'dignatario' => 'required',
         ]);
 
         // Obtener el punto correspondiente
@@ -190,6 +191,7 @@ class RegistroController extends Controller
                 'nivel_estudio' => $request->nivel_estudio,
                 'id_puntos' => $puntos[0]->id,
                 'tipo_servicio' => $request->tipo_servicio,
+                'dignatario' => $request->dignatario,
             ]);
 
             // Verificar si ya existe un registro con la misma identificación en la tabla 'info_usuario'
@@ -211,6 +213,7 @@ class RegistroController extends Controller
                     'condicion' => $user->condicion,
                     'etnia' => $user->etnia,
                     'nivel_estudio' => $user->nivel_estudio,
+                    'dignatario' => $user->dignatario,
                 ]);
             } else {
                 // Actualizar el registro existente con la nueva información
@@ -227,6 +230,7 @@ class RegistroController extends Controller
                     'condicion' => $user->condicion,
                     'etnia' => $user->etnia,
                     'nivel_estudio' => $user->nivel_estudio,
+                    'dignatario' => $user->dignatario,
                 ]);
             }
 
@@ -270,8 +274,9 @@ class RegistroController extends Controller
             'etnia' => 'required',
             'nivel_estudio' => 'required',
             'tipo_servicio' => 'required',
+            'dignatario' => 'required',
         ]);
-        
+
         // Actualizar el modelo de usuario con los datos validados
 
         // Verificar si ya existe un registro con la misma identificación en la tabla 'info_usuario'

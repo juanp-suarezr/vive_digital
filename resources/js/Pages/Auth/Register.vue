@@ -305,6 +305,19 @@
                             </select>
                             <InputError class="mt-1" :message="form.errors.etnia" />
                         </div>
+                        <!-- hace parta junta accion comunal -- dignatario -->
+                        <div class="mb-4 col-span-2">
+
+                            <input type="checkbox" id="juntaAccion" name="juntaAccion" v-model="form.dignatario"
+                                :class="[isContrast ? '!text-yellow-200 font-bold bg-black border-yellow-200' : '']">
+                            <label for="juntaAccion" class="ps-4 pe-12 sm:text-base text-sm text-gray-500" :class="[isContrast ? '!text-yellow-200 font-bold' : '',
+                            letraSize == -2 ? '!sm:text-xs !text-[0.65rem]'
+                                : letraSize == -1 ? '!sm:text-sm !text-xs'
+                                    : letraSize == 1 ? '!sm:text-lg !text-base'
+                                        : letraSize == 2 ? '!sm:text-xl !text-lg' : ''
+                            ]">¿Hace parte de la junta de acción Comunal(JAC) o Junta de acción local(JAL)?</label>
+                            <InputError class="mt-1" :message="form.errors.dignatario" />
+                        </div>
                         <!-- nivel estudio -->
                         <div class="mb-4">
                             <InputLabel :class="[isContrast ? '!text-yellow-200 font-bold' : '',
@@ -525,6 +538,7 @@ const form = useForm({
     nivel_estudio: '',
     codePunto: '',
     checked:  '',
+    dignatario: false,
     tipo_servicio: '',
 
 });

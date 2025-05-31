@@ -32,6 +32,7 @@ class Registro extends Model
         'nivel_estudio',
         'id_puntos',
         'tipo_servicio',
+        'dignatario',
     ];
 
     public function puntos_vive()

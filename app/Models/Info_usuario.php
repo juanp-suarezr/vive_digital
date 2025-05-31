@@ -30,6 +30,8 @@ class Info_usuario extends Model
         'genero',
         'condicion',
         'etnia',
+        'nivel_estudio',
+        'dignatario',
 
     ];
 
