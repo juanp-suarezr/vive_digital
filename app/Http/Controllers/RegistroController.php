@@ -17,6 +17,7 @@ use Inertia\Inertia;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use Maatwebsite\Excel\Facades\Excel;
 
 
@@ -233,9 +234,11 @@ class RegistroController extends Controller
                     'dignatario' => $user->dignatario,
                 ]);
             }
-
+            Log::info('registro', ['registro' => $user]);
             // event(new Registered($user));
         });
+
+
 
         return redirect()->route('register');
     }
