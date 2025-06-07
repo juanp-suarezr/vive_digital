@@ -13,6 +13,7 @@ use App\Http\Controllers\PuntosController;
 use App\Http\Controllers\RegistroController;
 use App\Http\Controllers\RegistrosGemelosController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\SatisfaccionController;
 use App\Models\Inscripciones;
 use App\Models\Ofertas;
 use App\Models\PageView;
@@ -95,6 +96,11 @@ Route::get('/inscribir-capacitaciones', [CapacitacionesController::class, 'inscr
 Route::post('/inscribir-capacitaciones', [CapacitacionesController::class, 'inscripcionCapacitacion']);
 
 Route::post('/inscribirCurso', [CapacitacionesController::class, 'createInfoInscripcion'])->name('inscribirCurso');
+
+//ruta de evaluacion desempeño
+Route::get('formulario-satisfaccion', [SatisfaccionController::class, 'create'])->name('formulario-satisfaccion');
+//enviar form
+Route::post('formulario-satisfaccion', [SatisfaccionController::class, 'store'])->name('formulario-satisfaccion');
 
 
 Route::get('/dashboard', function () {
