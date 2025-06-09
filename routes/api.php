@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\IndicadoresController;
+use App\Http\Controllers\api\IndicadoresController;
 use App\Http\Controllers\api\RegistroController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
