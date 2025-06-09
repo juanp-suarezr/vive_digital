@@ -274,8 +274,8 @@ class CapacitacionesController extends Controller
                 $query->where('estadoProceso', $estado);
             })
             ->where(function ($query) {
-                $query->where('estadoProceso', 'En proceso')
-                    ->orWhere('estadoProceso', 'Rechazado');
+                $query->where('estadoProceso', 'En proceso');
+
             })
             ->orderByRaw("FIELD(estadoProceso, 'En proceso') DESC")
             ->orderBy('created_at', 'asc') // Ordenar por la columna 'created_at' de forma ascendente
