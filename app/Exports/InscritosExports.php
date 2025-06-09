@@ -38,7 +38,7 @@ class InscritosExports implements FromCollection, WithHeadings, WithStyles, Shou
             });
         })->with('info_user')->with('oferta')->select(
             'comentario',
-            'created_at',
+            'id',
             'id_info_user',
             'updated_at',
             'identificacion',
@@ -54,7 +54,7 @@ class InscritosExports implements FromCollection, WithHeadings, WithStyles, Shou
         // Reemplazar el ID de puntos con el nombre del punto
         $inscripciones->transform(function ($ins) {
             $ins->comentario = $ins->oferta->nombre ?? '';
-            $ins->created_at = Puntos::where('id', $ins->oferta->id_puntos)->value('nombre') ?? '';
+            $ins->id = Puntos::where('id', $ins->oferta->id_puntos)->value('nombre') ?? '';
 
             $ins->id_info_user = $ins->info_user->nombres . ' ' . $ins->info_user->apellidos ?? '';
             $ins->updated_at = $ins->info_user->telefono ?? '';
