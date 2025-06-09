@@ -36,6 +36,7 @@ class IndicadoresController extends Controller
         }
 
         if ($genero) {
+            dd($genero);
             $genero = 1 ? 'Masculino' : $genero = 2 ? 'Femenino' : 'Otro';
             if ($genero == 'Otro') {
                 $resultados = $resultados->whereHas('puntos_vive', function ($query) use ($genero) {
