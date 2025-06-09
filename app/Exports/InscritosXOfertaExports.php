@@ -34,7 +34,7 @@ class InscritosXOfertaExports implements FromCollection, WithHeadings, WithStyle
 
         $inscripciones = Inscripciones::query()->when($this->ofertaID, function ($query, $ofertaID) {
             $query->where('id_oferta', $ofertaID); // Filtrar por puntosID
-            })->Where('estadoProceso', '!=', 'En proceso')->Where('estadoProceso', '!=', 'Rechazado')->with('info_user')->with('oferta')->select(
+        })->Where('estadoProceso', '!=', 'En proceso')->Where('estadoProceso', '!=', 'Rechazado')->with('info_user')->with('oferta')->select(
             'comentario',
             'created_at',
             'id_info_user',
@@ -42,7 +42,9 @@ class InscritosXOfertaExports implements FromCollection, WithHeadings, WithStyle
             'identificacion',
             'id_oferta',
             'estadoProceso',
+            'created_at',
         )
+            ->orderBy('created_at', 'asc') // Ordenar del primer registro al último
             ->get();
 
 
@@ -51,7 +53,7 @@ class InscritosXOfertaExports implements FromCollection, WithHeadings, WithStyle
         $inscripciones->transform(function ($ins) {
             $ins->comentario = $ins->oferta->nombre ?? '';
             $ins->created_at = Puntos::where('id', $ins->oferta->id_puntos)->value('nombre') ?? '';
-            $ins->id_info_user = $ins->info_user->nombres. ' '.$ins->info_user->apellidos ?? '';
+            $ins->id_info_user = $ins->info_user->nombres . ' ' . $ins->info_user->apellidos ?? '';
             $ins->updated_at = $ins->info_user->telefono ?? '';
             unset($ins->oferta); // Eliminar la relación ya que no la necesitamos en la exportación
             unset($ins->info_user);
@@ -75,6 +77,7 @@ class InscritosXOfertaExports implements FromCollection, WithHeadings, WithStyle
             'Identificación',
             'id_oferta',
             'Estado',
+            'Fecha de creación'
         ];
         // return array_keys($this->collection()->first()->toArray());
     }
