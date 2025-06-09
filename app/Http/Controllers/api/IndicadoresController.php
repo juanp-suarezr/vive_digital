@@ -15,10 +15,12 @@ class IndicadoresController extends Controller
         try {
             $resultados = Registro::get();
 
+
             return response()->json([
-                'estado' => 'ok',
+                'status' => true,
+                'message' => "success",
                 'data' => $resultados
-            ]);
+            ], 200);
 
         } catch (\Exception $e) {
             return response()->json([
@@ -27,5 +29,4 @@ class IndicadoresController extends Controller
             ], 500);
         }
     }
-
 }
