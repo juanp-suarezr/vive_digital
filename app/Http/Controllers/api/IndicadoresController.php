@@ -40,7 +40,7 @@ class IndicadoresController extends Controller
             if ($genero == 'Otro') {
                 $resultados = $resultados->whereHas('puntos_vive', function ($query) use ($genero) {
                 $query->where('genero', '!=', 'Masculino')
-                ->orWhere('genero', '!=', 'Femenino');
+                ->AndWhere('genero', '!=', 'Femenino');
             });
             } else {
                 $resultados = $resultados->whereHas('puntos_vive', function ($query) use ($genero) {
