@@ -38,7 +38,7 @@ class InscritosExports implements FromCollection, WithHeadings, WithStyles, Shou
             });
         })->with('info_user')->with('oferta')->select(
             'comentario',
-            'id',
+            'oferta.id',
             'id_info_user',
             'updated_at',
             'identificacion',
