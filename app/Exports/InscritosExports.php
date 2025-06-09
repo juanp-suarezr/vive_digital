@@ -38,13 +38,13 @@ class InscritosExports implements FromCollection, WithHeadings, WithStyles, Shou
             });
         })->with('info_user')->with('oferta')->select(
             'comentario',
-            'oferta.id',
+            'created_at',
             'id_info_user',
             'updated_at',
             'identificacion',
             'id_oferta',
             'estadoProceso',
-            'created_at',
+
         )
             ->orderBy('created_at', 'asc') // Ordenar del primer registro al último
             ->get();
@@ -54,7 +54,7 @@ class InscritosExports implements FromCollection, WithHeadings, WithStyles, Shou
         // Reemplazar el ID de puntos con el nombre del punto
         $inscripciones->transform(function ($ins) {
             $ins->comentario = $ins->oferta->nombre ?? '';
-            $ins->id = Puntos::where('id', $ins->oferta->id_puntos)->value('nombre') ?? '';
+            $ins->created_at = Puntos::where('id', $ins->oferta->id_puntos)->value('nombre') ?? '';
 
             $ins->id_info_user = $ins->info_user->nombres . ' ' . $ins->info_user->apellidos ?? '';
             $ins->updated_at = $ins->info_user->telefono ?? '';
