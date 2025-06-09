@@ -30,7 +30,7 @@ class IndicadoresController extends Controller
 
         if ($punto) {
             $resultados = $resultados->whereHas('puntos_vive', function ($query) use ($punto) {
-                $query->where('code', $punto);
+                $query->where('id', $punto);
             });
         }
 
