@@ -18,7 +18,7 @@ class IndicadoresController extends Controller
 
             return response()->json([
                 'status' => true,
-                'message' => "success",
+                'total' => $resultados->count() . ' Registros obtenidos',
                 'data' => $resultados
             ], 200);
 
