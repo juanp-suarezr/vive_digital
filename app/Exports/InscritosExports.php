@@ -44,6 +44,7 @@ class InscritosExports implements FromCollection, WithHeadings, WithStyles, Shou
             'identificacion',
             'id_oferta',
             'estadoProceso',
+            'oferta',
 
         )
             ->orderBy('created_at', 'asc') // Ordenar del primer registro al último
