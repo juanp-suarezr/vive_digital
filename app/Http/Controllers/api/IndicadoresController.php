@@ -17,6 +17,7 @@ class IndicadoresController extends Controller
 
             $mes = RequestFacade::input('mes');
             $punto = RequestFacade::input('punto');
+            $genero = RequestFacade::input('genero');
 
             $resultados = Registro::query();
 
@@ -32,6 +33,21 @@ class IndicadoresController extends Controller
             $resultados = $resultados->whereHas('puntos_vive', function ($query) use ($punto) {
                 $query->where('id', $punto);
             });
+        }
+
+        if ($genero) {
+            $genero = 1 ? 'Masculino' : $genero = 2 ? 'Femenino' : 'Otro';
+            if ($genero == 'Otro') {
+                $resultados = $resultados->whereHas('puntos_vive', function ($query) use ($genero) {
+                $query->where('genero', '!=', 'Masculino')
+                ->orWhere('genero', '!=', 'Femenino');
+            });
+            } else {
+                $resultados = $resultados->whereHas('puntos_vive', function ($query) use ($genero) {
+                $query->where('genero', $genero);
+            });
+            }
+
         }
 
         $resultados = $resultados->latest('created_at')->get();
