@@ -101,6 +101,12 @@
                                     class="text-parrafo cursor hover:underline border-r-2 border-secondary pe-2">Registro</a>
                             </li>
 
+                            <li><a :href="route('formulario-satisfaccion')"
+                                    :class="[{ 'underline': route().current('formulario-satisfaccion') }, { '!text-yellow-200 font-bold': HandleContrast }, { '!text-yellow-200 font-bold': HandleContrast }]"
+                                    v-tooltip.bottom="{ value: 'formulario satisfacción', autoHide: false }"
+                                    class="text-parrafo cursor hover:underline border-r-2 border-secondary pe-2">Satisfacción</a>
+                            </li>
+
                             <li><a :href="route('dashboard')" v-if="$page.props.auth.user"
                                     :class="[{ 'underline': route().current('dashboard') }, { '!text-yellow-200 font-bold': HandleContrast }, { '!text-yellow-200 font-bold': HandleContrast }]"
                                     v-tooltip.bottom="{ value: 'regresar al dashboard', autoHide: false }"
