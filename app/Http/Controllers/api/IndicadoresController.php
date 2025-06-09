@@ -37,7 +37,7 @@ class IndicadoresController extends Controller
 
         if ($genero) {
 
-            $genero = 1 ? 'Masculino' : $genero = 2 ? 'Femenino' : 'Otro';
+            $genero == 1 ? 'Masculino' : $genero == 2 ? 'Femenino' : 'Otro';
             dd($genero);
             if ($genero == 'Otro') {
                 $resultados = $resultados->where(function ($query) use ($genero) {
