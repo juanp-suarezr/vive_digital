@@ -66,11 +66,11 @@ class SatisfaccionController extends Controller
         ]);
 
 
-
         DB::transaction(function () use ($request) {
+            $nombre = strtolower($request->nombre);
             // Crear el registro en la tabla 'registro'
             Satisfaccion::create([
-                'nombre' => $request->nombre,
+                'nombre' => $nombre,
                 'motivo_visita' => $request->motivo_visita,
                 'identificacion' => $request->identificacion,
                 'velocidad_internet' => $request->velocidad_internet,

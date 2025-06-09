@@ -175,10 +175,14 @@ class RegistroController extends Controller
         $puntos = Puntos::where('code', $request->codePunto)->get();
 
         DB::transaction(function () use ($request, $puntos) {
+
+            $nombres = strtolower($request->nombres);
+            $apellidos = strtolower($request->apellidos);
+
             // Crear el registro en la tabla 'registro'
             $user = Registro::create([
-                'nombres' => $request->nombres,
-                'apellidos' => $request->apellidos,
+                'nombres' => $nombres,
+                'apellidos' => $apellidos,
                 'edad' => $request->edad,
                 'tipo_documento' => $request->tipo_documento,
                 'identificacion' => $request->identificacion,
@@ -201,8 +205,8 @@ class RegistroController extends Controller
             if (!$existingUser) {
                 // Crear el registro en la tabla 'info_usuario' solo si no existe
                 Info_usuario::create([
-                    'nombres' => $user->nombres,
-                    'apellidos' => $user->apellidos,
+                    'nombres' => $nombres,
+                    'apellidos' => $apellidos,
                     'edad' => $user->edad,
                     'tipo_documento' => $user->tipo_documento,
                     'identificacion' => $user->identificacion,
@@ -219,8 +223,8 @@ class RegistroController extends Controller
             } else {
                 // Actualizar el registro existente con la nueva información
                 $existingUser->update([
-                    'nombres' => $user->nombres,
-                    'apellidos' => $user->apellidos,
+                    'nombres' => $nombres,
+                    'apellidos' => $apellidos,
                     'edad' => $user->edad,
                     'tipo_documento' => $user->tipo_documento,
                     'direccion' => $user->direccion,
@@ -280,6 +284,9 @@ class RegistroController extends Controller
             'dignatario' => 'required',
         ]);
 
+        // Convertir nombres y apellidos a mayúsculas antes de actualizar
+        $data['nombres'] = mb_strtoupper($data['nombres']);
+        $data['apellidos'] = mb_strtoupper($data['apellidos']);
         // Actualizar el modelo de usuario con los datos validados
 
         // Verificar si ya existe un registro con la misma identificación en la tabla 'info_usuario'

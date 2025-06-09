@@ -94,11 +94,16 @@ class RegistrosGemelosController extends Controller
             'nivel_estudio' => 'required',
         ]);
 
+        // Convertir nombres y apellidos a mayúsculas antes de actualizar
+        $data['nombres'] = mb_strtoupper($data['nombres']);
+        $data['apellidos'] = mb_strtoupper($data['apellidos']);
+
         // Actualizar el modelo de usuario en la tabla info_usuario
         $existingUser = Info_usuario::where('identificacion', $request->identificacion)->first();
         if ($existingUser) {
             $existingUser->fill($data)->save();
         }
+
 
         // Actualizar todos los registros en la tabla registros con la misma identificación
         Registro::where('identificacion', $request->identificacion)->update([

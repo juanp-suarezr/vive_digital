@@ -44,7 +44,9 @@ class InscritosExports implements FromCollection, WithHeadings, WithStyles, Shou
             'identificacion',
             'id_oferta',
             'estadoProceso',
+            'created_at',
         )
+            ->orderBy('created_at', 'asc') // Ordenar del primer registro al último
             ->get();
 
 
@@ -54,7 +56,7 @@ class InscritosExports implements FromCollection, WithHeadings, WithStyles, Shou
             $ins->comentario = $ins->oferta->nombre ?? '';
             $ins->created_at = Puntos::where('id', $ins->oferta->id_puntos)->value('nombre') ?? '';
 
-            $ins->id_info_user = $ins->info_user->nombres. ' '.$ins->info_user->apellidos ?? '';
+            $ins->id_info_user = $ins->info_user->nombres . ' ' . $ins->info_user->apellidos ?? '';
             $ins->updated_at = $ins->info_user->telefono ?? '';
             unset($ins->oferta); // Eliminar la relación ya que no la necesitamos en la exportación
             unset($ins->info_user);
@@ -78,6 +80,7 @@ class InscritosExports implements FromCollection, WithHeadings, WithStyles, Shou
             'Identificación',
             'id_oferta',
             'Estado',
+            'Fecha creación'
         ];
         // return array_keys($this->collection()->first()->toArray());
     }
