@@ -54,11 +54,13 @@ class InscritosExports implements FromCollection, WithHeadings, WithStyles, Shou
         // Reemplazar el ID de puntos con el nombre del punto
         $inscripciones->transform(function ($ins) {
             $ins->comentario = $ins->oferta->nombre ?? '';
-            $ins->created_at = Puntos::where('id', $ins->oferta->id_puntos)->value('nombre') ?? '';
+
 
             $ins->id_info_user = $ins->info_user->nombres . ' ' . $ins->info_user->apellidos ?? '';
             $ins->updated_at = $ins->info_user->telefono ?? '';
-            unset($ins->oferta); // Eliminar la relación ya que no la necesitamos en la exportación
+            $ins->oferta = $ins->created_at;
+            $ins->created_at = Puntos::where('id', $ins->oferta->id_puntos)->value('nombre') ?? '';
+            // unset($ins->oferta); // Eliminar la relación ya que no la necesitamos en la exportación
             unset($ins->info_user);
 
 
