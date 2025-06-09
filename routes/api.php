@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\IndicadoresController;
 use App\Http\Controllers\api\RegistroController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -27,7 +28,7 @@ Route::get('userinfo',function () {
     ], 200);
 });
 
-// Protected routes 
+// Protected routes
 Route::middleware('auth:sanctum')->group( function () {
     Route::post('/logout', [UserAuthController::class, 'logout']);
 
@@ -39,5 +40,7 @@ Route::middleware('auth:sanctum')->group( function () {
 });
 
 Route::get('/registrados', [RegistroController::class, 'index']);
+
+Route::get('/indicadores', [IndicadoresController::class, 'index']);
 
 Route::post('login',[UserAuthController::class,'login']);
