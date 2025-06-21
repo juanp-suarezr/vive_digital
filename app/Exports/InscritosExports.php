@@ -42,7 +42,6 @@ class InscritosExports implements FromCollection, WithHeadings, WithStyles, Shou
             'id_info_user', // nombre inscrito
             'id', // telefono
             'identificacion', // identificacion
-            'info_user', // genero
             'id_oferta', // id oferta
             'estadoProceso', // estado
             'created_at', // fecha creación
@@ -60,6 +59,7 @@ class InscritosExports implements FromCollection, WithHeadings, WithStyles, Shou
 
             $ins->id_info_user = $ins->info_user->nombres . ' ' . $ins->info_user->apellidos ?? '';
             $ins->id = $ins->info_user->telefono ?? '';
+            $ins->genero = $ins->info_user->genero ?? ''; // ✅ aquí se asigna el género
 
             $ins->updated_at = Puntos::where('id', $ins->oferta->id_puntos)->value('nombre') ?? '';
             unset($ins->oferta); // Eliminar la relación ya que no la necesitamos en la exportación
