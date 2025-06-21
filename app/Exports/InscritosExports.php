@@ -42,7 +42,7 @@ class InscritosExports implements FromCollection, WithHeadings, WithStyles, Shou
             'id_info_user',
             'id',
             'identificacion',
-            'info_user.genero',
+            'info_user',
             'id_oferta',
             'estadoProceso',
             'created_at',
