@@ -82,10 +82,10 @@ class InscritosExports implements FromCollection, WithHeadings, WithStyles, Shou
             'Nombre inscrito',
             'Teléfono',
             'Identificación',
-            'Género',
             'id_oferta',
             'Estado',
-            'Fecha creación'
+            'Fecha creación',
+            'Género',
         ];
         // return array_keys($this->collection()->first()->toArray());
     }
