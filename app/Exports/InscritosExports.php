@@ -37,15 +37,15 @@ class InscritosExports implements FromCollection, WithHeadings, WithStyles, Shou
                 $subQuery->where('id_puntos', $puntosID); // Filtrar por puntosID
             });
         })->with('info_user')->with('oferta')->select(
-            'comentario',
-            'updated_at',
-            'id_info_user',
-            'id',
-            'identificacion',
-            'info_user',
-            'id_oferta',
-            'estadoProceso',
-            'created_at',
+            'comentario', //nombre oferta
+            'updated_at', // puntos vive digital
+            'id_info_user', // nombre inscrito
+            'id', // telefono
+            'identificacion', // identificacion
+            'info_user', // genero
+            'id_oferta', // id oferta
+            'estadoProceso', // estado
+            'created_at', // fecha creación
 
         )
             ->orderBy('created_at', 'asc') // Ordenar del primer registro al último
