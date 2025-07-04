@@ -18,6 +18,7 @@ class IndicadoresController extends Controller
         try {
 
             $mes = RequestFacade::input('mes');
+            $anio = RequestFacade::input('anio');
             $punto = RequestFacade::input('punto');
             $genero = RequestFacade::input('genero');
 
@@ -28,6 +29,10 @@ class IndicadoresController extends Controller
                     $query->whereMonth('created_at', $mes);
                 });
             }
+
+            if ($anio && is_numeric($anio)) {
+            $resultados = $resultados->whereYear('created_at', $anio);
+        }
 
             if ($punto) {
                 $resultados = $resultados->whereHas('puntos_vive', function ($query) use ($punto) {
@@ -60,7 +65,7 @@ class IndicadoresController extends Controller
                     'genero' => $registro->genero,
                     'edad' => $registro->edad,
                     'telefono' => $registro->telefono,
-                    'correo' => $registro->correo,
+                    'email' => $registro->email,
                     'condicion' => $registro->condicion,
                     'etnia' => $registro->etnia,
                     'nivel_estudio' => $registro->nivel_estudio,
