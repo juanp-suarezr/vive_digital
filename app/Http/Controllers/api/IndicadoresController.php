@@ -90,7 +90,6 @@ class IndicadoresController extends Controller
     {
         $punto = Puntos::query()
             ->select('nombre', 'id')
-            ->where('estado', 1)
             ->where('id', $id_punto)
             ->value('nombre');
 
