@@ -86,6 +86,7 @@ class RegistrosGemelosController extends Controller
             'identificacion' => 'required|max:20',
             'direccion' => 'required|string|max:100',
             'sector' => 'required',
+            'comuna' => '', // Asegurarse de que 'comuna' sea un string
             'telefono' => 'required|max:15',
             'email' => 'required|string|lowercase|email|max:100',
             'genero' => 'required',
@@ -97,6 +98,7 @@ class RegistrosGemelosController extends Controller
         // Convertir nombres y apellidos a mayúsculas antes de actualizar
         $data['nombres'] = mb_strtoupper($data['nombres']);
         $data['apellidos'] = mb_strtoupper($data['apellidos']);
+        $data['comuna'] = $request->input('comuna.label'); // Asegurarse de que 'comuna' sea un string
 
         // Actualizar el modelo de usuario en la tabla info_usuario
         $existingUser = Info_usuario::where('identificacion', $request->identificacion)->first();

@@ -1,10 +1,8 @@
 <template>
+  <Head title="Registro" />
 
-    <Head title="Registro" />
-
-    <GuestLayout :isRegister=true>
-
-        <!-- <div class="absolute sm:top-0 top-6 sm:right-[-18%] xl:right-12 xs:left-6">
+  <GuestLayout :isRegister="true">
+    <!-- <div class="absolute sm:top-0 top-6 sm:right-[-18%] xl:right-12 xs:left-6">
             <button v-if="isFirstTime" class="w-[15%]" @click="playInfo">
                 <PlayCircleIcon class="w-full text-gray-600" />
             </button>
@@ -12,585 +10,1084 @@
                 <SpeakerWaveIcon class="w-full text-blue-800" />
             </button>
         </div> -->
-        <div class="flex grid grid-cols-2 gap-4 w-full"
-            :class="[isContrast ? '!text-yellow-200 font-bold bg-white' : '']">
-            <Link href="/" class="flex items-center justify-center">
-            <ApplicationLogo class="w-full sm:w-2/6 fill-current text-gray-500" />
-            </Link>
+    <div
+      class="flex grid grid-cols-2 gap-4 w-full"
+      :class="[isContrast ? '!text-yellow-200 font-bold bg-white' : '']"
+    >
+      <Link href="/" class="flex items-center justify-center">
+        <ApplicationLogo class="w-full sm:w-2/6 fill-current text-gray-500" />
+      </Link>
 
-            <div class="flex items-center justify-center">
-                <img :src="logoViveD">
+      <div class="flex items-center justify-center">
+        <img :src="logoViveD" />
+      </div>
+    </div>
+
+    <form @submit.prevent="submit">
+      <div class="mt-6 justify-center" :class="[isContrast ? 'bg-white' : '']">
+        <Steps :model="items" v-model:activeStep="active" />
+      </div>
+
+      <div class="rounded-xl shadow-xl p-4">
+        <!-- Formulario de registro 1 -->
+        <div class="justify-center font-medium" v-if="active == 0">
+          <div class="w-full mt-6 sm:grid grid-cols-2 gap-4">
+            <!-- nombres -->
+            <div class="mb-4">
+              <InputLabel
+                :class="[
+                  isContrast ? '!text-yellow-200 font-bold' : '',
+                  letraSize == -2
+                    ? '!sm:text-[0.65rem] !text-[0.55rem]'
+                    : letraSize == -1
+                    ? '!sm:text-xs !text-[0.65rem]'
+                    : letraSize == 1
+                    ? '!sm:text-lg !text-sm'
+                    : letraSize == 2
+                    ? '!sm:text-xl !text-base'
+                    : '',
+                ]"
+                class="sm:text-sm text-xs"
+                for="nombres"
+                value="Nombres"
+              />
+              <TextInput
+                id="nombres"
+                type="text"
+                class="mt-1 block w-full p-0 sm:p-2"
+                :class="[
+                  isContrast ? '!text-yellow-200 font-bold bg-black' : '',
+                ]"
+                v-model="form.nombres"
+                required
+                autofocus
+                autocomplete="nombre"
+              />
+              <InputError class="mt-1" :message="form.errors.nombres" />
+            </div>
+            <!-- apellidos -->
+            <div class="mb-4">
+              <InputLabel
+                :class="[
+                  isContrast ? '!text-yellow-200 font-bold' : '',
+                  letraSize == -2
+                    ? '!sm:text-[0.65rem] !text-[0.55rem]'
+                    : letraSize == -1
+                    ? '!sm:text-xs !text-[0.65rem]'
+                    : letraSize == 1
+                    ? '!sm:text-lg !text-sm'
+                    : letraSize == 2
+                    ? '!sm:text-xl !text-base'
+                    : '',
+                ]"
+                class="sm:text-sm text-xs"
+                for="apellidos"
+                value="Apellidos"
+              />
+              <TextInput
+                id="apellidos"
+                type="text"
+                class="mt-1 block w-full p-0 sm:p-2"
+                :class="[
+                  isContrast ? '!text-yellow-200 font-bold bg-black' : '',
+                ]"
+                v-model="form.apellidos"
+                required
+                autocomplete="apellidos"
+              />
+              <InputError class="mt-1" :message="form.errors.apellidos" />
             </div>
 
+            <!-- edad e identificacion -->
+            <div class="col-span-2 mb-4 sm:flex">
+              <!-- edad -->
+              <div class="w-3/12 sm:pe-6">
+                <InputLabel
+                  :class="[
+                    isContrast ? '!text-yellow-200 font-bold' : '',
+                    letraSize == -2
+                      ? '!sm:text-[0.65rem] !text-[0.55rem]'
+                      : letraSize == -1
+                      ? '!sm:text-xs !text-[0.65rem]'
+                      : letraSize == 1
+                      ? '!sm:text-lg !text-sm'
+                      : letraSize == 2
+                      ? '!sm:text-xl !text-base'
+                      : '',
+                  ]"
+                  class="sm:text-sm text-xs"
+                  for="edad"
+                  value="Edad"
+                />
+                <TextInput
+                  id="edad"
+                  type="number"
+                  class="mt-1 p-0 sm:p-2 block w-full"
+                  :class="[
+                    isContrast ? '!text-yellow-200 font-bold bg-black' : '',
+                  ]"
+                  v-model="form.edad"
+                  required
+                  autocomplete="edad"
+                />
+                <InputError class="mt-1" :message="form.errors.edad" />
+              </div>
+
+              <!-- identificacion -->
+              <div class="w-full sm:w-9/12 grid grid-cols-4 gap-4 mt-4 sm:mt-0">
+                <!-- tipo de identificacion -->
+                <div class="col-span-1">
+                  <InputLabel
+                    :class="[
+                      isContrast ? '!text-yellow-200 font-bold' : '',
+                      letraSize == -2
+                        ? '!sm:text-[0.65rem] !text-[0.55rem]'
+                        : letraSize == -1
+                        ? '!sm:text-xs !text-[0.65rem]'
+                        : letraSize == 1
+                        ? '!sm:text-lg !text-sm'
+                        : letraSize == 2
+                        ? '!sm:text-xl !text-base'
+                        : '',
+                    ]"
+                    for="tipo"
+                    value="Tipo"
+                    class="text-neutral-500 sm:text-sm text-xs"
+                  />
+                  <select
+                    id="tipo"
+                    name="tipo"
+                    v-model="form.tipo_documento"
+                    class="block w-full sm:px-4 sm:py-2 p-0 mt-1 text-base text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                    :class="[
+                      isContrast ? '!text-yellow-200 font-bold bg-black' : '',
+                    ]"
+                  >
+                    <option
+                      class="text-black text-[9px] sm:text-xs"
+                      v-for="tipo in tipoIden"
+                      :key="tipo.id"
+                      :value="tipo.nombre"
+                    >
+                      {{
+                        tipo.code == "CC" ||
+                        tipo.code == "TI" ||
+                        tipo.code == "PPT"
+                          ? tipo.code
+                          : tipo.nombre
+                      }}
+                    </option>
+                  </select>
+                  <InputError
+                    class="mt-1"
+                    :message="form.errors.tipo_documento"
+                  />
+                </div>
+                <!-- Identificacion -->
+                <div class="col-span-3">
+                  <InputLabel
+                    :class="[
+                      isContrast ? '!text-yellow-200 font-bold' : '',
+                      letraSize == -2
+                        ? '!sm:text-[0.65rem] !text-[0.55rem]'
+                        : letraSize == -1
+                        ? '!sm:text-xs !text-[0.65rem]'
+                        : letraSize == 1
+                        ? '!sm:text-lg !text-sm'
+                        : letraSize == 2
+                        ? '!sm:text-xl !text-base'
+                        : 'sm:text-sm text-xs',
+                    ]"
+                    for="identificacion"
+                    value="identificacion"
+                  />
+                  <TextInput
+                    id="identificacion"
+                    type="number"
+                    class="mt-1 block w-full p-0 sm:p-2"
+                    :class="[
+                      isContrast ? '!text-yellow-200 font-bold bg-black' : '',
+                    ]"
+                    v-model="form.identificacion"
+                    required
+                    autocomplete="identificacion"
+                  />
+                  <InputError
+                    class="mt-1"
+                    :message="form.errors.identificacion"
+                  />
+                </div>
+              </div>
+            </div>
+
+            <!-- direccion -->
+            <div class="mb-4">
+              <InputLabel
+                :class="[
+                  isContrast ? '!text-yellow-200 font-bold' : '',
+                  letraSize == -2
+                    ? '!sm:text-[0.65rem] !text-[0.55rem]'
+                    : letraSize == -1
+                    ? '!sm:text-xs !text-[0.65rem]'
+                    : letraSize == 1
+                    ? '!sm:text-lg !text-sm'
+                    : letraSize == 2
+                    ? '!sm:text-xl !text-base'
+                    : '',
+                ]"
+                class="sm:text-sm text-xs"
+                for="direccion"
+                value="Dirección de residencia"
+              />
+              <TextInput
+                id="direccion"
+                type="text"
+                class="mt-1 block w-full p-0 sm:p-2"
+                :class="[
+                  isContrast ? '!text-yellow-200 font-bold bg-black' : '',
+                ]"
+                v-model="form.direccion"
+                required
+                autofocus
+                autocomplete="direccion"
+              />
+              <InputError class="mt-1" :message="form.errors.direccion" />
+            </div>
+            <!-- sector y comuna -->
+            <div class="mb-4">
+              <!-- Comuna -->
+              <div class="mb-4">
+                <InputLabel
+                  :class="[
+                    isContrast ? '!text-yellow-200 font-bold' : '',
+                    letraSize == -2
+                      ? '!sm:text-[0.65rem] !text-[0.55rem]'
+                      : letraSize == -1
+                      ? '!sm:text-xs !text-[0.65rem]'
+                      : letraSize == 1
+                      ? '!sm:text-lg !text-sm'
+                      : letraSize == 2
+                      ? '!sm:text-xl !text-base'
+                      : '',
+                  ]"
+                  class="sm:text-sm text-xs"
+                  for="comuna"
+                  value="Comuna/Corregimiento"
+                />
+                <Select
+                  id="comuna"
+                  v-model="form.comuna"
+                  :options="comunas"
+                  filter
+                  optionLabel="label"
+                  placeholder="Seleccione una comuna o corregimiento"
+                  checkmark
+                  :highlightOnSelect="false"
+                  class="block w-full sm:px-4 p-0 mt-1 text-base text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+                  :class="[
+                    isContrast ? '!text-yellow-200 font-bold !bg-black' : '',
+                  ]"
+                />
+                <InputError class="mt-1" :message="form.errors.comuna" />
+              </div>
+
+              <!-- sector -->
+              <div class="mb-4">
+                <InputLabel
+                  :class="[
+                    isContrast ? '!text-yellow-200 font-bold' : '',
+                    letraSize == -2
+                      ? '!sm:text-[0.65rem] !text-[0.55rem]'
+                      : letraSize == -1
+                      ? '!sm:text-xs !text-[0.65rem]'
+                      : letraSize == 1
+                      ? '!sm:text-lg !text-sm'
+                      : letraSize == 2
+                      ? '!sm:text-xl !text-base'
+                      : '',
+                  ]"
+                  class="sm:text-sm text-xs"
+                  for="sector"
+                  value="Barrio o vereda"
+                />
+                <TextInput
+                  id="sector"
+                  type="text"
+                  class="mt-1 block w-full p-0 sm:p-2"
+                  :class="[
+                    isContrast ? '!text-yellow-200 font-bold bg-black' : '',
+                  ]"
+                  v-model="form.sector"
+                  required
+                  autofocus
+                  autocomplete="sector"
+                />
+                <InputError class="mt-1" :message="form.errors.sector" />
+              </div>
+            </div>
+            <!-- telefono -->
+            <div class="mb-4">
+              <InputLabel
+                :class="[
+                  isContrast ? '!text-yellow-200 font-bold' : '',
+                  letraSize == -2
+                    ? '!sm:text-[0.65rem] !text-[0.55rem]'
+                    : letraSize == -1
+                    ? '!sm:text-xs !text-[0.65rem]'
+                    : letraSize == 1
+                    ? '!sm:text-lg !text-sm'
+                    : letraSize == 2
+                    ? '!sm:text-xl !text-base'
+                    : '',
+                ]"
+                class="sm:text-sm text-xs"
+                for="telefono"
+                value="Telefono"
+              />
+              <TextInput
+                id="telefono"
+                type="number"
+                class="mt-1 block w-full p-0 sm:p-2"
+                :class="[
+                  isContrast ? '!text-yellow-200 font-bold bg-black' : '',
+                ]"
+                v-model="form.telefono"
+                required
+                autofocus
+                autocomplete="telefono"
+              />
+              <InputError class="mt-1" :message="form.errors.telefono" />
+            </div>
+            <!-- email -->
+            <div class="mb-4">
+              <InputLabel
+                :class="[
+                  isContrast ? '!text-yellow-200 font-bold' : '',
+                  letraSize == -2
+                    ? '!sm:text-[0.65rem] !text-[0.55rem]'
+                    : letraSize == -1
+                    ? '!sm:text-xs !text-[0.65rem]'
+                    : letraSize == 1
+                    ? '!sm:text-lg !text-sm'
+                    : letraSize == 2
+                    ? '!sm:text-xl !text-base'
+                    : '',
+                ]"
+                class="sm:text-sm text-xs"
+                for="email"
+                value="Correo electronico"
+              />
+              <TextInput
+                id="email"
+                type="email"
+                class="mt-1 block w-full p-0 sm:p-2"
+                :class="[
+                  isContrast ? '!text-yellow-200 font-bold bg-black' : '',
+                ]"
+                v-model="form.email"
+                autofocus
+                autocomplete="username"
+              />
+              <InputError class="mt-1" :message="form.errors.email" />
+            </div>
+          </div>
+
+          <!-- botones -->
+          <div class="flex pt-4 justify-end">
+            <button
+              type="button"
+              @click="nextStep(1)"
+              class="bg-secondary hover:bg-primary text-xs sm:text-sm text-white p-2 rounded-md shadow-xl"
+              :class="[
+                letraSize == -2
+                  ? '!sm:text-[0.65rem] !text-[0.55rem]'
+                  : letraSize == -1
+                  ? '!sm:text-xs !text-[0.65rem]'
+                  : letraSize == 1
+                  ? '!sm:text-lg !text-sm'
+                  : letraSize == 2
+                  ? '!sm:text-xl !text-base'
+                  : '',
+              ]"
+            >
+              Siguiente
+            </button>
+          </div>
         </div>
 
-        <form @submit.prevent="submit">
-
-            <div class="mt-6 justify-center" :class="[isContrast ? 'bg-white' : '']">
-                <Steps :model="items" v-model:activeStep="active" />
+        <!-- Formulario de registro 2 -->
+        <div class="justify-center font-medium" v-if="active == 1">
+          <div class="w-full mt-6 sm:grid grid-cols-2 gap-4">
+            <!-- genero -->
+            <div class="mb-4">
+              <InputLabel
+                :class="[
+                  isContrast ? '!text-yellow-200 font-bold' : '',
+                  letraSize == -2
+                    ? '!sm:text-[0.65rem] !text-[0.55rem]'
+                    : letraSize == -1
+                    ? '!sm:text-xs !text-[0.65rem]'
+                    : letraSize == 1
+                    ? '!sm:text-lg !text-sm'
+                    : letraSize == 2
+                    ? '!sm:text-xl !text-base'
+                    : '',
+                ]"
+                class="sm:text-sm text-xs"
+                for="genero"
+                value="Genero"
+              />
+              <div class="mt-2 block sm:flex">
+                <div class="">
+                  <input
+                    type="radio"
+                    id="masculino"
+                    value="Masculino"
+                    v-model="form.genero"
+                  />
+                  <label
+                    class="ps-2 text-sm sm:text-base"
+                    :class="[
+                      isContrast ? '!text-yellow-200 font-bold' : '',
+                      letraSize == -2
+                        ? '!sm:text-xs !text-[0.65rem]'
+                        : letraSize == -1
+                        ? '!sm:text-sm !text-xs'
+                        : letraSize == 1
+                        ? '!sm:text-lg !text-base'
+                        : letraSize == 2
+                        ? '!sm:text-xl !text-lg'
+                        : '',
+                    ]"
+                    for="masculino"
+                    >Masculino</label
+                  >
+                </div>
+                <div class="sm:ms-6">
+                  <input
+                    type="radio"
+                    id="two"
+                    value="Femenino"
+                    v-model="form.genero"
+                  />
+                  <label
+                    class="ps-2 text-sm sm:text-base"
+                    :class="[
+                      isContrast ? '!text-yellow-200 font-bold' : '',
+                      letraSize == -2
+                        ? '!sm:text-xs !text-[0.65rem]'
+                        : letraSize == -1
+                        ? '!sm:text-sm !text-xs'
+                        : letraSize == 1
+                        ? '!sm:text-lg !text-base'
+                        : letraSize == 2
+                        ? '!sm:text-xl !text-lg'
+                        : '',
+                    ]"
+                    for="two"
+                    >Femenino</label
+                  >
+                </div>
+                <!-- otros generos -->
+                <div v-if="IsNewGenero" class="sm:ms-6">
+                  <InputLabel
+                    :class="[
+                      isContrast ? '!text-yellow-200 font-bold' : '',
+                      letraSize == -2
+                        ? '!sm:text-[0.65rem] !text-[0.55rem]'
+                        : letraSize == -1
+                        ? '!sm:text-xs !text-[0.65rem]'
+                        : letraSize == 1
+                        ? '!sm:text-lg !text-sm'
+                        : letraSize == 2
+                        ? '!sm:text-xl !text-base'
+                        : '',
+                    ]"
+                    class="sm:text-sm text-xs"
+                    for="genero"
+                    value="¿Cual?"
+                  />
+                  <TextInput
+                    id="genero"
+                    type="text"
+                    class="mt-1 block w-full p-0 sm:p-1"
+                    :class="[
+                      isContrast ? '!text-yellow-200 font-bold bg-black' : '',
+                    ]"
+                    v-model="form.genero"
+                    autocomplete="genero"
+                  />
+                  <InputError class="mt-1" :message="form.errors.genero" />
+                </div>
+                <div v-else class="sm:ms-6">
+                  <input
+                    type="radio"
+                    id="two"
+                    value="true"
+                    v-model="IsNewGenero"
+                  />
+                  <label
+                    class="ps-2 text-sm sm:text-base"
+                    :class="[
+                      isContrast ? '!text-yellow-200 font-bold' : '',
+                      letraSize == -2
+                        ? '!sm:text-xs !text-[0.65rem]'
+                        : letraSize == -1
+                        ? '!sm:text-sm !text-xs'
+                        : letraSize == 1
+                        ? '!sm:text-lg !text-base'
+                        : letraSize == 2
+                        ? '!sm:text-xl !text-lg'
+                        : '',
+                    ]"
+                    for="two"
+                    >Otro</label
+                  >
+                </div>
+              </div>
+            </div>
+            <!-- condicion -->
+            <div class="mb-4">
+              <InputLabel
+                :class="[
+                  isContrast ? '!text-yellow-200 font-bold' : '',
+                  letraSize == -2
+                    ? '!sm:text-[0.65rem] !text-[0.55rem]'
+                    : letraSize == -1
+                    ? '!sm:text-xs !text-[0.65rem]'
+                    : letraSize == 1
+                    ? '!sm:text-lg !text-sm'
+                    : letraSize == 2
+                    ? '!sm:text-xl !text-base'
+                    : '',
+                ]"
+                for="condicion"
+                value="Condición"
+                class="text-neutral-500 sm:text-sm text-xs"
+              />
+              <select
+                id="condicion"
+                name="condicion"
+                v-model="form.condicion"
+                :class="[
+                  isContrast ? '!text-yellow-200 font-bold bg-black' : '',
+                  letraSize == -2
+                    ? '!text-[0.65rem]'
+                    : letraSize == -1
+                    ? '!text-sm'
+                    : letraSize == 1
+                    ? '!text-lg'
+                    : letraSize == 2
+                    ? '!text-xl'
+                    : '',
+                ]"
+                class="block w-full sm:px-4 sm:py-2 p-0 mt-1 text-base text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option
+                  class="text-black"
+                  :class="[isContrast ? '!text-yellow-200 font-bold' : '']"
+                  v-for="con in condiciones"
+                  :key="con.id"
+                  :value="con.code"
+                >
+                  {{ con.nombre }}
+                </option>
+              </select>
+              <InputError class="mt-1" :message="form.errors.condicion" />
+            </div>
+            <!-- etnia -->
+            <div class="mb-4">
+              <InputLabel
+                :class="[
+                  isContrast ? '!text-yellow-200 font-bold' : '',
+                  letraSize == -2
+                    ? '!sm:text-[0.65rem] !text-[0.55rem]'
+                    : letraSize == -1
+                    ? '!sm:text-xs !text-[0.65rem]'
+                    : letraSize == 1
+                    ? '!sm:text-lg !text-sm'
+                    : letraSize == 2
+                    ? '!sm:text-xl !text-base'
+                    : '',
+                ]"
+                for="etnia"
+                value="Etnia"
+                class="text-neutral-500 sm:text-sm text-xs"
+              />
+              <select
+                id="etnia"
+                name="etnia"
+                v-model="form.etnia"
+                :class="[
+                  isContrast ? '!text-yellow-200 font-bold bg-black' : '',
+                  letraSize == -2
+                    ? '!text-[0.65rem]'
+                    : letraSize == -1
+                    ? '!text-sm'
+                    : letraSize == 1
+                    ? '!text-lg'
+                    : letraSize == 2
+                    ? '!text-xl'
+                    : '',
+                ]"
+                class="block w-full sm:px-4 sm:py-2 p-0 mt-1 text-base text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option
+                  class="text-black"
+                  :class="[isContrast ? '!text-yellow-200 font-bold' : '']"
+                  v-for="et in etnias"
+                  :key="et.id"
+                  :value="et.code"
+                >
+                  {{ et.nombre }}
+                </option>
+              </select>
+              <InputError class="mt-1" :message="form.errors.etnia" />
+            </div>
+            <!-- hace parta junta accion comunal -- dignatario -->
+            <div class="mb-4 col-span-2">
+              <input
+                type="checkbox"
+                id="juntaAccion"
+                name="juntaAccion"
+                v-model="form.dignatario"
+                :class="[
+                  isContrast
+                    ? '!text-yellow-200 font-bold bg-black border-yellow-200'
+                    : '',
+                ]"
+              />
+              <label
+                for="juntaAccion"
+                class="ps-4 pe-12 sm:text-base text-sm text-gray-500"
+                :class="[
+                  isContrast ? '!text-yellow-200 font-bold' : '',
+                  letraSize == -2
+                    ? '!sm:text-xs !text-[0.65rem]'
+                    : letraSize == -1
+                    ? '!sm:text-sm !text-xs'
+                    : letraSize == 1
+                    ? '!sm:text-lg !text-base'
+                    : letraSize == 2
+                    ? '!sm:text-xl !text-lg'
+                    : '',
+                ]"
+                >¿Hace parte de la junta de acción Comunal(JAC) o Junta de
+                acción local(JAL)?</label
+              >
+              <InputError class="mt-1" :message="form.errors.dignatario" />
+            </div>
+            <!-- nivel estudio -->
+            <div class="mb-4">
+              <InputLabel
+                :class="[
+                  isContrast ? '!text-yellow-200 font-bold' : '',
+                  letraSize == -2
+                    ? '!sm:text-[0.65rem] !text-[0.55rem]'
+                    : letraSize == -1
+                    ? '!sm:text-xs !text-[0.65rem]'
+                    : letraSize == 1
+                    ? '!sm:text-lg !text-sm'
+                    : letraSize == 2
+                    ? '!sm:text-xl !text-base'
+                    : '',
+                ]"
+                for="nivel_estudio"
+                value="Nivel de estudio"
+                class="text-neutral-500 sm:text-sm text-xs"
+              />
+              <select
+                id="nivel_estudio"
+                name="nivel_estudio"
+                v-model="form.nivel_estudio"
+                :class="[
+                  isContrast ? '!text-yellow-200 font-bold bg-black' : '',
+                  letraSize == -2
+                    ? '!text-[0.65rem]'
+                    : letraSize == -1
+                    ? '!text-sm'
+                    : letraSize == 1
+                    ? '!text-lg'
+                    : letraSize == 2
+                    ? '!text-xl'
+                    : '',
+                ]"
+                class="block w-full sm:px-4 sm:py-2 p-0 mt-1 text-base text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option
+                  class="text-black"
+                  :class="[isContrast ? '!text-yellow-200 font-bold' : '']"
+                  v-for="niv in nivel_estudios"
+                  :key="niv.id"
+                  :value="niv.code"
+                >
+                  {{ niv.nombre }}
+                </option>
+              </select>
+              <InputError class="mt-1" :message="form.errors.nivel_estudio" />
+            </div>
+            <!-- Puntos vive digital -->
+            <div class="mb-4">
+              <InputLabel
+                for="codePunto"
+                value="Punto Vive Digital"
+                :class="[
+                  isContrast ? '!text-yellow-200 font-bold' : '',
+                  letraSize == -2
+                    ? '!sm:text-[0.65rem] !text-[0.55rem]'
+                    : letraSize == -1
+                    ? '!sm:text-xs !text-[0.65rem]'
+                    : letraSize == 1
+                    ? '!sm:text-lg !text-sm'
+                    : letraSize == 2
+                    ? '!sm:text-xl !text-base'
+                    : '',
+                ]"
+                class="text-neutral-500 sm:text-sm text-xs"
+              />
+              <select
+                id="codePunto"
+                name="codePunto"
+                v-model="form.codePunto"
+                :class="[
+                  isContrast ? '!text-yellow-200 font-bold bg-black' : '',
+                  letraSize == -2
+                    ? '!text-[0.65rem]'
+                    : letraSize == -1
+                    ? '!text-sm'
+                    : letraSize == 1
+                    ? '!text-lg'
+                    : letraSize == 2
+                    ? '!text-xl'
+                    : '',
+                ]"
+                class="block w-full sm:px-4 sm:py-2 p-0 mt-1 text-base text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option
+                  class="text-black"
+                  :class="[isContrast ? '!text-yellow-200 font-bold' : '']"
+                  v-for="pun in puntos"
+                  :key="pun.id"
+                  :value="pun.code"
+                >
+                  {{ pun.nombre }}
+                </option>
+              </select>
+              <InputError class="mt-1" :message="form.errors.codePunto" />
+            </div>
+            <!-- Tipo servicios -->
+            <div class="mb-4">
+              <InputLabel
+                :class="[
+                  isContrast ? '!text-yellow-200 font-bold' : '',
+                  letraSize == -2
+                    ? '!sm:text-[0.65rem] !text-[0.55rem]'
+                    : letraSize == -1
+                    ? '!sm:text-xs !text-[0.65rem]'
+                    : letraSize == 1
+                    ? '!sm:text-lg !text-sm'
+                    : letraSize == 2
+                    ? '!sm:text-xl !text-base'
+                    : '',
+                ]"
+                for="tipo_servicios"
+                value="Tipo de servicio a usar"
+                class="text-neutral-500 sm:text-sm text-xs"
+              />
+              <select
+                id="tipo_servicios"
+                name="tipo_servicios"
+                v-model="form.tipo_servicio"
+                :class="[
+                  isContrast ? '!text-yellow-200 font-bold bg-black' : '',
+                  letraSize == -2
+                    ? '!text-[0.65rem]'
+                    : letraSize == -1
+                    ? '!text-sm'
+                    : letraSize == 1
+                    ? '!text-lg'
+                    : letraSize == 2
+                    ? '!text-xl'
+                    : '',
+                ]"
+                class="block w-full sm:px-4 sm:py-2 p-0 mt-1 text-base text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option
+                  class="text-black"
+                  :class="[isContrast ? '!text-yellow-200 font-bold' : '']"
+                  v-for="niv in tipoServ"
+                  :key="niv.id"
+                  :value="niv.code"
+                >
+                  {{ niv.nombre }}
+                </option>
+              </select>
+              <InputError class="mt-1" :message="form.errors.tipo_servicio" />
             </div>
 
-
-            <div class="rounded-xl shadow-xl p-4">
-
-
-                <!-- Formulario de registro 1 -->
-                <div class="justify-center font-medium" v-if="active == 0">
-
-                    <div class="w-full mt-6 sm:grid grid-cols-2 gap-4">
-
-                        <!-- nombres -->
-                        <div class="mb-4">
-                            <InputLabel :class="[
-                                isContrast ? '!text-yellow-200 font-bold' : '',
-                                letraSize == -2 ? '!sm:text-[0.65rem] !text-[0.55rem]'
-                                    : letraSize == -1 ? '!sm:text-xs !text-[0.65rem]'
-                                        : letraSize == 1 ? '!sm:text-lg !text-sm'
-                                            : letraSize == 2 ? '!sm:text-xl !text-base' : ''
-                            ]" class="sm:text-sm text-xs" for="nombres" value="Nombres" />
-                            <TextInput id="nombres" type="text" class="mt-1 block w-full p-0 sm:p-2"
-                                :class="[isContrast ? '!text-yellow-200 font-bold bg-black' : '']"
-                                v-model="form.nombres" required autofocus autocomplete="nombre" />
-                            <InputError class="mt-1" :message="form.errors.nombres" />
-                        </div>
-                        <!-- apellidos -->
-                        <div class="mb-4">
-                            <InputLabel :class="[isContrast ? '!text-yellow-200 font-bold' : '',
-                            letraSize == -2 ? '!sm:text-[0.65rem] !text-[0.55rem]'
-                                : letraSize == -1 ? '!sm:text-xs !text-[0.65rem]'
-                                    : letraSize == 1 ? '!sm:text-lg !text-sm'
-                                        : letraSize == 2 ? '!sm:text-xl !text-base' : ''
-                            ]" class="sm:text-sm text-xs" for="apellidos" value="Apellidos" />
-                            <TextInput id="apellidos" type="text" class="mt-1 block w-full p-0 sm:p-2"
-                                :class="[isContrast ? '!text-yellow-200 font-bold bg-black' : '']"
-                                v-model="form.apellidos" required autocomplete="apellidos" />
-                            <InputError class="mt-1" :message="form.errors.apellidos" />
-                        </div>
-
-                        <!-- edad e identificacion -->
-                        <div class="col-span-2 mb-4 sm:flex">
-
-                            <!-- edad -->
-                            <div class="w-3/12 sm:pe-6">
-                                <InputLabel :class="[isContrast ? '!text-yellow-200 font-bold' : '',
-                                letraSize == -2 ? '!sm:text-[0.65rem] !text-[0.55rem]'
-                                    : letraSize == -1 ? '!sm:text-xs !text-[0.65rem]'
-                                        : letraSize == 1 ? '!sm:text-lg !text-sm'
-                                            : letraSize == 2 ? '!sm:text-xl !text-base' : ''
-                                ]" class="sm:text-sm text-xs" for="edad" value="Edad" />
-                                <TextInput id="edad" type="number" class="mt-1 p-0 sm:p-2 block w-full"
-                                    :class="[isContrast ? '!text-yellow-200 font-bold bg-black' : '']"
-                                    v-model="form.edad" required autocomplete="edad" />
-                                <InputError class="mt-1" :message="form.errors.edad" />
-                            </div>
-
-                            <!-- identificacion -->
-                            <div class="w-full sm:w-9/12 grid grid-cols-4 gap-4 mt-4 sm:mt-0">
-                                <!-- tipo de identificacion -->
-                                <div class="col-span-1">
-                                    <InputLabel :class="[isContrast ? '!text-yellow-200 font-bold' : '',
-                                    letraSize == -2 ? '!sm:text-[0.65rem] !text-[0.55rem]'
-                                        : letraSize == -1 ? '!sm:text-xs !text-[0.65rem]'
-                                            : letraSize == 1 ? '!sm:text-lg !text-sm'
-                                                : letraSize == 2 ? '!sm:text-xl !text-base' : ''
-                                    ]" for="tipo" value="Tipo" class="text-neutral-500 sm:text-sm text-xs" />
-                                    <select id="tipo" name="tipo" v-model="form.tipo_documento"
-                                        class="block w-full sm:px-4 sm:py-2 p-0 mt-1 text-base text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
-                                        :class="[isContrast ? '!text-yellow-200 font-bold bg-black' : '']">
-
-                                        <option class="text-black text-[9px] sm:text-xs" v-for="tipo in tipoIden"
-                                            :key="tipo.id" :value="tipo.nombre">
-                                            {{ tipo.code == 'CC' || tipo.code == 'TI' || tipo.code == 'PPT' ? tipo.code : tipo.nombre }}
-                                        </option>
-                                    </select>
-                                    <InputError class="mt-1" :message="form.errors.tipo_documento" />
-                                </div>
-                                <!-- Identificacion -->
-                                <div class="col-span-3">
-                                    <InputLabel :class="[isContrast ? '!text-yellow-200 font-bold' : '',
-                                    letraSize == -2 ? '!sm:text-[0.65rem] !text-[0.55rem]'
-                                        : letraSize == -1 ? '!sm:text-xs !text-[0.65rem]'
-                                            : letraSize == 1 ? '!sm:text-lg !text-sm'
-                                                : letraSize == 2 ? '!sm:text-xl !text-base' : 'sm:text-sm text-xs'
-                                    ]" for="identificacion" value="identificacion" />
-                                    <TextInput id="identificacion" type="number" class="mt-1 block w-full p-0 sm:p-2"
-                                        :class="[isContrast ? '!text-yellow-200 font-bold bg-black' : '']"
-                                        v-model="form.identificacion" required autocomplete="identificacion" />
-                                    <InputError class="mt-1" :message="form.errors.identificacion" />
-                                </div>
-
-                            </div>
-
-
-
-                        </div>
-
-                        <!-- direccion -->
-                        <div class="mb-4">
-                            <InputLabel :class="[isContrast ? '!text-yellow-200 font-bold' : '',
-                            letraSize == -2 ? '!sm:text-[0.65rem] !text-[0.55rem]'
-                                : letraSize == -1 ? '!sm:text-xs !text-[0.65rem]'
-                                    : letraSize == 1 ? '!sm:text-lg !text-sm'
-                                        : letraSize == 2 ? '!sm:text-xl !text-base' : ''
-                            ]" class="sm:text-sm text-xs" for="direccion" value="Dirección de residencia" />
-                            <TextInput id="direccion" type="text" class="mt-1 block w-full p-0 sm:p-2"
-                                :class="[isContrast ? '!text-yellow-200 font-bold bg-black' : '']"
-                                v-model="form.direccion" required autofocus autocomplete="direccion" />
-                            <InputError class="mt-1" :message="form.errors.direccion" />
-                        </div>
-                        <!-- sector -->
-                        <div class="mb-4">
-                            <InputLabel :class="[isContrast ? '!text-yellow-200 font-bold' : '',
-                            letraSize == -2 ? '!sm:text-[0.65rem] !text-[0.55rem]'
-                                : letraSize == -1 ? '!sm:text-xs !text-[0.65rem]'
-                                    : letraSize == 1 ? '!sm:text-lg !text-sm'
-                                        : letraSize == 2 ? '!sm:text-xl !text-base' : ''
-                            ]" class="sm:text-sm text-xs" for="sector" value="Barrio o vereda" />
-                            <TextInput id="sector" type="text" class="mt-1 block w-full p-0 sm:p-2"
-                                :class="[isContrast ? '!text-yellow-200 font-bold bg-black' : '']" v-model="form.sector"
-                                required autofocus autocomplete="sector" />
-                            <InputError class="mt-1" :message="form.errors.sector" />
-                        </div>
-                        <!-- telefono -->
-                        <div class="mb-4">
-                            <InputLabel :class="[isContrast ? '!text-yellow-200 font-bold' : '',
-                            letraSize == -2 ? '!sm:text-[0.65rem] !text-[0.55rem]'
-                                : letraSize == -1 ? '!sm:text-xs !text-[0.65rem]'
-                                    : letraSize == 1 ? '!sm:text-lg !text-sm'
-                                        : letraSize == 2 ? '!sm:text-xl !text-base' : ''
-                            ]" class="sm:text-sm text-xs" for="telefono" value="Telefono" />
-                            <TextInput id="telefono" type="number" class="mt-1 block w-full p-0 sm:p-2"
-                                :class="[isContrast ? '!text-yellow-200 font-bold bg-black' : '']"
-                                v-model="form.telefono" required autofocus autocomplete="telefono" />
-                            <InputError class="mt-1" :message="form.errors.telefono" />
-                        </div>
-                        <!-- email -->
-                        <div class="mb-4">
-                            <InputLabel :class="[isContrast ? '!text-yellow-200 font-bold' : '',
-                            letraSize == -2 ? '!sm:text-[0.65rem] !text-[0.55rem]'
-                                : letraSize == -1 ? '!sm:text-xs !text-[0.65rem]'
-                                    : letraSize == 1 ? '!sm:text-lg !text-sm'
-                                        : letraSize == 2 ? '!sm:text-xl !text-base' : ''
-                            ]" class="sm:text-sm text-xs" for="email" value="Correo electronico" />
-                            <TextInput id="email" type="email" class="mt-1 block w-full p-0 sm:p-2"
-                                :class="[isContrast ? '!text-yellow-200 font-bold bg-black' : '']" v-model="form.email"
-                                autofocus autocomplete="username" />
-                            <InputError class="mt-1" :message="form.errors.email" />
-                        </div>
-
-                    </div>
-
-                    <!-- botones -->
-                    <div class="flex pt-4 justify-end">
-                        <button type="button" @click="nextStep(1)"
-                            class="bg-secondary hover:bg-primary text-xs sm:text-sm text-white p-2 rounded-md shadow-xl"
-                            :class="[
-                                letraSize == -2 ? '!sm:text-[0.65rem] !text-[0.55rem]'
-                                    : letraSize == -1 ? '!sm:text-xs !text-[0.65rem]'
-                                        : letraSize == 1 ? '!sm:text-lg !text-sm'
-                                            : letraSize == 2 ? '!sm:text-xl !text-base' : ''
-                            ]">
-                            Siguiente
-                        </button>
-                    </div>
-
-                </div>
-
-
-
-                <!-- Formulario de registro 2 -->
-                <div class="justify-center font-medium" v-if="active == 1">
-
-                    <div class="w-full mt-6 sm:grid grid-cols-2 gap-4">
-
-                        <!-- genero -->
-                        <div class="mb-4">
-                            <InputLabel :class="[isContrast ? '!text-yellow-200 font-bold' : '',
-                            letraSize == -2 ? '!sm:text-[0.65rem] !text-[0.55rem]'
-                                : letraSize == -1 ? '!sm:text-xs !text-[0.65rem]'
-                                    : letraSize == 1 ? '!sm:text-lg !text-sm'
-                                        : letraSize == 2 ? '!sm:text-xl !text-base' : ''
-                            ]" class="sm:text-sm text-xs" for="genero" value="Genero" />
-                            <div class="mt-2 block sm:flex">
-                                <div class="">
-                                    <input type="radio" id="masculino" value="Masculino" v-model="form.genero" />
-                                    <label class="ps-2 text-sm sm:text-base" :class="[isContrast ? '!text-yellow-200 font-bold' : '',
-                                    letraSize == -2 ? '!sm:text-xs !text-[0.65rem]'
-                                        : letraSize == -1 ? '!sm:text-sm !text-xs'
-                                            : letraSize == 1 ? '!sm:text-lg !text-base'
-                                                : letraSize == 2 ? '!sm:text-xl !text-lg' : ''
-                                    ]" for="masculino">Masculino</label>
-                                </div>
-                                <div class="sm:ms-6">
-                                    <input type="radio" id="two" value="Femenino" v-model="form.genero" />
-                                    <label class="ps-2 text-sm sm:text-base" :class="[isContrast ? '!text-yellow-200 font-bold' : '',
-                                    letraSize == -2 ? '!sm:text-xs !text-[0.65rem]'
-                                        : letraSize == -1 ? '!sm:text-sm !text-xs'
-                                            : letraSize == 1 ? '!sm:text-lg !text-base'
-                                                : letraSize == 2 ? '!sm:text-xl !text-lg' : ''
-                                    ]" for="two">Femenino</label>
-                                </div>
-                                <!-- otros generos -->
-                                <div v-if="IsNewGenero" class="sm:ms-6">
-                                    <InputLabel :class="[isContrast ? '!text-yellow-200 font-bold' : '',
-                                    letraSize == -2 ? '!sm:text-[0.65rem] !text-[0.55rem]'
-                                        : letraSize == -1 ? '!sm:text-xs !text-[0.65rem]'
-                                            : letraSize == 1 ? '!sm:text-lg !text-sm'
-                                                : letraSize == 2 ? '!sm:text-xl !text-base' : ''
-                                    ]" class="sm:text-sm text-xs" for="genero" value="¿Cual?" />
-                                    <TextInput id="genero" type="text" class="mt-1 block w-full p-0 sm:p-1"
-                                        :class="[isContrast ? '!text-yellow-200 font-bold bg-black' : '']"
-                                        v-model="form.genero" autocomplete="genero" />
-                                    <InputError class="mt-1" :message="form.errors.genero" />
-                                </div>
-                                <div v-else class="sm:ms-6">
-                                    <input type="radio" id="two" value="true" v-model="IsNewGenero" />
-                                    <label class="ps-2 text-sm sm:text-base" :class="[isContrast ? '!text-yellow-200 font-bold' : '',
-                                    letraSize == -2 ? '!sm:text-xs !text-[0.65rem]'
-                                        : letraSize == -1 ? '!sm:text-sm !text-xs'
-                                            : letraSize == 1 ? '!sm:text-lg !text-base'
-                                                : letraSize == 2 ? '!sm:text-xl !text-lg' : ''
-                                    ]" for="two">Otro</label>
-                                </div>
-
-
-
-
-                            </div>
-
-                        </div>
-                        <!-- condicion -->
-                        <div class="mb-4">
-                            <InputLabel :class="[isContrast ? '!text-yellow-200 font-bold' : '',
-                            letraSize == -2 ? '!sm:text-[0.65rem] !text-[0.55rem]'
-                                : letraSize == -1 ? '!sm:text-xs !text-[0.65rem]'
-                                    : letraSize == 1 ? '!sm:text-lg !text-sm'
-                                        : letraSize == 2 ? '!sm:text-xl !text-base' : ''
-                            ]" for="condicion" value="Condición" class="text-neutral-500 sm:text-sm text-xs" />
-                            <select id="condicion" name="condicion" v-model="form.condicion" :class="[isContrast ? '!text-yellow-200 font-bold bg-black' : '',
-                            letraSize == -2 ? '!text-[0.65rem]'
-                                : letraSize == -1 ? '!text-sm'
-                                    : letraSize == 1 ? '!text-lg'
-                                        : letraSize == 2 ? '!text-xl' : ''
-                            ]"
-                                class="block w-full sm:px-4 sm:py-2 p-0 mt-1 text-base text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-blue-500 focus:border-blue-500">
-
-                                <option class="text-black" :class="[isContrast ? '!text-yellow-200 font-bold' : '']"
-                                    v-for="con in condiciones" :key="con.id" :value="con.code">
-                                    {{ con.nombre }}
-                                </option>
-                            </select>
-                            <InputError class="mt-1" :message="form.errors.condicion" />
-                        </div>
-                        <!-- etnia -->
-                        <div class="mb-4">
-                            <InputLabel :class="[isContrast ? '!text-yellow-200 font-bold' : '',
-                            letraSize == -2 ? '!sm:text-[0.65rem] !text-[0.55rem]'
-                                : letraSize == -1 ? '!sm:text-xs !text-[0.65rem]'
-                                    : letraSize == 1 ? '!sm:text-lg !text-sm'
-                                        : letraSize == 2 ? '!sm:text-xl !text-base' : ''
-                            ]" for="etnia" value="Etnia" class="text-neutral-500 sm:text-sm text-xs" />
-                            <select id="etnia" name="etnia" v-model="form.etnia" :class="[isContrast ? '!text-yellow-200 font-bold bg-black' : '',
-                            letraSize == -2 ? '!text-[0.65rem]'
-                                : letraSize == -1 ? '!text-sm'
-                                    : letraSize == 1 ? '!text-lg'
-                                        : letraSize == 2 ? '!text-xl' : ''
-                            ]"
-                                class="block w-full sm:px-4 sm:py-2 p-0 mt-1 text-base text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-blue-500 focus:border-blue-500">
-
-                                <option class="text-black" :class="[isContrast ? '!text-yellow-200 font-bold' : '']"
-                                    v-for="et in etnias" :key="et.id" :value="et.code">
-                                    {{ et.nombre }}
-                                </option>
-                            </select>
-                            <InputError class="mt-1" :message="form.errors.etnia" />
-                        </div>
-                        <!-- hace parta junta accion comunal -- dignatario -->
-                        <div class="mb-4 col-span-2">
-
-                            <input type="checkbox" id="juntaAccion" name="juntaAccion" v-model="form.dignatario"
-                                :class="[isContrast ? '!text-yellow-200 font-bold bg-black border-yellow-200' : '']">
-                            <label for="juntaAccion" class="ps-4 pe-12 sm:text-base text-sm text-gray-500" :class="[isContrast ? '!text-yellow-200 font-bold' : '',
-                            letraSize == -2 ? '!sm:text-xs !text-[0.65rem]'
-                                : letraSize == -1 ? '!sm:text-sm !text-xs'
-                                    : letraSize == 1 ? '!sm:text-lg !text-base'
-                                        : letraSize == 2 ? '!sm:text-xl !text-lg' : ''
-                            ]">¿Hace parte de la junta de acción Comunal(JAC) o Junta de acción local(JAL)?</label>
-                            <InputError class="mt-1" :message="form.errors.dignatario" />
-                        </div>
-                        <!-- nivel estudio -->
-                        <div class="mb-4">
-                            <InputLabel :class="[isContrast ? '!text-yellow-200 font-bold' : '',
-                            letraSize == -2 ? '!sm:text-[0.65rem] !text-[0.55rem]'
-                                : letraSize == -1 ? '!sm:text-xs !text-[0.65rem]'
-                                    : letraSize == 1 ? '!sm:text-lg !text-sm'
-                                        : letraSize == 2 ? '!sm:text-xl !text-base' : ''
-                            ]" for="nivel_estudio" value="Nivel de estudio"
-                                class="text-neutral-500 sm:text-sm text-xs" />
-                            <select id="nivel_estudio" name="nivel_estudio" v-model="form.nivel_estudio" :class="[isContrast ? '!text-yellow-200 font-bold bg-black' : '',
-                            letraSize == -2 ? '!text-[0.65rem]'
-                                : letraSize == -1 ? '!text-sm'
-                                    : letraSize == 1 ? '!text-lg'
-                                        : letraSize == 2 ? '!text-xl' : ''
-                            ]"
-                                class="block w-full sm:px-4 sm:py-2 p-0 mt-1 text-base text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-blue-500 focus:border-blue-500">
-
-                                <option class="text-black" :class="[isContrast ? '!text-yellow-200 font-bold' : '']"
-                                    v-for="niv in nivel_estudios" :key="niv.id" :value="niv.code">
-                                    {{ niv.nombre }}
-                                </option>
-                            </select>
-                            <InputError class="mt-1" :message="form.errors.nivel_estudio" />
-                        </div>
-                        <!-- Puntos vive digital -->
-                        <div class="mb-4">
-                            <InputLabel for="codePunto" value="Punto Vive Digital" :class="[isContrast ? '!text-yellow-200 font-bold' : '',
-                            letraSize == -2 ? '!sm:text-[0.65rem] !text-[0.55rem]'
-                                : letraSize == -1 ? '!sm:text-xs !text-[0.65rem]'
-                                    : letraSize == 1 ? '!sm:text-lg !text-sm'
-                                        : letraSize == 2 ? '!sm:text-xl !text-base' : ''
-                            ]" class="text-neutral-500 sm:text-sm text-xs" />
-                            <select id="codePunto" name="codePunto" v-model="form.codePunto" :class="[isContrast ? '!text-yellow-200 font-bold bg-black' : '',
-                            letraSize == -2 ? '!text-[0.65rem]'
-                                : letraSize == -1 ? '!text-sm'
-                                    : letraSize == 1 ? '!text-lg'
-                                        : letraSize == 2 ? '!text-xl' : ''
-                            ]"
-                                class="block w-full sm:px-4 sm:py-2 p-0 mt-1 text-base text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-blue-500 focus:border-blue-500">
-
-                                <option class="text-black" :class="[isContrast ? '!text-yellow-200 font-bold' : '']"
-                                    v-for="pun in puntos" :key="pun.id" :value="pun.code">
-                                    {{ pun.nombre }}
-                                </option>
-                            </select>
-                            <InputError class="mt-1" :message="form.errors.codePunto" />
-                        </div>
-                        <!-- Tipo servicios -->
-                        <div class="mb-4">
-                            <InputLabel :class="[isContrast ? '!text-yellow-200 font-bold' : '',
-                            letraSize == -2 ? '!sm:text-[0.65rem] !text-[0.55rem]'
-                                : letraSize == -1 ? '!sm:text-xs !text-[0.65rem]'
-                                    : letraSize == 1 ? '!sm:text-lg !text-sm'
-                                        : letraSize == 2 ? '!sm:text-xl !text-base' : ''
-                            ]" for="tipo_servicios" value="Tipo de servicio a usar"
-                                class="text-neutral-500 sm:text-sm text-xs" />
-                            <select id="tipo_servicios" name="tipo_servicios" v-model="form.tipo_servicio" :class="[isContrast ? '!text-yellow-200 font-bold bg-black' : '',
-                            letraSize == -2 ? '!text-[0.65rem]'
-                                : letraSize == -1 ? '!text-sm'
-                                    : letraSize == 1 ? '!text-lg'
-                                        : letraSize == 2 ? '!text-xl' : ''
-                            ]"
-                                class="block w-full sm:px-4 sm:py-2 p-0 mt-1 text-base text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-blue-500 focus:border-blue-500">
-
-                                <option class="text-black" :class="[isContrast ? '!text-yellow-200 font-bold' : '']"
-                                    v-for="niv in tipoServ" :key="niv.id" :value="niv.code">
-                                    {{ niv.nombre }}
-                                </option>
-                            </select>
-                            <InputError class="mt-1" :message="form.errors.tipo_servicio" />
-                        </div>
-
-                        <!-- ncheck tratamiento datos -->
-                        <div class="mb-4 col-span-2">
-
-                            <input type="checkbox" id="consentimiento1" name="consentimiento1" required autofocus
-                                :class="[isContrast ? '!text-yellow-200 font-bold bg-black border-yellow-200' : '']">
-                            <label for="consentimiento1" class="ps-4 pe-12 sm:text-base text-sm text-gray-500" :class="[isContrast ? '!text-yellow-200 font-bold' : '',
-                            letraSize == -2 ? '!sm:text-xs !text-[0.65rem]'
-                                : letraSize == -1 ? '!sm:text-sm !text-xs'
-                                    : letraSize == 1 ? '!sm:text-lg !text-base'
-                                        : letraSize == 2 ? '!sm:text-xl !text-lg' : ''
-                            ]">Acepto el
-                                tratamiento de mis datos personales para fines informativos de la Alcaldía de Pereira y
-                                la secretaría de las TICs</label>
-                            <InputError class="mt-1" :message="form.errors.checked" />
-                        </div>
-
-
-
-                    </div>
-
-                    <!-- botones -->
-                    <div class="pt-4 flex justify-between gap-2">
-                        <div class="flex pt-4 justify-end">
-                            <button type="button" @click="prevStep(0)"
-                                class="bg-secondary hover:bg-primary text-xs sm:text-sm text-white p-2 rounded-md shadow-xl"
-                                :class="[isContrast ? '!text-yellow-200 font-bold' : '',
-                                letraSize == -2 ? '!sm:text-[0.65rem] !text-[0.55rem]'
-                                    : letraSize == -1 ? '!sm:text-xs !text-[0.65rem]'
-                                        : letraSize == 1 ? '!sm:text-lg !text-sm'
-                                            : letraSize == 2 ? '!sm:text-xl !text-base' : ''
-                                ]">
-                                Atras
-                            </button>
-                        </div>
-                        <div class="flex pt-4 justify-end">
-                            <PrimaryButton class="justify-center !p-2 !mb-0 text-xs sm:text-sm"
-                                :class="{ 'opacity-25': form.processing }" :disabled="form.processing">
-                                Enviar
-                            </PrimaryButton>
-                        </div>
-                    </div>
-
-                </div>
+            <!-- ncheck tratamiento datos -->
+            <div class="mb-4 col-span-2">
+              <input
+                type="checkbox"
+                id="consentimiento1"
+                name="consentimiento1"
+                required
+                autofocus
+                :class="[
+                  isContrast
+                    ? '!text-yellow-200 font-bold bg-black border-yellow-200'
+                    : '',
+                ]"
+              />
+              <label
+                for="consentimiento1"
+                class="ps-4 pe-12 sm:text-base text-sm text-gray-500"
+                :class="[
+                  isContrast ? '!text-yellow-200 font-bold' : '',
+                  letraSize == -2
+                    ? '!sm:text-xs !text-[0.65rem]'
+                    : letraSize == -1
+                    ? '!sm:text-sm !text-xs'
+                    : letraSize == 1
+                    ? '!sm:text-lg !text-base'
+                    : letraSize == 2
+                    ? '!sm:text-xl !text-lg'
+                    : '',
+                ]"
+                >Acepto el tratamiento de mis datos personales para fines
+                informativos de la Alcaldía de Pereira y la secretaría de las
+                TICs</label
+              >
+              <InputError class="mt-1" :message="form.errors.checked" />
             </div>
+          </div>
 
-        </form>
-
-
-        <!-- MODAL ENCUESTA -->
-        <Dialog v-model:visible="visible" modal position="center" header="REGISTRO REALIZADO"
-            class="max-w-xl mx-2 sm:mx-4 flex">
-
-            <div class="m-auto">
-                <p class="text-lg">
-                    Registro realizado con exito
-                </p>
-
-                <div class="flex w-full justify-center">
-                    <vue-qrcode
-                        :value="route('registrados.index', { identificacion: form.identificacion, origin: 'validation', fechaCreacion: fecha_inicio })" />
-                </div>
-
-
-                <!-- finalizar button -->
-                <div class="flex justify-center items-center justify-end mt-6 z-20">
-                    <primaryButton type="button" @click="closeModal" :class="{ 'opacity-25': form.processing }"
-                        :disabled="form.processing">
-                        Finalizar
-                    </primaryButton>
-                </div>
-
+          <!-- botones -->
+          <div class="pt-4 flex justify-between gap-2">
+            <div class="flex pt-4 justify-end">
+              <button
+                type="button"
+                @click="prevStep(0)"
+                class="bg-secondary hover:bg-primary text-xs sm:text-sm text-white p-2 rounded-md shadow-xl"
+                :class="[
+                  isContrast ? '!text-yellow-200 font-bold' : '',
+                  letraSize == -2
+                    ? '!sm:text-[0.65rem] !text-[0.55rem]'
+                    : letraSize == -1
+                    ? '!sm:text-xs !text-[0.65rem]'
+                    : letraSize == 1
+                    ? '!sm:text-lg !text-sm'
+                    : letraSize == 2
+                    ? '!sm:text-xl !text-base'
+                    : '',
+                ]"
+              >
+                Atras
+              </button>
             </div>
+            <div class="flex pt-4 justify-end">
+              <PrimaryButton
+                class="justify-center !p-2 !mb-0 text-xs sm:text-sm"
+                :class="{ 'opacity-25': form.processing }"
+                :disabled="form.processing"
+              >
+                Enviar
+              </PrimaryButton>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
 
+    <!-- MODAL ENCUESTA -->
+    <Dialog
+      v-model:visible="visible"
+      modal
+      position="center"
+      header="REGISTRO REALIZADO"
+      class="max-w-xl mx-2 sm:mx-4 flex"
+    >
+      <div class="m-auto">
+        <p class="text-lg">Registro realizado con exito</p>
 
+        <div class="flex w-full justify-center">
+          <vue-qrcode
+            :value="
+              route('registrados.index', {
+                identificacion: form.identificacion,
+                origin: 'validation',
+                fechaCreacion: fecha_inicio,
+              })
+            "
+          />
+        </div>
 
-        </Dialog>
+        <!-- finalizar button -->
+        <div class="flex justify-center items-center justify-end mt-6 z-20">
+          <primaryButton
+            type="button"
+            @click="closeModal"
+            :class="{ 'opacity-25': form.processing }"
+            :disabled="form.processing"
+          >
+            Finalizar
+          </primaryButton>
+        </div>
+      </div>
+    </Dialog>
+  </GuestLayout>
 
-    </GuestLayout>
-
-    <audio ref="infoAudio" :src="audioIntro"></audio>
-
-
+  <audio ref="infoAudio" :src="audioIntro"></audio>
 </template>
 
 <script setup>
-import ApplicationLogo from '@/Components/ApplicationLogo.vue';
-import GuestLayout from '@/Layouts/GuestLayout.vue';
-import InputError from '@/Components/InputError.vue';
-import InputLabel from '@/Components/InputLabel.vue';
-import PrimaryButton from '@/Components/PrimaryButton.vue';
-import TextInput from '@/Components/TextInput.vue';
-import { Head, Link, useForm, router, usePage } from '@inertiajs/vue3';
-import logoViveD from '../../../../public/assets/img/puntoViveDigital.webp'
-import Steps from 'primevue/steps';
-import { ref, watch, inject } from 'vue'
-import Dialog from 'primevue/dialog';
-import VueQrcode from 'vue-qrcode';
-import { useToast } from 'vue-toast-notification';
-import { SpeakerWaveIcon, PlayCircleIcon } from '@heroicons/vue/24/solid';
-import audioIntro from '../../../../public/assets/audios/inicioForm.wav'
-import axios from 'axios';
+import ApplicationLogo from "@/Components/ApplicationLogo.vue";
+import GuestLayout from "@/Layouts/GuestLayout.vue";
+import InputError from "@/Components/InputError.vue";
+import InputLabel from "@/Components/InputLabel.vue";
+import PrimaryButton from "@/Components/PrimaryButton.vue";
+import TextInput from "@/Components/TextInput.vue";
+import { Head, Link, useForm, router, usePage } from "@inertiajs/vue3";
+import logoViveD from "../../../../public/assets/img/puntoViveDigital.webp";
+import Steps from "primevue/steps";
+import { ref, watch, inject } from "vue";
+import Dialog from "primevue/dialog";
+import Select from "primevue/select";
+import VueQrcode from "vue-qrcode";
+import { useToast } from "vue-toast-notification";
+import { SpeakerWaveIcon, PlayCircleIcon } from "@heroicons/vue/24/solid";
+import audioIntro from "../../../../public/assets/audios/inicioForm.wav";
+import axios from "axios";
+import comunas from "@/shared/comunas.json";
 
 const $toast = useToast();
 
 const props = defineProps({
-    puntos: {
-        type: Object,
-        default: () => ({}),
-    },
+  puntos: {
+    type: Object,
+    default: () => ({}),
+  },
 
-    fecha_inicio: {
-        type: String,
-        default: () => '',
-    },
-
-
+  fecha_inicio: {
+    type: String,
+    default: () => "",
+  },
 });
 
 const isContrast = ref(usePage().props.accesibilidad.contraste);
 const letraSize = ref(usePage().props.accesibilidad.letra);
 const info_usuario = ref([]);
 
-watch(() => usePage().props.accesibilidad.contraste, (newVal) => {
+watch(
+  () => usePage().props.accesibilidad.contraste,
+  (newVal) => {
     isContrast.value = newVal;
     console.log(isContrast.value);
-});
+  }
+);
 
-watch(() => usePage().props.accesibilidad.letra, (newVal) => {
+watch(
+  () => usePage().props.accesibilidad.letra,
+  (newVal) => {
     letraSize.value = newVal;
     console.log(letraSize.value);
-});
+  }
+);
 
 const form = useForm({
-    nombres: '',
-    apellidos: '',
-    edad: 0,
-    tipo_documento: '',
-    identificacion: 0,
-    direccion: '',
-    sector: '',
-    telefono: 0,
-    email: '',
-    genero: '',
-    condicion: 'NA',
-    etnia: 'NA',
-    nivel_estudio: '',
-    codePunto: '',
-    checked:  '',
-    dignatario: false,
-    tipo_servicio: '',
-
+  nombres: "",
+  apellidos: "",
+  edad: 0,
+  tipo_documento: "",
+  identificacion: 0,
+  direccion: "",
+  sector: "",
+  comuna: "",
+  telefono: 0,
+  email: "",
+  genero: "",
+  condicion: "NA",
+  etnia: "NA",
+  nivel_estudio: "",
+  codePunto: "",
+  checked: "",
+  dignatario: false,
+  tipo_servicio: "",
 });
 
 // Debounce function
 function debounce(func, wait) {
-    let timeout;
-    return function (...args) {
-        clearTimeout(timeout);
-        timeout = setTimeout(() => func.apply(this, args), wait);
-    };
+  let timeout;
+  return function (...args) {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func.apply(this, args), wait);
+  };
 }
 
 const fetchUserInfo = debounce((newVal) => {
-    if (newVal.length > 6) {
-        console.log(newVal);
-        axios
-            .get('/searchRegistrado', {
-                params: {
-                    identificacion: newVal,
-                },
-            })
-            .then((response) => {
-
-                info_usuario.value = response.data.registrados;
-                form.nombres = info_usuario.value ? info_usuario.value.nombres : form.nombres;
-                    form.apellidos = info_usuario.value ? info_usuario.value.apellidos : form.apellidos;
-                    form.edad = info_usuario.value ? info_usuario.value.edad : form.edad;
-                    form.tipo_documento = info_usuario.value ? info_usuario.value.tipo_documento : form.tipo_documento;
-                    form.direccion = info_usuario.value ? info_usuario.value.direccion : form.direccion;
-                    form.sector = info_usuario.value ? info_usuario.value.sector : form.sector;
-                    form.telefono = info_usuario.value ? info_usuario.value.telefono : form.telefono;
-                    form.email = info_usuario.value ? info_usuario.value.email : form.email;
-                    form.genero = info_usuario.value ? info_usuario.value.genero : form.genero;
-                    form.condicion = info_usuario.value ? info_usuario.value.condicion : 'NA';
-                    form.etnia = info_usuario.value ? info_usuario.value.etnia : 'NA';
-                    form.nivel_estudio = info_usuario.value ? info_usuario.value.nivel_estudio : form.nivel_estudio;
-                    form.codePunto = info_usuario.value ? info_usuario.value.codePunto : form.codePunto;
-                    form.checked = info_usuario.value ? true : form.checked;
-                    form.tipo_servicio = info_usuario.value ? info_usuario.value.tipo_servicio : form.tipo_servicio;
-
-
-            })
-            .catch((error) => {
-                console.error("Error loading:", error);
-            });
-    }
+  if (newVal.length > 6) {
+    console.log(newVal);
+    axios
+      .get("/searchRegistrado", {
+        params: {
+          identificacion: newVal,
+        },
+      })
+      .then((response) => {
+        info_usuario.value = response.data.registrados;
+        form.nombres = info_usuario.value
+          ? info_usuario.value.nombres
+          : form.nombres;
+        form.apellidos = info_usuario.value
+          ? info_usuario.value.apellidos
+          : form.apellidos;
+        form.edad = info_usuario.value ? info_usuario.value.edad : form.edad;
+        form.tipo_documento = info_usuario.value
+          ? info_usuario.value.tipo_documento
+          : form.tipo_documento;
+        form.direccion = info_usuario.value
+          ? info_usuario.value.direccion
+          : form.direccion;
+        form.sector = info_usuario.value
+          ? info_usuario.value.sector
+          : form.sector;
+        form.comuna = info_usuario.value
+          ? getComuna(info_usuario.value.comuna, info_usuario.value.sector)
+          : form.comuna;
+        form.telefono = info_usuario.value
+          ? info_usuario.value.telefono
+          : form.telefono;
+        form.email = info_usuario.value ? info_usuario.value.email : form.email;
+        form.genero = info_usuario.value
+          ? info_usuario.value.genero
+          : form.genero;
+        form.condicion = info_usuario.value
+          ? info_usuario.value.condicion
+          : "NA";
+        form.etnia = info_usuario.value ? info_usuario.value.etnia : "NA";
+        form.nivel_estudio = info_usuario.value
+          ? info_usuario.value.nivel_estudio
+          : form.nivel_estudio;
+        form.codePunto = info_usuario.value
+          ? info_usuario.value.codePunto
+          : form.codePunto;
+        form.checked = info_usuario.value ? true : form.checked;
+        form.tipo_servicio = info_usuario.value
+          ? info_usuario.value.tipo_servicio
+          : form.tipo_servicio;
+      })
+      .catch((error) => {
+        console.error("Error loading:", error);
+      });
+  }
 }, 300); // 300 ms debounce delay
 
-watch(() => form.identificacion, (newVal) => {
+watch(
+  () => form.identificacion,
+  (newVal) => {
     fetchUserInfo(newVal);
-});
+  }
+);
 
 //valida si ya se reprodujo el audio
 const isFirstTime = ref(true);
@@ -600,70 +1097,68 @@ const handledAudio = ref(true);
 // referencia al audio intro
 const infoAudio = ref(null);
 
-
 //ITEMS DEL STEP
 const items = ref([
-    {
-        label: 'Paso 1'
-    },
-    {
-        label: 'Paso 2'
-    },
+  {
+    label: "Paso 1",
+  },
+  {
+    label: "Paso 2",
+  },
 ]);
 
 //ITEMS DEL TIPO DE IDENTIFICACION
 const tipoIden = ref([
-    { id: '0', nombre: "Tarjeta de Identidad", code: 'TI' },
-    { id: '1', nombre: "Registro Civil", code: 'R' },
-    { id: '2', nombre: "Cédula Ciudadanía", code: 'CC' },
-    { id: '3', nombre: "Cédula Extranjería", code: 'CE' },
-    { id: '4', nombre: "Pasaporte", code: 'P' },
-    { id: '5', nombre: "Permiso por Protección Temporal", code: 'PPT' },
-    { id: '6', nombre: "Otro", code: 'O' },
+  { id: "0", nombre: "Tarjeta de Identidad", code: "TI" },
+  { id: "1", nombre: "Registro Civil", code: "R" },
+  { id: "2", nombre: "Cédula Ciudadanía", code: "CC" },
+  { id: "3", nombre: "Cédula Extranjería", code: "CE" },
+  { id: "4", nombre: "Pasaporte", code: "P" },
+  { id: "5", nombre: "Permiso por Protección Temporal", code: "PPT" },
+  { id: "6", nombre: "Otro", code: "O" },
 ]);
 //ITEMS DE CONDICIONES
 const condiciones = ref([
-    { id: '0', nombre: 'Sin condición', code: 'NA' },
-    { id: '1', nombre: 'Persona con discapacidad', code: 'discapacitado' },
-    { id: '2', nombre: 'Desplazados', code: 'desplazados' },
-    { id: '3', nombre: 'Victimas', code: 'victimasConfArm' },
-    { id: '4', nombre: 'Mujer cabeza de hogar', code: 'mujerCabHogar' },
-    { id: '5', nombre: 'Padre cabeza de hogar', code: 'hombreCabHogar' },
-    { id: '6', nombre: 'Habitante de calle', code: 'habitanteCalle' },
-    { id: '7', nombre: 'Migrante', code: 'migrante' },
+  { id: "0", nombre: "Sin condición", code: "NA" },
+  { id: "1", nombre: "Persona con discapacidad", code: "discapacitado" },
+  { id: "2", nombre: "Desplazados", code: "desplazados" },
+  { id: "3", nombre: "Victimas", code: "victimasConfArm" },
+  { id: "4", nombre: "Mujer cabeza de hogar", code: "mujerCabHogar" },
+  { id: "5", nombre: "Padre cabeza de hogar", code: "hombreCabHogar" },
+  { id: "6", nombre: "Habitante de calle", code: "habitanteCalle" },
+  { id: "7", nombre: "Migrante", code: "migrante" },
 ]);
 
 //ITEMS DE ETNIAS
 const etnias = ref([
-    { id: '0', nombre: 'No aplica', code: 'NA' },
-    { id: '1', nombre: 'Mestizo', code: 'mestizo' },
-    { id: '2', nombre: 'Afrodescendiente', code: 'afro' },
-    { id: '3', nombre: 'Indígena', code: 'indigena' },
-    { id: '4', nombre: 'Palanquero', code: 'palanquero' },
-    { id: '5', nombre: 'Raizal', code: 'raizal' },
-    { id: '6', nombre: 'ROM', code: 'rom' },
+  { id: "0", nombre: "No aplica", code: "NA" },
+  { id: "1", nombre: "Mestizo", code: "mestizo" },
+  { id: "2", nombre: "Afrodescendiente", code: "afro" },
+  { id: "3", nombre: "Indígena", code: "indigena" },
+  { id: "4", nombre: "Palanquero", code: "palanquero" },
+  { id: "5", nombre: "Raizal", code: "raizal" },
+  { id: "6", nombre: "ROM", code: "rom" },
 ]);
 
 //ITEMS DE nivel_estudios
 const nivel_estudios = ref([
-    { id: '0', nombre: 'Ninguno', code: 'NA' },
-    { id: '1', nombre: 'Primaria', code: 'primaria' },
-    { id: '2', nombre: 'Secundaria', code: 'secundaria' },
-    { id: '3', nombre: 'Tecnico', code: 'tecnico' },
-    { id: '4', nombre: 'Tecnologico', code: 'tecnologico' },
-    { id: '5', nombre: 'Universitario', code: 'universitario' },
-    { id: '6', nombre: 'Postgrado', code: 'postgrado' },
+  { id: "0", nombre: "Ninguno", code: "NA" },
+  { id: "1", nombre: "Primaria", code: "primaria" },
+  { id: "2", nombre: "Secundaria", code: "secundaria" },
+  { id: "3", nombre: "Tecnico", code: "tecnico" },
+  { id: "4", nombre: "Tecnologico", code: "tecnologico" },
+  { id: "5", nombre: "Universitario", code: "universitario" },
+  { id: "6", nombre: "Postgrado", code: "postgrado" },
 ]);
 
 //ITEMS DEL TIPO DE Servicios
 const tipoServ = ref([
-    { id: '0', nombre: "Uso internet - Estudio", code: 'Uso internet-estudio' },
-    { id: '1', nombre: "Uso internet - Ocio", code: 'Uso internet-ocio' },
-    { id: '2', nombre: "Capacitaciones", code: 'capacitaciones' },
-    { id: '3', nombre: "Préstamo de aulas", code: 'prestamo aulas' },
-    { id: '4', nombre: "Tramites", code: 'tramites' },
-    { id: '5', nombre: "Videojuegos", code: 'videojuegos' },
-
+  { id: "0", nombre: "Uso internet - Estudio", code: "Uso internet-estudio" },
+  { id: "1", nombre: "Uso internet - Ocio", code: "Uso internet-ocio" },
+  { id: "2", nombre: "Capacitaciones", code: "capacitaciones" },
+  { id: "3", nombre: "Préstamo de aulas", code: "prestamo aulas" },
+  { id: "4", nombre: "Tramites", code: "tramites" },
+  { id: "5", nombre: "Videojuegos", code: "videojuegos" },
 ]);
 
 //step activo
@@ -676,111 +1171,122 @@ const visible = ref(false);
 const IsNewGenero = ref(false);
 
 watch(IsNewGenero, (value) => {
-    if (value) {
-        form.genero = '';
-    }
+  if (value) {
+    form.genero = "";
+  }
 });
 
 //STEP PART
 //prev
-const prevStep = num => {
-    active.value = num;
-}
+const prevStep = (num) => {
+  active.value = num;
+};
 //next
-const nextStep = num => {
+const nextStep = (num) => {
+  isValidate.value = false;
+  switch (num) {
+    case 1:
+      if (
+        form.nombres &&
+        form.apellidos &&
+        form.identificacion &&
+        form.edad &&
+        form.tipo_documento &&
+        form.telefono &&
+        form.direccion &&
+        form.comuna &&
+        form.sector
+      ) {
+        isValidate.value = true;
+      }
+      break;
 
+    default:
+      break;
+  }
 
-    isValidate.value = false;
-    switch (num) {
-        case 1:
-            if (form.nombres && form.apellidos && form.identificacion && form.edad && form.tipo_documento && form.telefono && form.direccion && form.sector) {
-                isValidate.value = true;
-            }
-            break;
-
-        default:
-            break;
+  if (isValidate.value) {
+    active.value = num;
+  } else {
+    if (!form.nombres) {
+      form.errors.nombres = "Este campo es requerido.";
+    }
+    if (!form.identificacion) {
+      form.errors.identificacion = "Este campo es requerido.";
+    }
+    if (!form.apellidos) {
+      form.errors.apellidos = "Este campo es requerido.";
+    }
+    if (!form.edad) {
+      form.errors.edad = "Este campo es requerido.";
+    }
+    if (!form.tipo_documento) {
+      form.errors.tipo_documento = "Este campo es requerido.";
     }
 
-    if (isValidate.value) {
-        active.value = num;
-    } else {
-        if (!form.nombres) {
-            form.errors.nombres = 'Este campo es requerido.';
-        }
-        if (!form.identificacion) {
-            form.errors.identificacion = 'Este campo es requerido.';
-        }
-        if (!form.apellidos) {
-            form.errors.apellidos = 'Este campo es requerido.';
-        }
-        if (!form.edad) {
-            form.errors.edad = 'Este campo es requerido.';
-        }
-        if (!form.tipo_documento) {
-            form.errors.tipo_documento = 'Este campo es requerido.';
-        }
-
-        if (!form.direccion) {
-            form.errors.direccion = 'Este campo es requerido.';
-        }
-        if (!form.sector) {
-            form.errors.sector = 'Este campo es requerido.';
-        }
-        if (!form.telefono) {
-            form.errors.telefono = 'Este campo es requerido.';
-        }
-
-
+    if (!form.direccion) {
+      form.errors.direccion = "Este campo es requerido.";
     }
-
-}
+    if (!form.comuna) {
+      form.errors.comuna = "Este campo es requerido.";
+    }
+    if (!form.sector) {
+      form.errors.sector = "Este campo es requerido.";
+    }
+    if (!form.telefono) {
+      form.errors.telefono = "Este campo es requerido.";
+    }
+  }
+};
 //play button
 const playInfo = () => {
-    isFirstTime.value = false;
-    const audio = infoAudio.value;
-    audio.play();
-    usePage().props.accesibilidad.audio = true;
+  isFirstTime.value = false;
+  const audio = infoAudio.value;
+  audio.play();
+  usePage().props.accesibilidad.audio = true;
 };
 
 //activar/desactivar sonido
-const handleAudio = num => {
+const handleAudio = (num) => {
+  isFirstTime.value = false;
+  if (num == 0) {
+    usePage().props.accesibilidad.audio = true;
+  } else if (num == 1) {
+    usePage().props.accesibilidad.audio = false;
+  }
+};
 
-    isFirstTime.value = false;
-    if (num == 0) {
-        usePage().props.accesibilidad.audio = true;
-    } else if (num == 1) {
-        usePage().props.accesibilidad.audio = false;
-    }
+const getComuna = (comuna, sector) => {
+  console.log("Buscando comuna:", comuna);
+  console.log("Lista de comunas:", comunas);
 
-}
+  const comunaEncontrada = comunas.find((c) => c.label === comuna);
+  console.log("Comuna encontrada:", comunaEncontrada);
+
+  return comunaEncontrada ? comunaEncontrada : "";
+};
 
 const closeModal = () => {
-    visible.value = false;
-    window.location.reload();
-}
+  visible.value = false;
+  window.location.reload();
+};
 
 const submit = () => {
+  form.post(route("registro"), {
+    onSuccess: () => {
+      visible.value = true;
+    },
 
-
-
-    form.post(route('registro'), {
-        onSuccess: () => {
-            visible.value = true;
-        },
-
-        onError: () => {
-            let instance = $toast.open({
-                message: "Algo salio mal en el registro, revise los campos o vuelva a intentarlo por favor",
-                type: 'warning',
-                position: 'top-right',
-                duration: 6000,
-                pauseOnHover: true,
-
-            });
-        }
-
-
-    });
+    onError: () => {
+      let instance = $toast.open({
+        message:
+          "Algo salio mal en el registro, revise los campos o vuelva a intentarlo por favor",
+        type: "warning",
+        position: "top-right",
+        duration: 6000,
+        pauseOnHover: true,
+      });
+    },
+  });
 };
 </script>

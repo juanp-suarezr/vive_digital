@@ -55,6 +55,7 @@ class InscritosXOfertaExports implements FromCollection, WithHeadings, WithStyle
             $ins->created_at = Puntos::where('id', $ins->oferta->id_puntos)->value('nombre') ?? '';
             $ins->id_info_user = $ins->info_user->nombres . ' ' . $ins->info_user->apellidos ?? '';
             $ins->updated_at = $ins->info_user->telefono ?? '';
+            $ins->genero = $ins->info_user->genero ?? ''; // ✅ aquí se asigna el género
             unset($ins->oferta); // Eliminar la relación ya que no la necesitamos en la exportación
             unset($ins->info_user);
 
@@ -77,7 +78,8 @@ class InscritosXOfertaExports implements FromCollection, WithHeadings, WithStyle
             'Identificación',
             'id_oferta',
             'Estado',
-            'Fecha de creación'
+            'Fecha de creación',
+            'Género'
         ];
         // return array_keys($this->collection()->first()->toArray());
     }

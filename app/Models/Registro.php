@@ -24,6 +24,7 @@ class Registro extends Model
         'identificacion',
         'direccion',
         'sector',
+        'comuna',
         'telefono',
         'email',
         'genero',

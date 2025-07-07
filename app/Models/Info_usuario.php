@@ -25,6 +25,7 @@ class Info_usuario extends Model
         'identificacion',
         'direccion',
         'sector',
+        'comuna',
         'telefono',
         'email',
         'genero',

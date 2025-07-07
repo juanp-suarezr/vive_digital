@@ -5,7 +5,8 @@ import { createApp, h } from "vue";
 import VueSweetalert2 from "vue-sweetalert2";
 import "sweetalert2/dist/sweetalert2.min.css";
 // theme
-import "primevue/resources/themes/aura-light-blue/theme.css";
+import Aura from "@primeuix/themes/aura";
+import { definePreset } from "@primeuix/themes";
 import { createInertiaApp } from "@inertiajs/vue3";
 import { createPinia } from "pinia";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
@@ -14,6 +15,30 @@ import PrimeVue from "primevue/config";
 import "vue-toast-notification/dist/theme-default.css";
 import Tooltip from 'primevue/tooltip';
 import Traduccion from '../../public/traduccion.json';
+
+const MyPreset = definePreset(Aura, {
+    semantic: {
+        primary: {
+            50: "{indigo.50}",
+            100: "{indigo.100}",
+            200: "{indigo.200}",
+            300: "{indigo.300}",
+            400: "{indigo.400}",
+            500: "{indigo.500}",
+            600: "{indigo.600}",
+            700: "{indigo.700}",
+            800: "{indigo.800}",
+            900: "{indigo.900}",
+            950: "{indigo.950}",
+        },
+        focusRing: {
+            width: "2px",
+            style: "dashed",
+            color: "{primary.color}",
+            offset: "1px",
+        },
+    },
+});
 
 const appName = "Vive Digital";
 
@@ -32,7 +57,11 @@ createInertiaApp({
             .use(VueSweetalert2)
             .use(PrimeVue, {
                 theme: {
-                    theme: "light",
+                    preset: MyPreset,
+                    options: {
+                        prefix: "p",
+                        darkModeSelector: false,
+                    },
                     cssLayer: {
                         name: "primevue",
                         order: "tailwind-base, primevue, tailwind-utilities",

@@ -160,6 +160,7 @@ class RegistroController extends Controller
             'identificacion' => 'required|max:20',
             'direccion' => 'required|string|max:100',
             'sector' => 'required',
+            'comuna' => 'required',
             'telefono' => 'required|max:15',
             'email' => 'required|string|lowercase|email|max:100',
             'genero' => 'required',
@@ -188,6 +189,7 @@ class RegistroController extends Controller
                 'identificacion' => $request->identificacion,
                 'direccion' => $request->direccion,
                 'sector' => $request->sector,
+                'comuna' => $request->input('comuna.label'),
                 'telefono' => $request->telefono,
                 'email' => $request->email,
                 'genero' => $request->genero,
@@ -212,6 +214,7 @@ class RegistroController extends Controller
                     'identificacion' => $user->identificacion,
                     'direccion' => $user->direccion,
                     'sector' => $user->sector,
+                    'comuna' => $user->comuna,
                     'telefono' => $user->telefono,
                     'email' => $user->email,
                     'genero' => $user->genero,
@@ -229,6 +232,7 @@ class RegistroController extends Controller
                     'tipo_documento' => $user->tipo_documento,
                     'direccion' => $user->direccion,
                     'sector' => $user->sector,
+                    'comuna' => $user->comuna,
                     'telefono' => $user->telefono,
                     'email' => $user->email,
                     'genero' => $user->genero,
@@ -274,6 +278,7 @@ class RegistroController extends Controller
             'identificacion' => 'required|max:20',
             'direccion' => 'required|string|max:100',
             'sector' => 'required',
+            'comuna' => '',
             'telefono' => 'required|max:15',
             'email' => 'required|string|lowercase|email|max:100',
             'genero' => 'required',
@@ -287,6 +292,7 @@ class RegistroController extends Controller
         // Convertir nombres y apellidos a mayúsculas antes de actualizar
         $data['nombres'] = mb_strtoupper($data['nombres']);
         $data['apellidos'] = mb_strtoupper($data['apellidos']);
+        $data['comuna'] = $request->input('comuna.label'); // Asegurarse de que 'comuna' sea un string
         // Actualizar el modelo de usuario con los datos validados
 
         // Verificar si ya existe un registro con la misma identificación en la tabla 'info_usuario'
