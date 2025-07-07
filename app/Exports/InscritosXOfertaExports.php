@@ -52,7 +52,7 @@ class InscritosXOfertaExports implements FromCollection, WithHeadings, WithStyle
         // Reemplazar el ID de puntos con el nombre del punto
         $inscripciones->transform(function ($ins) {
             $ins->comentario = $ins->oferta->nombre ?? '';
-            $ins->creacion = $ins->created_at->format('Y-m-d H:i:s') ?? '';
+            $ins->creacion = $ins->created_at;
             $ins->created_at = Puntos::where('id', $ins->oferta->id_puntos)->value('nombre') ?? '';
             $ins->id_info_user = $ins->info_user->nombres . ' ' . $ins->info_user->apellidos ?? '';
             $ins->updated_at = $ins->info_user->telefono ?? '';
