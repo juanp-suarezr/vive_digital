@@ -114,6 +114,7 @@ class RegistrosGemelosController extends Controller
             'edad' => $data['edad'],
             'direccion' => $data['direccion'],
             'sector' => $data['sector'],
+            'comuna' => $data['comuna'],
             'telefono' => $data['telefono'],
             'email' => $data['email'],
             'genero' => $data['genero'],

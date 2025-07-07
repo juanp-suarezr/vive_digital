@@ -4,9 +4,12 @@ import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import MultiSelect from "primevue/multiselect";
+import Select from "primevue/select";
+
+import comunas from "@/shared/comunas.json";
 
 import { Link, useForm, usePage } from "@inertiajs/vue3";
-import { inject, ref } from "vue";
+import { inject, ref, onMounted } from "vue";
 import SecondaryLink from "@/Components/SecondaryLink.vue";
 
 const swal = inject("$swal");
@@ -27,6 +30,7 @@ const form = useForm({
   identificacion: props.user.identificacion,
   direccion: props.user.direccion,
   sector: props.user.sector,
+  comuna: props.user.comuna,
   telefono: props.user.telefono,
   email: props.user.email,
   genero: props.user.genero,
@@ -49,25 +53,25 @@ const tipoIden = ref([
 ]);
 //ITEMS DE CONDICIONES
 const condiciones = ref([
-    { id: '0', nombre: 'Sin condición', code: 'NA' },
-    { id: '1', nombre: 'Persona con discapacidad', code: 'discapacitado' },
-    { id: '2', nombre: 'Desplazados', code: 'desplazados' },
-    { id: '3', nombre: 'Victimas', code: 'victimasConfArm' },
-    { id: '4', nombre: 'Mujer cabeza de hogar', code: 'mujerCabHogar' },
-    { id: '5', nombre: 'Padre cabeza de hogar', code: 'hombreCabHogar' },
-    { id: '6', nombre: 'Habitante de calle', code: 'habitanteCalle' },
-    { id: '7', nombre: 'Migrante', code: 'migrante' },
+  { id: "0", nombre: "Sin condición", code: "NA" },
+  { id: "1", nombre: "Persona con discapacidad", code: "discapacitado" },
+  { id: "2", nombre: "Desplazados", code: "desplazados" },
+  { id: "3", nombre: "Victimas", code: "victimasConfArm" },
+  { id: "4", nombre: "Mujer cabeza de hogar", code: "mujerCabHogar" },
+  { id: "5", nombre: "Padre cabeza de hogar", code: "hombreCabHogar" },
+  { id: "6", nombre: "Habitante de calle", code: "habitanteCalle" },
+  { id: "7", nombre: "Migrante", code: "migrante" },
 ]);
 
 //ITEMS DE ETNIAS
 const etnias = ref([
-    { id: '0', nombre: 'No aplica', code: 'NA' },
-    { id: '1', nombre: 'Mestizo', code: 'mestizo' },
-    { id: '2', nombre: 'Afrodescendiente', code: 'afro' },
-    { id: '3', nombre: 'Indígena', code: 'indigena' },
-    { id: '4', nombre: 'Palanquero', code: 'palanquero' },
-    { id: '5', nombre: 'Raizal', code: 'raizal' },
-    { id: '6', nombre: 'ROM', code: 'rom' },
+  { id: "0", nombre: "No aplica", code: "NA" },
+  { id: "1", nombre: "Mestizo", code: "mestizo" },
+  { id: "2", nombre: "Afrodescendiente", code: "afro" },
+  { id: "3", nombre: "Indígena", code: "indigena" },
+  { id: "4", nombre: "Palanquero", code: "palanquero" },
+  { id: "5", nombre: "Raizal", code: "raizal" },
+  { id: "6", nombre: "ROM", code: "rom" },
 ]);
 
 //ITEMS DE nivel_estudios
@@ -91,6 +95,15 @@ const tipoServ = ref([
   { id: "5", nombre: "Videojuegos", code: "videojuegos" },
 ]);
 
+const getComuna = (comuna) => {
+  console.log("Buscando comuna:", comuna);
+
+  const comunaEncontrada = comunas.find((c) => c.label === comuna);
+  console.log("Comuna encontrada:", comunaEncontrada);
+
+  return comunaEncontrada ? comunaEncontrada : "";
+};
+
 const submit = () => {
   console.log(user.value.id);
   form.patch(route("registrados.update", { id: user.value.id }), {
@@ -102,6 +115,11 @@ const submit = () => {
       }),
   });
 };
+
+onMounted(() => {
+  form.comuna = getComuna(form.comuna);
+  console.log("Comuna inicial:", form.comuna);
+});
 </script>
 
 <template>
@@ -109,18 +127,14 @@ const submit = () => {
     <header>
       <div class="grid grid-cols-6">
         <div class="col-span-4">
-          <h2 class="text-lg font-medium text-gray-900">
-            Información registrado
-          </h2>
+          <h2 class="text-lg font-medium text-gray-900">Información registrado</h2>
 
           <p class="mt-1 text-sm text-gray-600">
             Actualice la información especifica del registro
           </p>
         </div>
         <div class="col-span-2 text-right">
-          <SecondaryLink :href="route('registrados.index')">
-            Regresar
-          </SecondaryLink>
+          <SecondaryLink :href="route('registrados.index')"> Regresar </SecondaryLink>
         </div>
       </div>
     </header>
@@ -128,11 +142,7 @@ const submit = () => {
       <div class="sm:grid grid-cols-2 gap-4">
         <!-- nombres -->
         <div class="mb-4">
-          <InputLabel
-            class="sm:text-sm text-xs"
-            for="nombres"
-            value="Nombres"
-          />
+          <InputLabel class="sm:text-sm text-xs" for="nombres" value="Nombres" />
           <TextInput
             id="nombres"
             type="text"
@@ -146,11 +156,7 @@ const submit = () => {
         </div>
         <!-- apellidos -->
         <div class="mb-4">
-          <InputLabel
-            class="sm:text-sm text-xs"
-            for="apellidos"
-            value="Apellidos"
-          />
+          <InputLabel class="sm:text-sm text-xs" for="apellidos" value="Apellidos" />
           <TextInput
             id="apellidos"
             type="text"
@@ -238,31 +244,47 @@ const submit = () => {
           />
           <InputError class="mt-1" :message="form.errors.direccion" />
         </div>
-        <!-- sector -->
+        <!-- comuna y sector -->
         <div class="mb-4">
-          <InputLabel
-            class="sm:text-sm text-xs"
-            for="sector"
-            value="Barrio o vereda"
-          />
-          <TextInput
-            id="sector"
-            type="text"
-            class="mt-1 block w-full p-0 sm:p-2"
-            v-model="form.sector"
-            required
-            autofocus
-            autocomplete="sector"
-          />
-          <InputError class="mt-1" :message="form.errors.sector" />
+          <!-- Comuna -->
+          <div class="mb-4">
+            <InputLabel
+              class="sm:text-sm text-xs"
+              for="comuna"
+              value="Comuna/Corregimiento"
+            />
+            <Select
+              id="comuna"
+              v-model="form.comuna"
+              :options="comunas"
+              filter
+              optionLabel="label"
+              placeholder="Seleccione una comuna o corregimiento"
+              checkmark
+              :highlightOnSelect="false"
+              class="block w-full sm:px-4 p-0 mt-1 text-base text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+            />
+            <InputError class="mt-1" :message="form.errors.comuna" />
+          </div>
+          <!-- sector -->
+          <div class="mb-4">
+            <InputLabel class="sm:text-sm text-xs" for="sector" value="Barrio o vereda" />
+            <TextInput
+              id="sector"
+              type="text"
+              class="mt-1 block w-full p-0 sm:p-2"
+              v-model="form.sector"
+              required
+              autofocus
+              autocomplete="sector"
+            />
+            <InputError class="mt-1" :message="form.errors.sector" />
+          </div>
         </div>
+
         <!-- telefono -->
         <div class="mb-4">
-          <InputLabel
-            class="sm:text-sm text-xs"
-            for="telefono"
-            value="Telefono"
-          />
+          <InputLabel class="sm:text-sm text-xs" for="telefono" value="Telefono" />
           <TextInput
             id="telefono"
             type="number"
@@ -276,11 +298,7 @@ const submit = () => {
         </div>
         <!-- email -->
         <div class="mb-4">
-          <InputLabel
-            class="sm:text-sm text-xs"
-            for="email"
-            value="Correo electronico"
-          />
+          <InputLabel class="sm:text-sm text-xs" for="email" value="Correo electronico" />
           <TextInput
             id="email"
             type="email"
@@ -304,28 +322,15 @@ const submit = () => {
                 value="Masculino"
                 v-model="form.genero"
               />
-              <label class="ps-2 text-sm sm:text-base" for="masculino"
-                >Masculino</label
-              >
+              <label class="ps-2 text-sm sm:text-base" for="masculino">Masculino</label>
             </div>
             <div class="sm:ms-6">
-              <input
-                type="radio"
-                id="femenino"
-                value="Femenino"
-                v-model="form.genero"
-              />
-              <label class="ps-2 text-sm sm:text-base" for="femenino"
-                >Femenino</label
-              >
+              <input type="radio" id="femenino" value="Femenino" v-model="form.genero" />
+              <label class="ps-2 text-sm sm:text-base" for="femenino">Femenino</label>
             </div>
             <!-- otros generos -->
             <div v-if="IsNewGenero" class="sm:ms-6">
-              <InputLabel
-                class="sm:text-sm text-xs"
-                for="genero"
-                value="¿Cual?"
-              />
+              <InputLabel class="sm:text-sm text-xs" for="genero" value="¿Cual?" />
               <TextInput
                 id="genero"
                 type="text"
@@ -379,12 +384,7 @@ const submit = () => {
             v-model="form.etnia"
             class="block w-full sm:px-4 sm:py-2 p-0 mt-1 text-base text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
           >
-            <option
-              class="text-black"
-              v-for="et in etnias"
-              :key="et.id"
-              :value="et.code"
-            >
+            <option class="text-black" v-for="et in etnias" :key="et.id" :value="et.code">
               {{ et.nombre }}
             </option>
           </select>
@@ -421,12 +421,8 @@ const submit = () => {
             id="juntaAccion"
             name="juntaAccion"
             v-model="form.dignatario"
-
           />
-          <label
-            for="juntaAccion"
-            class="ps-4 pe-12 sm:text-base text-sm text-gray-500"
-
+          <label for="juntaAccion" class="ps-4 pe-12 sm:text-base text-sm text-gray-500"
             >¿Hace parte de la junta de acción Comunal(JAC) o Junta de acción
             local(JAL)?</label
           >
@@ -470,9 +466,7 @@ const submit = () => {
           leave-active-class="transition ease-in-out"
           leave-to-class="opacity-0"
         >
-          <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">
-            Actualizado.
-          </p>
+          <p v-if="form.recentlySuccessful" class="text-sm text-gray-600">Actualizado.</p>
         </Transition>
       </div>
     </form>

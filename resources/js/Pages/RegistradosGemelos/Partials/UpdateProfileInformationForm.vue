@@ -4,9 +4,12 @@ import InputLabel from "@/Components/InputLabel.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import TextInput from "@/Components/TextInput.vue";
 import MultiSelect from "primevue/multiselect";
+import Select from "primevue/select";
+
+import comunas from "@/shared/comunas.json";
 
 import { Link, useForm, usePage } from "@inertiajs/vue3";
-import { inject, ref } from "vue";
+import { inject, ref, onMounted } from "vue";
 import SecondaryLink from "@/Components/SecondaryLink.vue";
 
 const swal = inject("$swal");
@@ -27,6 +30,7 @@ const form = useForm({
   identificacion: props.user.identificacion,
   direccion: props.user.direccion,
   sector: props.user.sector,
+  comuna: props.user.comuna,
   telefono: props.user.telefono,
   email: props.user.email,
   genero: props.user.genero,
@@ -90,6 +94,13 @@ const tipoServ = ref([
   { id: "5", nombre: "Videojuegos", code: "videojuegos" },
 ]);
 
+const getComuna = (comuna) => {
+  const comunaEncontrada = comunas.find((c) => c.label === comuna);
+  console.log("Comuna encontrada:", comunaEncontrada);
+
+  return comunaEncontrada ? comunaEncontrada : "";
+};
+
 const submit = () => {
   console.log(user.value.id);
   form.patch(route("registrados.update", { id: user.value.id }), {
@@ -101,6 +112,11 @@ const submit = () => {
       }),
   });
 };
+
+onMounted(() => {
+  form.comuna = getComuna(form.comuna);
+  console.log("Comuna inicial:", form.comuna);
+});
 </script>
 
 <template>
@@ -237,23 +253,46 @@ const submit = () => {
           />
           <InputError class="mt-1" :message="form.errors.direccion" />
         </div>
-        <!-- sector -->
+        <!-- comuna y sector -->
         <div class="mb-4">
-          <InputLabel
-            class="sm:text-sm text-xs"
-            for="sector"
-            value="Barrio o vereda"
-          />
-          <TextInput
-            id="sector"
-            type="text"
-            class="mt-1 block w-full p-0 sm:p-2"
-            v-model="form.sector"
-            required
-            autofocus
-            autocomplete="sector"
-          />
-          <InputError class="mt-1" :message="form.errors.sector" />
+          <!-- Comuna -->
+          <div class="mb-4">
+            <InputLabel
+              class="sm:text-sm text-xs"
+              for="comuna"
+              value="Comuna/Corregimiento"
+            />
+            <Select
+              id="comuna"
+              v-model="form.comuna"
+              :options="comunas"
+              filter
+              optionLabel="label"
+              placeholder="Seleccione una comuna o corregimiento"
+              checkmark
+              :highlightOnSelect="false"
+              class="block w-full sm:px-4 p-0 mt-1 text-base text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
+            />
+            <InputError class="mt-1" :message="form.errors.comuna" />
+          </div>
+          <!-- sector -->
+          <div class="mb-4">
+            <InputLabel
+              class="sm:text-sm text-xs"
+              for="sector"
+              value="Barrio o vereda"
+            />
+            <TextInput
+              id="sector"
+              type="text"
+              class="mt-1 block w-full p-0 sm:p-2"
+              v-model="form.sector"
+              required
+              autofocus
+              autocomplete="sector"
+            />
+            <InputError class="mt-1" :message="form.errors.sector" />
+          </div>
         </div>
         <!-- telefono -->
         <div class="mb-4">
