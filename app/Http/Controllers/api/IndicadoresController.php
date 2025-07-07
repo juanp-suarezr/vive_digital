@@ -66,6 +66,7 @@ class IndicadoresController extends Controller
                     'edad' => $registro->edad,
                     'telefono' => $registro->telefono,
                     'email' => $registro->email,
+                    'comuna' => $registro->comuna,
                     'condicion' => $registro->condicion,
                     'etnia' => $registro->etnia,
                     'nivel_estudio' => $registro->nivel_estudio,
