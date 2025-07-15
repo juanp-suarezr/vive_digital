@@ -59,13 +59,8 @@ class IndicadoresController extends Controller
             $data = $resultados->map(function ($registro) {
                 return [
                     'id' => $registro->id,
-                    'nombres' => $registro->nombres,
-                    'apellidos' => $registro->apellidos,
-                    'identificacion' => $registro->identificacion,
                     'genero' => $registro->genero,
                     'edad' => $registro->edad,
-                    'telefono' => $registro->telefono,
-                    'email' => $registro->email,
                     'comuna' => $registro->comuna,
                     'condicion' => $registro->condicion,
                     'etnia' => $registro->etnia,
