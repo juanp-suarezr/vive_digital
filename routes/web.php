@@ -173,6 +173,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/ofertas/exportar', [OfertasController::class, 'excel'])->name('oferts.excel');
     Route::get('/totalInscritos/exportar', [OfertasController::class, 'excelInscritos'])->name('totalInscritos.excel');
     Route::get('/totalInscritosXOferta/exportar', [OfertasController::class, 'excelInscritosXOferta'])->name('totalInscritosXOferta.excel');
+    Route::get('/satisfaccion/exportar', [SatisfaccionController::class, 'excel'])->name('satisfaccion.excel');
 
     //INSCRITOS MASIVOS
     Route::get('/inscritosMasivos', [OfertasController::class, 'inscritosMasivos'])->name('inscritosMasivos.index');
@@ -196,6 +197,7 @@ Route::group(['middleware' => ['auth']], function () {
     Route::resource('ofertas', OfertasController::class);
     Route::resource('eventos', EventosController::class);
     Route::resource('registradosUnicos', RegistrosGemelosController::class);
+    Route::resource('satisfaccion', SatisfaccionController::class);
 });
 
 

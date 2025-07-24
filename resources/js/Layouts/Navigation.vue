@@ -27,6 +27,10 @@
                 <ClipboardDocumentIcon class="h-6 w-6 text-white" />
                 <span class="mx-3">Registrados </span>
             </nav-link>
+            <nav-link :href="route('satisfaccion.index')" :active="route().current().includes('satisfaccion')">
+                <ChatBubbleLeftRightIcon class="h-6 w-6 text-white" />
+                <span class="mx-3">Reporte satisfacción </span>
+            </nav-link>
             <nav-link v-if="$page.props.user.permissions.includes('rol-listar')" :href="route('registradosUnicos.index')" :active="route().current().includes('registradosUnicos')">
                 <ClipboardDocumentIcon class="h-6 w-6 text-white" />
                 <span class="mx-3">Tabla unica de registros </span>
@@ -76,7 +80,7 @@ import SeparadorMenu from "@/Components/SeparadorMenu.vue";
 import { Link } from '@inertiajs/vue3';
 import imglogo_w from '/public/assets/img/logo_white.webp'
 import { ref } from 'vue'
-import { FingerPrintIcon, UserGroupIcon, HomeIcon, FireIcon, ClipboardDocumentIcon, DocumentIcon, AcademicCapIcon, ListBulletIcon, CheckIcon, DocumentArrowUpIcon } from '@heroicons/vue/24/solid'
+import { FingerPrintIcon, UserGroupIcon, HomeIcon, FireIcon, ClipboardDocumentIcon, DocumentIcon, AcademicCapIcon, ListBulletIcon, CheckIcon, DocumentArrowUpIcon, ChatBubbleLeftRightIcon } from '@heroicons/vue/24/solid'
 
 export default {
     components: {
@@ -92,6 +96,7 @@ export default {
         ListBulletIcon,
         CheckIcon,
         DocumentArrowUpIcon,
+        ChatBubbleLeftRightIcon,
         SeparadorMenu
     },
 
