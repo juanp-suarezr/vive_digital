@@ -151,6 +151,15 @@ class RegistroController extends Controller
      */
     public function create(Request $request)
     {
+        // Verificar si el usuario ya tiene un registro hoy
+        $existingTodayRecord = Registro::where('identificacion', $request->identificacion)
+            ->whereDate('created_at', Carbon::today())
+            ->first();
+
+        if ($existingTodayRecord) {
+            return redirect()->back()->with('error', 'Ya has realizado un registro el día de hoy. Por favor, vuelve mañana.');
+        }
+
         // Validación de los datos del request
         $request->validate([
             'nombres' => 'required|string|max:100',

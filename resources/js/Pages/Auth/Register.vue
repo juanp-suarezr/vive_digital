@@ -1280,7 +1280,7 @@ const submit = () => {
     onError: () => {
       let instance = $toast.open({
         message:
-          "Algo salio mal en el registro, revise los campos o vuelva a intentarlo por favor",
+          "Algo salio mal en el registro, si ya hizo el registro el día de hoy, no tiene que volver a realizarlo, revise los campos, o vuelva a intentarlo por favor",
         type: "warning",
         position: "top-right",
         duration: 6000,
