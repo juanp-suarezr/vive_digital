@@ -169,6 +169,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/registrado', [RegistroController::class, 'update'])->name('registrados.update');
     //EXCEL
     Route::get('/registrado/exportar', [RegistroController::class, 'excel'])->name('registrados.excel');
+    Route::get('/registrado-politicas/exportar', [RegistroController::class, 'excel_politicas'])->name('registrados_politicas.excel');
     Route::get('/registradosUnicos/exportar', [RegistrosGemelosController::class, 'excel'])->name('registradosUnicos.excel');
     Route::get('/ofertas/exportar', [OfertasController::class, 'excel'])->name('oferts.excel');
     Route::get('/totalInscritos/exportar', [OfertasController::class, 'excelInscritos'])->name('totalInscritos.excel');

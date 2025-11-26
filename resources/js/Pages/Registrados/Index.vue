@@ -48,10 +48,14 @@
 
             </div>
 
-            <div class="flex justify-end w-full my-auto col-span-2">
+            <div class="flex justify-end w-full my-auto col-span-2 gap-2">
                 <a :href="route('registrados.excel', { fecha_init: fecha_init, fecha_end: fecha_end })"
                     class="flex text-white bg-green-800 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2">
                     <DocumentArrowDownIcon class="h-6 w-6 me-2" />Exportar
+                </a>
+                <a :href="route('registrados_politicas.excel', { fecha_init: fecha_init, fecha_end: fecha_end })"
+                    class="flex text-green-400 bg-green-600 hover:bg-green-800 font-medium rounded-lg text-sm px-4 py-2 font-semibold">
+                    <DocumentArrowDownIcon class="h-6 w-6 me-2" />Exportar para politicas
                 </a>
             </div>
 

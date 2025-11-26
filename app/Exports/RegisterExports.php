@@ -30,6 +30,148 @@ class RegisterExports implements FromCollection, WithHeadings, WithStyles, Shoul
         return preg_replace('/[^\x{0000}-\x{FFFF}]/u', '', $string);
     }
 
+    // obtener nombres reales de etnias
+    private function getRealNameEtnia($string)
+    {
+
+        // Arreglo de etnias
+        switch ($string) {
+            case "NA":
+                return "No aplica";
+                break;
+            case "mestizo":
+                return "Mestizo";
+                break;
+            case "afro":
+                return "Afrodescendiente";
+                break;
+            case "indigena":
+                return "Indigena";
+                break;
+            case "palanquero":
+                return "Palanquero";
+                break;
+            case "rom":
+                return "R-rom";
+                break;
+            default:
+                return "Desconocido";
+                break;
+        }
+    }
+
+    //obtener nombres reales de condicion
+    private function getRealNameCondicion($string)
+    {
+
+        switch ($string) {
+            case "NA":
+                return "Ninguna";
+                break;
+            case "discapacitado":
+                return "Discapacitado";
+                break;
+            case "desplazados":
+                return "Desplazados";
+                break;
+            case "victimasConfArm":
+                return "Victima";
+                break;
+            case "mujerCabHogar":
+                return "Padre / Madre cabeza de hogar";
+                break;
+            case "hombreCabHogar":
+                return "Padre / Madre cabeza de hogar";
+                break;
+            case "habitanteCalle":
+                return "Habitante de calle";
+                break;
+            case "migrante":
+                return "Migrante";
+                break;
+            case "diversidadSex":
+                return "Diversidad sexual";
+                break;
+            default:
+                return "Desconocido";
+                break;
+        }
+    }
+
+    //obtener genero diverso
+    private function getRealNameGenero($string)
+    {
+
+        if ($string !== "Masculino" && $string !== "Femenino") {
+            return "Genero Diverso";
+        } else {
+            return $string;
+        }
+    }
+
+    //obtener nombres reales de nivel educacion
+    private function getRealNameNivelEducacion($string)
+    {
+
+
+        switch ($string) {
+            case "NA":
+                return "Ninguna de las anteriores";
+                break;
+            case "primaria":
+                return "Básica primaria";
+                break;
+            case "secundaria":
+                return "Básica secundaria";
+                break;
+            case "tecnico":
+                return "Profesional, técnico o tecnólogo";
+                break;
+            case "tecnologico":
+                return "Profesional, técnico o tecnólogo";
+                break;
+            case "universitario":
+                return "Profesional, técnico o tecnólogo";
+                break;
+            case "postgrado":
+                return "Postgrado";
+                break;
+            default:
+                return "Desconocido";
+                break;
+        }
+    }
+
+    //obtener nombres reales de tipo servicio
+    private function getRealNameTipoServicio($string)
+    {
+
+
+        switch ($string) {
+            case "Uso internet-estudio":
+                return "Estudio";
+                break;
+            case "Uso internet-ocio":
+                return "Uso internet - Ocio";
+                break;
+            case "capacitaciones":
+                return "Capacitaciones";
+                break;
+            case "prestamo aulas":
+                return "Préstamo de aulas";
+                break;
+            case "tramites":
+                return "Tramites";
+                break;
+            case "videojuegos":
+                return "Videojuegos";
+                break;
+            default:
+                return "Otros";
+                break;
+        }
+    }
+
     /**
      * @return \Illuminate\Support\Collection
      */
@@ -114,7 +256,13 @@ class RegisterExports implements FromCollection, WithHeadings, WithStyles, Shoul
             $user->direccion = $this->removeEmojis($user->direccion);
             $user->sector = $this->removeEmojis($user->sector);
             $user->email = $this->removeEmojis($user->email);
-            $user->id_puntos = $user->puntos_vive->nombre ?? ''; // Asignar el nombre del punto o cadena vacía si no hay punto
+            $user->genero = $this->getRealNameGenero($user->genero);
+            $user->condicion = $this->getRealNameCondicion($user->condicion);
+            $user->etnia = $this->getRealNameEtnia($user->etnia);
+            $user->nivel_estudio = $this->getRealNameNivelEducacion($user->nivel_estudio);
+
+
+            $user->id_puntos = $user->puntos_vive->identificador_politicas ?? ''; // Asignar el nombre del punto o cadena vacía si no hay punto
             // $user->created_at = \PhpOffice\PhpSpreadsheet\Shared\Date::PHPToExcel( $user->created_at );
             unset($user->puntos_vive); // Eliminar la relación ya que no la necesitamos en la exportación
             return $user;

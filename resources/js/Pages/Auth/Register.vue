@@ -1136,7 +1136,6 @@ const etnias = ref([
   { id: "2", nombre: "Afrodescendiente", code: "afro" },
   { id: "3", nombre: "Indígena", code: "indigena" },
   { id: "4", nombre: "Palanquero", code: "palanquero" },
-  { id: "5", nombre: "Raizal", code: "raizal" },
   { id: "6", nombre: "ROM", code: "rom" },
 ]);
 
@@ -1272,6 +1271,12 @@ const closeModal = () => {
 };
 
 const submit = () => {
+  if (form.genero !== "Femenino" && form.genero !== "Masculino") {
+    if (form.condicion === "NA") {
+      form.condicion = "diversidadSex";
+    }
+  }
+
   form.post(route("registro"), {
     onSuccess: () => {
       visible.value = true;

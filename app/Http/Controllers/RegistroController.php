@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Exports\RegisterExports;
+use App\Exports\RegisterPoliticasExports;
 use Illuminate\Support\Facades\Request as RequestFacade;
 use App\Http\Controllers\Controller;
 use App\Models\Info_usuario;
@@ -325,5 +325,16 @@ class RegistroController extends Controller
         $endDate = RequestFacade::input('fecha_end');
 
         return Excel::download(new RegisterExports($startDate, $endDate), 'register.xls', \Maatwebsite\Excel\Excel::XLS);
+    }
+
+    public function excel_politicas()
+    {
+        ob_end_clean();
+        ob_start();
+
+        $startDate = RequestFacade::input('fecha_init');
+        $endDate = RequestFacade::input('fecha_end');
+
+        return Excel::download(new RegisterPoliticasExports($startDate, $endDate), 'register.xls', \Maatwebsite\Excel\Excel::XLS);
     }
 }

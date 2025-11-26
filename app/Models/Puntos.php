@@ -24,6 +24,7 @@ class Puntos extends Model
         'direccion',
         'sector',
         'code',
+        'identificador_politicas',
     ];
 
     public function usuario()
