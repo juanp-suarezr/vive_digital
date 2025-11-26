@@ -260,6 +260,7 @@ class RegisterPoliticasExports implements FromCollection, WithHeadings, WithStyl
             $user->condicion = $this->getRealNameCondicion($user->condicion);
             $user->etnia = $this->getRealNameEtnia($user->etnia);
             $user->nivel_estudio = $this->getRealNameNivelEducacion($user->nivel_estudio);
+            $user->tipo_servicio = $this->getRealNameTipoServicio($user->tipo_servicio);
 
 
             $user->id_puntos = $user->puntos_vive->identificador_politicas ?? ''; // Asignar el nombre del punto o cadena vacía si no hay punto
