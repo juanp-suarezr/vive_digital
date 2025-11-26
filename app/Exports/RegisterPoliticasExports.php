@@ -152,16 +152,16 @@ class RegisterPoliticasExports implements FromCollection, WithHeadings, WithStyl
                 return "Estudio";
                 break;
             case "Uso internet-ocio":
-                return "Uso internet - Ocio";
+                return "Entrentenimiento";
                 break;
             case "capacitaciones":
                 return "Capacitaciones";
                 break;
             case "prestamo aulas":
-                return "Préstamo de aulas";
+                return "Estudio";
                 break;
             case "tramites":
-                return "Tramites";
+                return "Otros";
                 break;
             case "videojuegos":
                 return "Videojuegos";
