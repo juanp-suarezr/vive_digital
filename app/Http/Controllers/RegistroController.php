@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\RegisterExports;
 use App\Exports\RegisterPoliticasExports;
 use Illuminate\Support\Facades\Request as RequestFacade;
 use App\Http\Controllers\Controller;
