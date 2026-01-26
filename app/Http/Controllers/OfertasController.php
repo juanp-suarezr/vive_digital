@@ -294,10 +294,13 @@ class OfertasController extends Controller
             $puntosID = $puntos[0]->id; // Usar el punto asociado al usuario autenticado
         }
 
+        $fechaInicio = RequestFacade::input('fecha_inicio');
+        $fechaFin = RequestFacade::input('fecha_fin');
+
         return Inertia::render(
             'Inscripciones/Index',
             [
-                'filters' => RequestFacade::only(['search', 'punto']),
+                'filters' => RequestFacade::only(['search', 'punto', 'fecha_inicio', 'fecha_fin']),
                 'puntos' => $puntos,
                 'inscripciones' => Inscripciones::query()
                     ->where('estadoProceso', '!=', 'En proceso')
@@ -306,6 +309,9 @@ class OfertasController extends Controller
                         $query->whereHas('oferta', function ($subQuery) use ($puntosID) {
                             $subQuery->where('id_puntos', $puntosID); // Filtrar por puntosID
                         });
+                    })
+                    ->when($fechaInicio && $fechaFin, function ($query) use ($fechaInicio, $fechaFin) {
+                        $query->whereBetween('created_at', [$fechaInicio, $fechaFin]);
                     })
                     ->with('info_user')
                     ->with('oferta')
@@ -317,6 +323,9 @@ class OfertasController extends Controller
                             $subQuery->where('id_puntos', $puntosID); // Filtrar por puntosID
                         });
                     })
+                    ->when($fechaInicio && $fechaFin, function ($query) use ($fechaInicio, $fechaFin) {
+                        $query->whereBetween('created_at', [$fechaInicio, $fechaFin]);
+                    })
                     ->count(),
                 'procesos' => Inscripciones::query()
                     ->where('estadoProceso', 'Inscrito')
@@ -325,6 +334,9 @@ class OfertasController extends Controller
                             $subQuery->where('id_puntos', $puntosID); // Filtrar por puntosID
                         });
                     })
+                    ->when($fechaInicio && $fechaFin, function ($query) use ($fechaInicio, $fechaFin) {
+                        $query->whereBetween('created_at', [$fechaInicio, $fechaFin]);
+                    })
                     ->count(),
                 'noCertificados' => Inscripciones::query()
                     ->where('estadoProceso', 'No certificado')
@@ -332,6 +344,9 @@ class OfertasController extends Controller
                         $query->whereHas('oferta', function ($subQuery) use ($puntosID) {
                             $subQuery->where('id_puntos', $puntosID); // Filtrar por puntosID
                         });
+                    })
+                    ->when($fechaInicio && $fechaFin, function ($query) use ($fechaInicio, $fechaFin) {
+                        $query->whereBetween('created_at', [$fechaInicio, $fechaFin]);
                     })
                     ->count(),
             ]
@@ -383,7 +398,10 @@ class OfertasController extends Controller
             $puntosID = $puntos[0]->id; // Usar el punto asociado al usuario autenticado
         }
 
-        return Excel::download(new InscritosExports($puntosID), 'totalInscritos.xls', \Maatwebsite\Excel\Excel::XLS);
+        $fechaInicio = RequestFacade::input('fecha_inicio');
+        $fechaFin = RequestFacade::input('fecha_fin');
+
+        return Excel::download(new InscritosExports($puntosID, $fechaInicio, $fechaFin), 'totalInscritos.xls', \Maatwebsite\Excel\Excel::XLS);
     }
 
     public function excelInscritosXOferta()

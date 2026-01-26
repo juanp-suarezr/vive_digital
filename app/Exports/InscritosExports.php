@@ -19,10 +19,14 @@ class InscritosExports implements FromCollection, WithHeadings, WithStyles, Shou
 
 
     protected $puntosID;
+    protected $fechaInicio;
+    protected $fechaFin;
 
-    public function __construct($puntosID)
+    public function __construct($puntosID, $fechaInicio = null, $fechaFin = null)
     {
         $this->puntosID = $puntosID;
+        $this->fechaInicio = $fechaInicio;
+        $this->fechaFin = $fechaFin;
     }
 
     /**
@@ -36,6 +40,8 @@ class InscritosExports implements FromCollection, WithHeadings, WithStyles, Shou
             $query->whereHas('oferta', function ($subQuery) use ($puntosID) {
                 $subQuery->where('id_puntos', $puntosID); // Filtrar por puntosID
             });
+        })->when($this->fechaInicio && $this->fechaFin, function ($query) {
+            $query->whereBetween('created_at', [$this->fechaInicio, $this->fechaFin]);
         })->with('info_user')->with('oferta')->select(
             'comentario', //nombre oferta
             'updated_at', // puntos vive digital

@@ -31,6 +31,27 @@
         </select>
       </div>
 
+      <div class="mb-2">
+        <label for="fecha_inicio" class="block text-sm font-medium text-gray-700">Fecha Inicio</label>
+        <input
+          type="date"
+          id="fecha_inicio"
+          v-model="fechaInicio"
+          @change="handleSelectPuntos"
+          class="block w-full px-4 py-1 text-base text-gray-900 border border-gray-600 rounded-lg bg-gray-200 focus:ring-blue-500 focus:border-blue-500"
+        />
+      </div>
+
+      <div class="mb-2">
+        <label for="fecha_fin" class="block text-sm font-medium text-gray-700">Fecha Fin</label>
+        <input
+          type="date"
+          id="fecha_fin"
+          v-model="fechaFin"
+          @change="handleSelectPuntos"
+          class="block w-full px-4 py-1 text-base text-gray-900 border border-gray-600 rounded-lg bg-gray-200 focus:ring-blue-500 focus:border-blue-500"
+        />
+      </div>
 
         <button
           type="submit"
@@ -43,7 +64,7 @@
 
       <div class="flex justify-end w-full my-auto mb-2">
         <a
-          :href="route('totalInscritos.excel', { punto: punto })"
+          :href="route('totalInscritos.excel', { punto: punto, fecha_inicio: fechaInicio, fecha_fin: fechaFin })"
           class="flex text-white bg-green-800 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2"
         >
           <DocumentArrowDownIcon class="h-6 w-6 me-2" />Exportar
@@ -264,12 +285,14 @@ const totalInscritos = ref(
 );
 
 const punto = ref(props.filters.punto ?? "");
+const fechaInicio = ref(props.filters.fecha_inicio ?? "");
+const fechaFin = ref(props.filters.fecha_fin ?? "");
 
 const handleSelectPuntos = () => {
   console.log(punto.value);
   router.get(
     "/totalInscritos",
-    { punto: punto.value },
+    { punto: punto.value, fecha_inicio: fechaInicio.value, fecha_fin: fechaFin.value },
     {
       replace: true,
     }
@@ -280,9 +303,11 @@ const handleSelectPuntos = () => {
 const clearAll = () => {
 
     punto.value = "";
+    fechaInicio.value = "";
+    fechaFin.value = "";
     router.get(
         "/totalInscritos",
-        { punto: punto.value },
+        { punto: punto.value, fecha_inicio: fechaInicio.value, fecha_fin: fechaFin.value },
         {
             replace: true,
         }
