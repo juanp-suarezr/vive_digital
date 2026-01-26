@@ -41,6 +41,9 @@ const props = defineProps({
     ofertas_remanso: {
         type: Object,
     },
+    ofertas_sanjoaquin: {
+        type: Object,
+    },
     info_usuario: {
         type: Object,
     },

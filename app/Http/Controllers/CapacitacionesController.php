@@ -49,6 +49,7 @@ class CapacitacionesController extends Controller
                 'ofertas_bella' => $this->getOfertas(3),
                 'ofertas_consota' => $this->getOfertas(4),
                 'ofertas_remanso' => $this->getOfertas(5),
+                'ofertas_sanjoaquin' => $this->getOfertas(6),
                 'info_usuario' => Info_usuario::query()
                     ->when(RequestFacade::input('identificacion'), function ($query, $identificacion) {
                         $query->where('identificacion', $identificacion);
