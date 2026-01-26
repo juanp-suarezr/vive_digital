@@ -8,58 +8,61 @@
       <!-- solo admin, para elegir punto -->
       .
       <div
-        class="w-auto sm:flex sm:gap-2 mb-2 my-auto"
+        class="w-full sm:flex sm:flex-wrap sm:gap-4 mb-4 my-auto"
         v-if="
           $page.props.user.roles.includes('Administrador') ||
           $page.props.user.roles.includes('Supervisor')
         "
       >
-      <div class="mb-2">
-        <select
-          id="puntos"
-          name="puntos"
-          v-model="punto"
-          @change="handleSelectPuntos"
-          class="block w-full px-4 py-1 text-base text-gray-900 border border-gray-600 rounded-lg bg-gray-200 focus:ring-blue-500 focus:border-blue-500"
-        >
-          <option selected disabled value="">
-            Seleccionar punto vive digital
-          </option>
-          <option v-for="pt in puntos" :key="pt.id" :value="pt.id">
-            {{ pt.nombre }}
-          </option>
-        </select>
-      </div>
+        <div class="w-full sm:w-auto mb-2">
+          <label for="puntos" class="block text-sm font-medium text-gray-700 mb-1">Punto Vive Digital</label>
+          <select
+            id="puntos"
+            name="puntos"
+            v-model="punto"
+            @change="handleSelectPuntos"
+            class="block w-full px-4 py-2 text-base text-gray-900 border border-gray-600 rounded-lg bg-gray-200 focus:ring-blue-500 focus:border-blue-500"
+          >
+            <option selected disabled value="">
+              Seleccionar punto vive digital
+            </option>
+            <option v-for="pt in puntos" :key="pt.id" :value="pt.id">
+              {{ pt.nombre }}
+            </option>
+          </select>
+        </div>
 
-      <div class="mb-2">
-        <label for="fecha_inicio" class="block text-sm font-medium text-gray-700">Fecha Inicio</label>
-        <input
-          type="date"
-          id="fecha_inicio"
-          v-model="fechaInicio"
-          @change="handleSelectPuntos"
-          class="block w-full px-4 py-1 text-base text-gray-900 border border-gray-600 rounded-lg bg-gray-200 focus:ring-blue-500 focus:border-blue-500"
-        />
-      </div>
+        <div class="w-full sm:w-auto mb-2">
+          <label for="fecha_inicio" class="block text-sm font-medium text-gray-700 mb-1">Fecha Inicio</label>
+          <input
+            type="date"
+            id="fecha_inicio"
+            v-model="fechaInicio"
+            @change="handleSelectPuntos"
+            class="block w-full px-4 py-2 text-base text-gray-900 border border-gray-600 rounded-lg bg-gray-200 focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
 
-      <div class="mb-2">
-        <label for="fecha_fin" class="block text-sm font-medium text-gray-700">Fecha Fin</label>
-        <input
-          type="date"
-          id="fecha_fin"
-          v-model="fechaFin"
-          @change="handleSelectPuntos"
-          class="block w-full px-4 py-1 text-base text-gray-900 border border-gray-600 rounded-lg bg-gray-200 focus:ring-blue-500 focus:border-blue-500"
-        />
-      </div>
+        <div class="w-full sm:w-auto mb-2">
+          <label for="fecha_fin" class="block text-sm font-medium text-gray-700 mb-1">Fecha Fin</label>
+          <input
+            type="date"
+            id="fecha_fin"
+            v-model="fechaFin"
+            @change="handleSelectPuntos"
+            class="block w-full px-4 py-2 text-base text-gray-900 border border-gray-600 rounded-lg bg-gray-200 focus:ring-blue-500 focus:border-blue-500"
+          />
+        </div>
 
-        <button
-          type="submit"
-          @click="clearAll"
-          class="mb-2 flex justify-center items-center border-2 border-gray-400 text-gray-600 font-semibold rounded-md px-4 hover:bg-gray-300"
-        >
-          Limpiar
-        </button>
+        <div class="w-full sm:w-auto flex items-end mb-2">
+          <button
+            type="submit"
+            @click="clearAll"
+            class="w-full sm:w-auto flex justify-center items-center border-2 border-gray-400 text-gray-600 font-semibold rounded-md px-4 py-2 hover:bg-gray-300"
+          >
+            Limpiar
+          </button>
+        </div>
       </div>
 
       <div class="flex justify-end w-full my-auto mb-2">
@@ -315,21 +318,20 @@ const clearAll = () => {
 };
 
 const updateChartData = () => {
-  const documentStyle = getComputedStyle(document.body);
   chartData.value = {
     labels: ["Certificados", "Inscritos", "No certificado"],
     datasets: [
       {
         data: [certificados.value, procesos.value, noCertificados.value],
         backgroundColor: [
-          documentStyle.getPropertyValue("--green-700"),
-          documentStyle.getPropertyValue("--orange-600"),
-          documentStyle.getPropertyValue("--secondary"),
+          "#10B981", // green-500
+          "#F59E0B", // amber-500
+          "#6B7280", // gray-500
         ],
         hoverBackgroundColor: [
-          documentStyle.getPropertyValue("--green-500"),
-          documentStyle.getPropertyValue("--orange-400"),
-          documentStyle.getPropertyValue("--primary"),
+          "#059669", // green-600
+          "#D97706", // amber-600
+          "#4B5563", // gray-600
         ],
       },
     ],
