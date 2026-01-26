@@ -84,6 +84,7 @@ const allOfertas = computed(() => [
     { punto: 'Centro Administrativo La Bella', ofertas: props.ofertas_bella },
     { punto: 'Centro de Desarrollo Vecinal Villa Consota', ofertas: props.ofertas_consota },
     { punto: 'El Remanso', ofertas: props.ofertas_remanso },
+    { punto: 'San Joaquín', ofertas: props.ofertas_sanjoaquin },
 ]);
 
 const abrirModal = oferta => {
