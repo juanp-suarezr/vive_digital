@@ -64,10 +64,10 @@
 
         <!-- solo admin, para elegir punto -->
         <div class="sm:w-1/2 md:w-2/6 mb-4" v-if="$page.props.user.roles.includes('Administrador') || $page.props.user.roles.includes('Supervisor')">
-            <InputLabel class="!text-base mb-1" for="puntos" value="Puntos vive digital" />
+            <InputLabel class="!text-base mb-1" for="puntos" value="Centros tecnológicos vive digital" />
             <select id="puntos" name="puntos" v-model="punto" @change="handleEnterKey"
                 class="block w-full px-4 py-1 text-base text-gray-900 border border-gray-600 rounded-lg bg-gray-200 focus:ring-blue-500 focus:border-blue-500">
-                <option selected disabled value="">Seleccionar punto vive digital</option>
+                <option selected disabled value="">Seleccionar centro tecnológico vive digital</option>
                 <option v-for="pt in puntos" :key="pt.id" :value="pt.id">{{ pt.nombre }}</option>
 
             </select>

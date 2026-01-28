@@ -34,7 +34,9 @@
               ]"
               class="block w-full sm:px-4 sm:py-2 p-0 mt-1 text-base text-gray-900 border border-gray-300 rounded-md bg-gray-50 focus:ring-blue-500 focus:border-blue-500"
             >
-              <option disabled value="">Seleccione un punto</option>
+              <option disabled value="">
+                Seleccione un centros tecnológico
+              </option>
               <option v-for="punto in puntos" :key="punto.id" :value="punto.id">
                 {{ punto.nombre }}
               </option>
@@ -293,6 +295,7 @@ watch(
 function submitForm() {
   form.post(route("formulario-satisfaccion"), {
     onSuccess: () => {
+      form.reset();
       swal({
         title: "Registro Guardado",
         text: "El registro se ha almacenado exitosamente",

@@ -3,11 +3,11 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <meta name="keywords" content="Vive Digital, vive digital, puntos vive digital, conexion gratis, internet gratis, pereira, puntos acceso internet pereira">
-        <meta name="description" content="Sitio diseñado el registro, oferta e información relevante de los puntos vive digital de la alcaldía de Pereira">
+        <meta name="keywords" content="Vive Digital, vive digital, puntos vive digital, centros tecnológicos, conexion gratis, internet gratis, pereira, puntos acceso internet pereira, centros tecnológicos vive digital">
+        <meta name="description" content="Sitio diseñado el registro, oferta e información relevante de los centros tecnológicos vive digital de la alcaldía de Pereira">
         <meta name="author" content="M.Sc.&#169; Alcaldía de Pereira - Taytech">
         <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
-        
+
         <title inertia>Vive Digital</title>
 
         <!-- Fonts -->

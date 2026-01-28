@@ -71,7 +71,7 @@
       <InputLabel
         class="!text-base mb-1"
         for="puntos"
-        value="Puntos vive digital"
+        value="Centros tecnológicos vive digital"
       />
       <select
         id="puntos"
@@ -81,7 +81,7 @@
         class="block w-full px-4 py-1 text-base text-gray-900 border border-gray-600 rounded-lg bg-gray-200 focus:ring-blue-500 focus:border-blue-500"
       >
         <option selected disabled value="">
-          Seleccionar punto vive digital
+          Seleccionar centros tecnológicos vive digital
         </option>
         <option v-for="pt in puntos" :key="pt.id" :value="pt.id">
           {{ pt.nombre }}

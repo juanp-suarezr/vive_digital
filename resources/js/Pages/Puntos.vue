@@ -124,7 +124,7 @@ const getInitials = function (name) {
     return initials;
 };
 
-//IMAGEN 
+//IMAGEN
 const getImageUrl = (imageName, folder) => {
     // Si las imágenes están almacenadas en la carpeta public/images, la ruta sería algo como esto:
     return `/storage/uploads/${folder}/${imageName}`;
@@ -158,7 +158,7 @@ const responsiveOptions = ref([
 
 //INSCRIPCIONES
 const submit = () => {
-    
+
     form.post(route('puntos.store'), {
         onSuccess: function () {
             visible.value = false;
@@ -183,10 +183,10 @@ const submit = () => {
 
             <div class="mb-4 px-4 sm:flex">
                 <div class="sm:w-1/2 md:w-2/6 mb-4">
-                    <InputLabel class="!text-base mb-1" for="puntos" value="Puntos vive digital" />
+                    <InputLabel class="!text-base mb-1" for="puntos" value="Centros tecnológicos vive digital" />
                     <select id="puntos" name="puntos" v-model="punto" @change="handleSelectPuntos"
                         class="block w-full px-4 py-1 text-base text-gray-900 border border-gray-600 rounded-lg bg-gray-200 focus:ring-blue-500 focus:border-blue-500">
-                        <option selected disabled value="0">Seleccionar punto vive digital</option>
+                        <option selected disabled value="0">Seleccionar centro tecnológico vive digital</option>
                         <option v-for="pt in puntos" :key="pt.id" :value="pt.id">{{ pt.nombre }}</option>
 
                     </select>
@@ -448,7 +448,7 @@ const submit = () => {
 
             <!-- next button -->
             <div class="flex justify-center items-center justify-end mt-6 z-20">
-                
+
                 <primaryButton v-if="info_usuario.find(item => item.identificacion == form.identificacion)" type="button" @click="submit" :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing">
                     Inscribirse

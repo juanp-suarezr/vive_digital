@@ -730,7 +730,7 @@
             <div class="mb-4">
               <InputLabel
                 for="codePunto"
-                value="Punto Vive Digital"
+                value="centros tecnológicos Vive Digital"
                 :class="[
                   isContrast ? '!text-yellow-200 font-bold' : '',
                   letraSize == -2

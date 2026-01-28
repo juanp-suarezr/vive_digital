@@ -16,7 +16,7 @@
                 <InputLabel
                     class="!text-base mb-1"
                     for="puntos"
-                    value="Puntos vive digital"
+                    value="centros tecnológicos vive digital"
                 />
                 <select
                     id="puntos"

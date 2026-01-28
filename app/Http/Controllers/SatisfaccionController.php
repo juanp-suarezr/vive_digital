@@ -141,7 +141,7 @@ class SatisfaccionController extends Controller
 
 
 
-        return redirect()->route('Welcome');
+        return back();
     }
 
 

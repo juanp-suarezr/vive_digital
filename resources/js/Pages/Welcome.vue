@@ -260,7 +260,7 @@ onMounted(() => {
                         : letraSize == -1 ? 'sm:text-4xl text-2xl'
                             : letraSize == 1 ? 'sm:text-[4rem] text-4xl'
                                 : letraSize == 2 ? 'sm:text-[5rem] text-4xl' : 'sm:text-[3rem] text-4xl'">
-                        <span class="font-bold p-2 bg-azul text-white">PUNTOS</span>
+                        <span class="font-bold p-2 bg-azul text-white">CENTROS TECNOLÓGICOS</span>
                         <div class="mt-2 sm:mt-5 md:mt-6">
                             <span class="mt-2 font-bold p-2 bg-azul text-white">VIVE</span>
                             <span class="font-bold p-2 bg-primary text-white">DIGITAL</span>
@@ -297,7 +297,7 @@ onMounted(() => {
             <div class="flex flex-col md:flex-row md:grid grid-cols-8 gap-4 mt-8">
                 <!-- texto -->
                 <div class="col-span-3 flex justify-center items-center px-6 mb-4" :class="getLetterSize(letraSize)">
-                    Los puntos Vive Digital ofrecen servicios como acceso a internet, capacitaciones en TIC y asesorías
+                    Los centros tecnológicos Vive Digital ofrecen servicios como acceso a internet, capacitaciones en TIC y asesorías
                     en trámites electrónicos.
                 </div>
                 <!-- imagen -->
