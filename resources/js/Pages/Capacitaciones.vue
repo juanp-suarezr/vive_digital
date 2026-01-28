@@ -217,7 +217,7 @@ const formatField = value => {
 
     <Head title="Capacitaciones" />
 
-    <PageLayout>
+    <PageLayout :isAccesibilidad="false">
 
         <div class="w-full px-2 sm:px-6 mt-0 p-0 bg-gradient-to-b from-option2 to-option1"
             :class="{ '!bg-gradient-to-b !from-black to-black !text-yellow-200 font-bold': isContrast }">

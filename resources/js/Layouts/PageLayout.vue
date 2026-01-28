@@ -7,7 +7,7 @@
       class="fixed top-64 w-screen"
       style="z-index: 50; pointer-events: none"
     >
-      <div class="xl:w-[5%] sm:w-[6%] w-[10%] sm:ml-[95%] ml-[90%]">
+      <div class="xl:w-[5%] sm:w-[6%] w-[10%] sm:ml-[95%] ml-[90%]" v-if="isAccesibilidad">
         <div
           class="bg-azul w-full py-4 sm:rounded-tl-xl sm:rounded-bl-xl rounded-tl-md rounded-bl-md"
           style="pointer-events: auto"
@@ -427,6 +427,13 @@ import { useToast } from "vue-toast-notification";
 const $toast = useToast();
 
 AOS.init();
+
+const props = defineProps({
+    isAccesibilidad: {
+        type: boolean,
+        default: () => true
+    }
+});
 
 const HandleContrast = ref(usePage().props.accesibilidad.contraste);
 const HandleLetra = ref(usePage().props.accesibilidad.letra);
