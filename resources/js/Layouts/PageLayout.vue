@@ -430,7 +430,7 @@ AOS.init();
 
 const props = defineProps({
     isAccesibilidad: {
-        type: boolean,
+        type: Boolean,
         default: () => true
     }
 });
