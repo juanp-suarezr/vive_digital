@@ -15,11 +15,11 @@
       :class="[isContrast ? '!text-yellow-200 font-bold bg-white' : '']"
     >
       <Link href="/" class="flex items-center justify-center">
-        <ApplicationLogo class="w-full sm:w-2/6 fill-current text-gray-500" />
+        <ApplicationLogo class="w-full sm:w-4/6 fill-current text-gray-500" />
       </Link>
 
       <div class="flex items-center justify-center">
-        <img :src="logoViveD" />
+        <img :src="logoViveD" class="w-full sm:w-5/6" />
       </div>
     </div>
 
