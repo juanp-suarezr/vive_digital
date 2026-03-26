@@ -18,8 +18,6 @@ class OfertasExports implements FromCollection, WithHeadings, WithStyles, Should
 {
 
     protected $search;
-    protected $startDate;
-    protected $endDate;
     protected $puntosID;
     protected $estado;
     protected $fechaInicio;
