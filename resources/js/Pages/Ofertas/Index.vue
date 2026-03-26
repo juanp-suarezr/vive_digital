@@ -40,6 +40,40 @@
                 </div>
             </div>
 
+            <!-- Filtro Estado -->
+            <div class="col-span-2 w-full m-auto">
+                <select
+                    v-model="estado"
+                    @change="handleEnterKey"
+                    class="block w-full py-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-0 focus:border-transparent"
+                >
+                    <option value="">Todos los estados</option>
+                    <option value="Activo">Activo</option>
+                    <option value="Inactivo">Inactivo</option>
+                    <option value="En formacion">En formación</option>
+                    <option value="Cancelado">Cancelado</option>
+                    <option value="Rechazado">Rechazado</option>
+                </select>
+            </div>
+
+            <!-- Filtro Rango de Fechas -->
+            <div class="col-span-3 w-full m-auto flex gap-2">
+                <input
+                    type="date"
+                    v-model="fechaInicio"
+                    @change="handleEnterKey"
+                    class="block w-full py-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-0 focus:border-transparent"
+                    placeholder="Fecha inicio"
+                />
+                <input
+                    type="date"
+                    v-model="fechaFin"
+                    @change="handleEnterKey"
+                    class="block w-full py-2 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-0 focus:border-transparent"
+                    placeholder="Fecha fin"
+                />
+            </div>
+
             <div class="sm:flex inline-block w-full m-auto gap-3 col-span-5">
                 <div
                     class="flex justify-center my-auto gap-2 inline-block ms-2"
@@ -68,7 +102,7 @@
             <div class="flex justify-end w-full my-auto col-span-2">
                 <a
                     :href="
-                        route('oferts.excel', { search: search, punto: punto })
+                        route('oferts.excel', { search: search, punto: punto, estado: estado, fecha_inicio: fechaInicio, fecha_fin: fechaFin })
                     "
                     class="flex text-white bg-green-800 hover:bg-blue-800 font-medium rounded-lg text-sm px-4 py-2"
                 >
@@ -346,6 +380,9 @@ console.log(props.oferts);
 // pass filters in search
 let search = ref(props.filters.search);
 const punto = ref(props.filters.punto ?? "");
+const estado = ref(props.filters.estado ?? "");
+const fechaInicio = ref(props.filters.fecha_inicio ?? "");
+const fechaFin = ref(props.filters.fecha_fin ?? "");
 
 const handleSelectPuntos = () => {
     console.log(punto.value);
@@ -361,7 +398,7 @@ const handleSelectPuntos = () => {
 const handleEnterKey = () => {
     router.get(
         "/oferts",
-        { search: search.value, punto: punto.value },
+        { search: search.value, punto: punto.value, estado: estado.value, fecha_inicio: fechaInicio.value, fecha_fin: fechaFin.value },
         {
             replace: true,
         },
@@ -375,11 +412,13 @@ const handleEnterKey = () => {
 //Liampiar filtros
 const clearAll = () => {
     search.value = "";
-
     punto.value = "";
+    estado.value = "";
+    fechaInicio.value = "";
+    fechaFin.value = "";
     router.get(
         "/oferts",
-        { search: search.value, punto: punto.value },
+        { search: search.value, punto: punto.value, estado: estado.value, fecha_inicio: fechaInicio.value, fecha_fin: fechaFin.value },
         {
             replace: true,
         }

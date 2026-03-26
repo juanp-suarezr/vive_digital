@@ -21,11 +21,17 @@ class OfertasExports implements FromCollection, WithHeadings, WithStyles, Should
     protected $startDate;
     protected $endDate;
     protected $puntosID;
+    protected $estado;
+    protected $fechaInicio;
+    protected $fechaFin;
 
-    public function __construct($search, $puntosID)
+    public function __construct($search, $puntosID, $estado = null, $fechaInicio = null, $fechaFin = null)
     {
         $this->search = $search;
         $this->puntosID = $puntosID;
+        $this->estado = $estado;
+        $this->fechaInicio = $fechaInicio;
+        $this->fechaFin = $fechaFin;
     }
 
     /**
@@ -40,6 +46,10 @@ class OfertasExports implements FromCollection, WithHeadings, WithStyles, Should
             })->when($this->puntosID, function ($query) {
                 // Filtrar por id_puntos solo si existe un valor en puntosID
                 $query->where('id_puntos', $this->puntosID);
+            })->when($this->estado, function ($query) {
+                $query->where('estado', $this->estado);
+            })->when($this->fechaInicio && $this->fechaFin, function ($query) {
+                $query->whereBetween('created_at', [$this->fechaInicio, $this->fechaFin]);
             })->select(
                 'id_puntos',
                 'nombre',

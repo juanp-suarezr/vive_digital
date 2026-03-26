@@ -217,6 +217,11 @@ class OfertasController extends Controller
             $puntosID = $puntos[0]->id;
         }
 
+        $search = RequestFacade::input('search');
+        $estado = RequestFacade::input('estado');
+        $fechaInicio = RequestFacade::input('fecha_inicio');
+        $fechaFin = RequestFacade::input('fecha_fin');
+
         return Inertia::render(
 
             'Ofertas/Index',
@@ -224,15 +229,19 @@ class OfertasController extends Controller
             [
                 'puntos' => $puntos,
                 'oferts' => Ofertas::query()
-                    ->when(RequestFacade::input('search'), function ($query, $search) {
+                    ->when($search, function ($query, $search) {
                         $query->where('nombre', 'like', '%' . $search . '%');
                     })->when($puntosID, function ($query, $puntosID) {
                         // Filtrar por id_puntos solo si existe un valor en puntosID
                         $query->where('id_puntos', $puntosID);
+                    })->when($estado, function ($query, $estado) {
+                        $query->where('estado', $estado);
+                    })->when($fechaInicio && $fechaFin, function ($query) use ($fechaInicio, $fechaFin) {
+                        $query->whereBetween('created_at', [$fechaInicio, $fechaFin]);
                     })
                     ->paginate(5)
                     ->withQueryString(),
-                'filters' => RequestFacade::only(['search', 'punto'])
+                'filters' => RequestFacade::only(['search', 'punto', 'estado', 'fecha_inicio', 'fecha_fin'])
             ]
         );
     }
@@ -378,9 +387,11 @@ class OfertasController extends Controller
         }
 
         $search = RequestFacade::input('search');
+        $estado = RequestFacade::input('estado');
+        $fechaInicio = RequestFacade::input('fecha_inicio');
+        $fechaFin = RequestFacade::input('fecha_fin');
 
-
-        return Excel::download(new OfertasExports($search, $puntosID), 'ofertas.xls', \Maatwebsite\Excel\Excel::XLS);
+        return Excel::download(new OfertasExports($search, $puntosID, $estado, $fechaInicio, $fechaFin), 'ofertas.xls', \Maatwebsite\Excel\Excel::XLS);
     }
 
     public function excelInscritos()
