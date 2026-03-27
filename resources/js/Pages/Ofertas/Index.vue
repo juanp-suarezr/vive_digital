@@ -280,11 +280,15 @@
                                                 'bg-red-500':
                                                     oferta.estado ===
                                                         'Rechazado' ||
+                                                        oferta.estado ===
+                                                        'Inactivo' ||
                                                     oferta.estado ===
                                                         'Cancelado',
                                                 'bg-blue-500':
                                                     oferta.estado ===
                                                     'En formacion',
+                                                    'bg-gray-500':
+                                                    oferta.estado === 'Finalizado',
                                             }"
                                             class="text-white px-2.5 py-1 rounded whitespace-no-wrap"
                                         >
