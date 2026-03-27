@@ -391,7 +391,7 @@ class OfertasController extends Controller
         $fechaInicio = RequestFacade::input('fecha_inicio');
         $fechaFin = RequestFacade::input('fecha_fin');
 
-        return Excel::download(new OfertasExports($search, $puntosID, $estado, $fechaInicio, $fechaFin), 'ofertas.xls', \Maatwebsite\Excel\Excel::XLS);
+        return Excel::download(new OfertasExports($search, $puntosID, $estado, $fechaInicio, $fechaFin), 'ofertas.xlsx', \Maatwebsite\Excel\Excel::XLSX);
     }
 
     public function excelInscritos()

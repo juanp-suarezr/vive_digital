@@ -13,8 +13,10 @@ use Maatwebsite\Excel\Concerns\ShouldAutoSize;
 use Maatwebsite\Excel\Concerns\WithStyles;
 use PhpOffice\PhpSpreadsheet\Worksheet\Worksheet;
 use Maatwebsite\Excel\Concerns\WithHeadings;
+use Maatwebsite\Excel\Concerns\WithColumnFormatting;
+use PhpOffice\PhpSpreadsheet\Shared\Date;
 
-class OfertasExports implements FromCollection, WithHeadings, WithStyles, ShouldAutoSize
+class OfertasExports implements FromCollection, WithHeadings, WithStyles, ShouldAutoSize, WithColumnFormatting
 {
 
     protected $search;
@@ -61,12 +63,23 @@ class OfertasExports implements FromCollection, WithHeadings, WithStyles, Should
             )
             ->get();
 
-
-
-        // Reemplazar el ID de puntos con el nombre del punto
+        // Reemplazar el ID de puntos con el nombre del punto y formatear datos
         $ofertas->transform(function ($oferta) {
-            $oferta->id_puntos = Puntos::where('id', $oferta->id_puntos)->value('nombre') ?? ''; // Asignar el nombre del punto o cadena vacía si no hay punto
+            // Reemplazar ID de puntos con nombre
+            $oferta->id_puntos = Puntos::where('id', $oferta->id_puntos)->value('nombre') ?? '';
 
+            // Formatear created_at a string legible
+            if ($oferta->created_at) {
+                $oferta->created_at = $oferta->created_at->format('Y-m-d H:i:s');
+            }
+
+            // Sanitizar campos de texto para evitar problemas de codificación
+            $oferta->nombre = $this->sanitizeText($oferta->nombre ?? '');
+            $oferta->horario = $this->sanitizeText($oferta->horario ?? '');
+            $oferta->descripcion = $this->sanitizeText($oferta->descripcion ?? '');
+            $oferta->lugar = $this->sanitizeText($oferta->lugar ?? '');
+            $oferta->tipo = $this->sanitizeText($oferta->tipo ?? '');
+            $oferta->estado = $this->sanitizeText($oferta->estado ?? '');
 
             return $oferta;
         });
@@ -99,10 +112,45 @@ class OfertasExports implements FromCollection, WithHeadings, WithStyles, Should
                 'borders' => [
                     'outline' => [
                         'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
-                        'color' => ['rgb' => '000000'], // Color de borde negro
+                        'color' => ['rgb' => '000000'],
                     ],
                 ],
             ],
         ];
+    }
+
+    /**
+     * Formato de columnas para evitar problemas con fechas
+     */
+    public function columnFormats(): array
+    {
+        return [
+            'H' => 'YYYY-MM-DD HH:MM:SS', // Formato para created_at
+        ];
+    }
+
+    /**
+     * Sanitizar texto para evitar problemas de codificación en Excel
+     */
+    private function sanitizeText($text)
+    {
+        if (empty($text)) {
+            return '';
+        }
+
+        // Convertir a UTF-8 si no lo está
+        if (!mb_check_encoding($text, 'UTF-8')) {
+            $text = mb_convert_encoding($text, 'UTF-8', 'UTF-8');
+        }
+
+        // Remover caracteres de control que pueden causar problemas
+        $text = preg_replace('/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/', '', $text);
+
+        // Limitar longitud para evitar problemas con XLS
+        if (strlen($text) > 32000) {
+            $text = substr($text, 0, 32000) . '...';
+        }
+
+        return $text;
     }
 }
