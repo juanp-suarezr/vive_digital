@@ -23,7 +23,7 @@ class OfertasExports implements FromCollection, WithHeadings, WithStyles, Should
     protected $fechaInicio;
     protected $fechaFin;
 
-    public function __construct($search, $puntosID, $estado = null, $fechaInicio = null, $fechaFin = null)
+    public function __construct($search, $puntosID, $estado, $fechaInicio, $fechaFin)
     {
         $this->search = $search;
         $this->puntosID = $puntosID;
@@ -56,6 +56,7 @@ class OfertasExports implements FromCollection, WithHeadings, WithStyles, Should
                 'descripcion',
                 'lugar',
                 'estado',
+                'created_at'
 
             )
             ->get();
@@ -85,6 +86,7 @@ class OfertasExports implements FromCollection, WithHeadings, WithStyles, Should
             'Descripción',
             'Lugar',
             'Estado',
+            'Fecha creación'
         ];
         // return array_keys($this->collection()->first()->toArray());
     }
