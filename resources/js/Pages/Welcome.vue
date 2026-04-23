@@ -281,9 +281,13 @@ onMounted(() => {
             <!-- texto e imagen -->
             <div class="flex flex-col md:flex-row md:grid grid-cols-8 gap-4 mt-8">
                 <!-- texto -->
-                <div class="col-span-4 flex justify-center items-center px-6 mb-4" :class="getLetterSize(letraSize)">
-                    Los centros tecnológicos Vive Digital ofrecen servicios como acceso a internet, capacitaciones en TIC y asesorías
-                    en trámites electrónicos.
+                <div class="col-span-4 flex justify-center items-center px-6 mb-4">
+                    <div class="bg-white rounded-lg shadow-lg p-6 w-full text-center">
+                        <p :class="'text-lg ' + getLetterSize(letraSize)">
+                            Los centros tecnológicos Vive Digital ofrecen servicios como acceso a internet, capacitaciones en TIC y asesorías
+                            en trámites electrónicos.
+                        </p>
+                    </div>
                 </div>
                 <!-- imagen -->
                 <div class="col-span-4 flex justify-center items-center m-auto px-4">
