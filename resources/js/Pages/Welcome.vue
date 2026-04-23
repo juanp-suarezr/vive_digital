@@ -133,13 +133,13 @@ onMounted(() => {
                     }
                 },
                 color: {
-                    value: '#4e56d3'
+                    value: '#aadd2c'
                 },
                 shape: {
                     type: 'circle',
                     stroke: {
                         width: 0,
-                        color: '#4e56d3'
+                        color: '#aadd2c'
                     },
                     polygon: {
                         nb_sides: 5
@@ -261,10 +261,10 @@ onMounted(() => {
                     </div>
                     <div class="mt-8 z-30">
                         <Link href="/capacitaciones"
-                            class="bg-primary text-white font-bold py-2 px-4 z-30 rounded mr-2 cursor-pointer text-2xl">
+                            class="bg-secondary text-white font-bold py-2 px-4 z-30 rounded mr-2 cursor-pointer text-2xl">
                         Capacitaciones
                         </Link>
-                        <Link href="/register" class="bg-primary text-white font-bold py-2 px-4 rounded text-2xl">
+                        <Link href="/register" class="bg-secondary text-white font-bold py-2 px-4 rounded text-2xl">
                         Registro
                         </Link>
                     </div>
@@ -281,12 +281,12 @@ onMounted(() => {
             <!-- texto e imagen -->
             <div class="flex flex-col md:flex-row md:grid grid-cols-8 gap-4 mt-8">
                 <!-- texto -->
-                <div class="col-span-5 flex justify-center items-center px-6 mb-4" :class="getLetterSize(letraSize)">
+                <div class="col-span-4 flex justify-center items-center px-6 mb-4" :class="getLetterSize(letraSize)">
                     Los centros tecnológicos Vive Digital ofrecen servicios como acceso a internet, capacitaciones en TIC y asesorías
                     en trámites electrónicos.
                 </div>
                 <!-- imagen -->
-                <div class="col-span-3 flex justify-center items-center m-auto px-4">
+                <div class="col-span-4 flex justify-center items-center m-auto px-4">
                     <figure>
                         <img class="w-full rounded-xl shadow-xl tilt-image" :src="puntoVive" alt="imagen de espacio digital"
                             title="Punto vive digital">
@@ -363,7 +363,7 @@ onMounted(() => {
     width: 100%;
     height: 100vh;
     z-index: 0;
-    background: #F2F2F2;
+    background: #4e56d3;
     /* Adjust as needed */
 }
 
