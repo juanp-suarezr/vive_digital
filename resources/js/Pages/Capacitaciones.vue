@@ -294,7 +294,7 @@ const formatField = value => {
             <svg class="curve" viewBox="0 0 370.417 79.375">
                 <path class="wave"
                     d="M-1.301 51.894C141.54 5.807 159.612 38.111 226.846 62.2c90.74 32.51 149.712-33.492 149.712-33.492v59.541H-1.302z"
-                    fill="#C20E1A" fill-rule="evenodd" />
+                    fill="#4e56d3" fill-rule="evenodd" />
             </svg>
 
         </section>
