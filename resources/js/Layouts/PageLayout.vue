@@ -102,7 +102,7 @@
       </a>
     </header>
     <nav
-      class="w-full h-full bg-option2 py-2 text-xl sm:text-2xl text-parrafo z-20"
+      class="w-full h-full bg-[#4e56d3] py-2 text-xl sm:text-2xl text-parrafo z-20"
       :class="[
         { '!text-yellow-200 font-bold !bg-black': HandleContrast },
         HandleLetra == -2
@@ -146,7 +146,7 @@
               <!-- <li><a :href="route('puntos.index')" :class="[{ 'underline': route().current('puntos') },
                             { '!text-yellow-200 font-bold': HandleContrast },
 
-                            ]" class="text-parrafo cursor border-r-2 border-l-2 border-secondary px-2 hover:underline">Puntos</a>
+                            ]" class="text-white cursor border-r-2 border-l-2 border-secondary px-2 hover:underline">Puntos</a>
                             </li> -->
 
               <li>
@@ -161,7 +161,7 @@
                     value: 'Registro de ingreso al punto',
                     autoHide: false,
                   }"
-                  class="text-parrafo cursor hover:underline border-r-2 border-secondary pe-2"
+                  class="text-white cursor hover:underline border-r-2 border-secondary pe-2"
                   >Capacitaciones</a
                 >
               </li>
@@ -178,7 +178,7 @@
                     value: 'Registro de ingreso al punto',
                     autoHide: false,
                   }"
-                  class="text-parrafo cursor hover:underline border-r-2 border-secondary pe-2"
+                  class="text-white cursor hover:underline border-r-2 border-secondary pe-2"
                   >Registro</a
                 >
               </li>
@@ -195,7 +195,7 @@
                     value: 'formulario satisfacción',
                     autoHide: false,
                   }"
-                  class="text-parrafo cursor hover:underline border-r-2 border-secondary pe-2"
+                  class="text-white cursor hover:underline border-r-2 border-secondary pe-2"
                   >Satisfacción</a
                 >
               </li>
@@ -213,7 +213,7 @@
                     value: 'regresar al dashboard',
                     autoHide: false,
                   }"
-                  class="text-parrafo cursor hover:underline border-r-2 border-secondary pe-2"
+                  class="text-white cursor hover:underline border-r-2 border-secondary pe-2"
                   >Dashboard</a
                 >
               </li>
@@ -222,7 +222,7 @@
           <div class="md:hidden z-20">
             <!-- Mobile menu button -->
             <button
-              class="text-parrafo hover:text-secondary focus:outline-none"
+              class="text-white hover:text-secondary focus:outline-none"
               @click="isMobileMenuOpen = !isMobileMenuOpen"
               :class="[{ '!text-yellow-200 font-bold': HandleContrast }]"
             >
@@ -385,7 +385,7 @@
       </div>
     </footer>
 
-    <div class="w-full py-4 ps-8 flex bg-[#3366cc]">
+    <div class="w-full py-4 ps-8 flex bg-[#4e56d3]">
       <a
         class="flex w-5/6 sm:w-[25%] md:w-[15%]"
         href="https://www.gov.co/"
