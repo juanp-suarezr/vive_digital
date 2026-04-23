@@ -275,7 +275,7 @@ onMounted(() => {
         </div>
 
         <!-- 2 parte -->
-        <div class="w-full overflow-hidden px-6 bg-gradient-to-b from-option2 to other text-parrafo"
+        <div class="w-full overflow-hidden px-6 bg-gradient-to-b from-[#4e56d3] to-white text-parrafo"
             data-aos="fade-up"
             :class="{ '!bg-gradient-to-b !from-black to-black !text-yellow-200 font-bold': isContrast }">
             <!-- texto e imagen -->
