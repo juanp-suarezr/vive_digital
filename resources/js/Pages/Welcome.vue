@@ -133,13 +133,13 @@ onMounted(() => {
                     }
                 },
                 color: {
-                    value: '#C20E1A'
+                    value: '#4e56d3'
                 },
                 shape: {
                     type: 'circle',
                     stroke: {
                         width: 0,
-                        color: '#C20E1A'
+                        color: '#4e56d3'
                     },
                     polygon: {
                         nb_sides: 5
@@ -169,7 +169,7 @@ onMounted(() => {
                 line_linked: {
                     enable: true,
                     distance: 150,
-                    color: '#E20613',
+                    color: '#aadd2c',
                     opacity: 0.4,
                     width: 1
                 },
@@ -275,18 +275,18 @@ onMounted(() => {
         </div>
 
         <!-- 2 parte -->
-        <div class="w-full overflow-hidden px-6 bg-gradient-to-b from-option2 to option1 text-parrafo"
+        <div class="w-full overflow-hidden px-6 bg-gradient-to-b from-option2 to other text-parrafo"
             data-aos="fade-up"
             :class="{ '!bg-gradient-to-b !from-black to-black !text-yellow-200 font-bold': isContrast }">
             <!-- texto e imagen -->
             <div class="flex flex-col md:flex-row md:grid grid-cols-8 gap-4 mt-8">
                 <!-- texto -->
-                <div class="col-span-3 flex justify-center items-center px-6 mb-4" :class="getLetterSize(letraSize)">
+                <div class="col-span-5 flex justify-center items-center px-6 mb-4" :class="getLetterSize(letraSize)">
                     Los centros tecnológicos Vive Digital ofrecen servicios como acceso a internet, capacitaciones en TIC y asesorías
                     en trámites electrónicos.
                 </div>
                 <!-- imagen -->
-                <div class="col-span-5 flex justify-center items-center m-auto px-4">
+                <div class="col-span-3 flex justify-center items-center m-auto px-4">
                     <figure>
                         <img class="w-full rounded-xl shadow-xl tilt-image" :src="puntoVive" alt="imagen de espacio digital"
                             title="Punto vive digital">
@@ -301,7 +301,7 @@ onMounted(() => {
             <svg class="curve" viewBox="0 0 370.417 79.375">
                 <path class="wave"
                     d="M-1.301 51.894C141.54 5.807 159.612 38.111 226.846 62.2c90.74 32.51 149.712-33.492 149.712-33.492v59.541H-1.302z"
-                    fill="#C20E1A" fill-rule="evenodd" />
+                    fill="#4e56d3" fill-rule="evenodd" />
             </svg>
 
         </section>

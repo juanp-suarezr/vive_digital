@@ -16,13 +16,13 @@ export default {
                 sans: ['Montserrat', ...defaultTheme.fontFamily.sans],
             },
             colors: {
-                primary: '#C20E1A', //Títulos, botones estado HOVER
-                secondary: '#E20613', //Llamados de acción, botones, texto seleccionado
-                option1: '#d3d8f7', //Fondo secciones
+                primary: '#4e56d3', //Títulos, botones estado HOVER
+                secondary: '#aadd2c', //Llamados de acción, botones, texto seleccionado
+                other: '#32332f', //Fondo secciones
                 option2: '#F2F2F2', //Fondo secciones 2
                 parrafo: '#585857', //Párrafo, fondo dropdowns en HOVER, tab laterales, encabezados tablas
                 azul: '#004884',
-                
+
             },
             // fontSize: {
             //     xs: ['0.75rem', { lineHeight: '1rem' }], // 12px
