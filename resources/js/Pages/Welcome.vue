@@ -256,23 +256,8 @@ onMounted(() => {
         <div id="inicio" class="w-full h-screen overflow-hidden">
             <div class="aa_sec flex items-center justify-center">
                 <div class="aa_txt text-center">
-                    <div class="aa_inner" :class="letraSize == -2 ? 'sm:text-2xl text-xl'
-                        : letraSize == -1 ? 'sm:text-4xl text-2xl'
-                            : letraSize == 1 ? 'sm:text-[4rem] text-4xl'
-                                : letraSize == 2 ? 'sm:text-[5rem] text-4xl' : 'sm:text-[3rem] text-4xl'">
-                        <span class="font-bold p-2 bg-azul text-white">CENTROS TECNOLÓGICOS</span>
-                        <div class="mt-2 sm:mt-5 md:mt-6">
-                            <span class="mt-2 font-bold p-2 bg-azul text-white">VIVE</span>
-                            <span class="font-bold p-2 bg-primary text-white">DIGITAL</span>
-                        </div>
-                        <h1 class="px-12 sm:px-8 md:px-16 text-parrafo mt-4 sm:mt-6 font-bold italic" :class="[{ '!text-yellow-200': isContrast },
-                        letraSize == -2 ? 'sm:text-lg text-xs'
-                            : letraSize == -1 ? 'sm:text-xl text-sm'
-                                : letraSize == 1 ? 'sm:text-4xl text-base'
-                                    : letraSize == 2 ? 'sm:text-6xl text-base' : 'sm:text-2xl text-base'
-                        ]">
-                            Empoderando Comunidades con Tecnología y Conocimiento
-                        </h1>
+                    <div class="aa_inner flex justify-center items-center">
+                        <img src="/assets/img/puntoViveDigital1.webp" alt="Logo Vive Digital" class="max-w-full h-auto max-h-64 sm:max-h-80 md:max-h-96 lg:max-h-[500px] w-auto object-contain" />
                     </div>
                     <div class="mt-8 z-30">
                         <Link href="/capacitaciones"
