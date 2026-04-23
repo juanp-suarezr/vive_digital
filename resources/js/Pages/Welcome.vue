@@ -261,10 +261,10 @@ onMounted(() => {
                     </div>
                     <div class="mt-8 z-30">
                         <Link href="/capacitaciones"
-                            class="bg-secondary text-white font-bold py-2 px-4 z-30 rounded mr-2 cursor-pointer text-2xl">
+                            class="bg-secondary text-parrafo font-bold py-2 px-4 z-30 rounded mr-2 cursor-pointer text-4xl">
                         Capacitaciones
                         </Link>
-                        <Link href="/register" class="bg-secondary text-white font-bold py-2 px-4 rounded text-2xl">
+                        <Link href="/register" class="bg-secondary text-parrafo font-bold py-2 px-4 rounded text-4xl">
                         Registro
                         </Link>
                     </div>
