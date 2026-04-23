@@ -131,7 +131,7 @@
                 <img
                   v-else
                   class="w-full sm:w-5/6"
-                  :src="logo"
+                  :src="logoBlanco"
                   alt="imagen de logo"
                   title="Alcaldía de Pereira"
                 />
