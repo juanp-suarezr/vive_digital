@@ -78,7 +78,7 @@
                     <!-- Descripción -->
                     <div class="mb-4">
                         <InputLabel for="descripcion"
-                            value="Descripción de la oferta (opcional - max 300 caracteres)" />
+                            value="Descripción de la oferta (opcional - max 600 caracteres)" />
                         <textarea id="descripcion" class="mt-1 block w-full" v-model="form.descripcion" required
                             placeholder="Descripción detallada de la oferta" autocomplete="descripcion"></textarea>
                         <p class="text-gray-500 text-sm mt-2" :class="{ 'text-red-500': isMaxPalabras1 }">
@@ -219,7 +219,7 @@ const palabrasEnDescripcion = computed(() => {
     const palabras = form.descripcion.trim();
     const result = palabras.length;
 
-    if (result >= 300) {
+    if (result >= 600) {
         isMaxPalabras1.value = true;
     } else {
         isMaxPalabras1.value = false;

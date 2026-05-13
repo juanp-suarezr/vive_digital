@@ -117,7 +117,7 @@
                         <div class="col-span-2">
                             <InputLabel
                                 for="descripcion"
-                                value="Descripción de la oferta (opcional - max 300 caracteres)"
+                                value="Descripción de la oferta (opcional - max 600 caracteres)"
                             />
                             <textarea
                                 id="descripcion"
@@ -375,7 +375,7 @@ const palabrasEnDescripcion = computed(() => {
     const palabras = form.descripcion.trim();
     const result = palabras.length;
 
-    if (result >= 300) {
+    if (result >= 600) {
         isMaxPalabras1.value = true;
     } else {
         isMaxPalabras1.value = false;

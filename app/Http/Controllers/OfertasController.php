@@ -77,7 +77,7 @@ class OfertasController extends Controller
             'nombre' => 'required|string',
 
             'horario' => 'max:100',
-            'descripcion' => 'max:300',
+            'descripcion' => 'max:600',
             'lugar' => 'string|max:100',
             'tipo' => 'string|max:100',
 
@@ -137,7 +137,7 @@ class OfertasController extends Controller
             'nombre' => 'required|string',
 
             'horario' => 'string|max:100',
-            'descripcion' => 'string|max:300',
+            'descripcion' => 'string|max:600',
             'lugar' => 'string|max:100',
             'estado',
             'tipo' => 'string|max:100',
