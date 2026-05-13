@@ -57,6 +57,7 @@ class InscritosXOfertaExports implements FromCollection, WithHeadings, WithStyle
             $ins->id_info_user = $ins->info_user->nombres . ' ' . $ins->info_user->apellidos ?? '';
             $ins->updated_at = $ins->info_user->telefono ?? '';
             $ins->genero = $ins->info_user->genero ?? ''; // ✅ aquí se asigna el género
+            $ins->anexo = $ins->info_user->anexo_documento ? url('/storage/' . $ins->info_user->anexo_documento) : 'Sin anexo';
             unset($ins->oferta); // Eliminar la relación ya que no la necesitamos en la exportación
             unset($ins->info_user);
 
@@ -80,7 +81,8 @@ class InscritosXOfertaExports implements FromCollection, WithHeadings, WithStyle
             'id_oferta',
             'Estado',
             'Fecha de creación',
-            'Género'
+            'Género',
+            'Enlace Anexo'
         ];
         // return array_keys($this->collection()->first()->toArray());
     }

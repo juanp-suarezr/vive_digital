@@ -75,6 +75,11 @@
                     <th
                       class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"
                     >
+                      Ver Anexo
+                    </th>
+                    <th
+                      class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600"
+                    >
                       Acciones
                     </th>
                   </tr>
@@ -136,6 +141,14 @@
                       >
                         {{ ins.estadoProceso }}
                       </p>
+                    </td>
+                    <td
+                      class="border-b border-gray-200 bg-white px-5 py-5 text-sm"
+                    >
+                      <button v-if="ins.info_user.anexo_documento" @click="viewAnexo(ins.info_user.anexo_documento)" class="text-blue-600 hover:text-blue-800 underline">
+                        Ver Anexo
+                      </button>
+                      <span v-else class="text-gray-500">Sin anexo</span>
                     </td>
                     <td
                       class="border-b border-gray-200 bg-white flex flex-wrap gap-x-2 sm:px-5 sm:py-5 p-2 sm:text-sm text-xs"
@@ -226,6 +239,25 @@
           </tr>
         </table>
       </div>
+
+      <!-- Modal para visor de anexo -->
+      <Dialog v-model:visible="showViewer" modal header="Visor de Anexo" class="w-11/12 max-w-4xl">
+        <div class="p-4">
+          <div v-if="fileType === 'image'" class="flex justify-center">
+            <img :src="`/storage/${selectedFile}`" alt="Anexo" class="max-w-full max-h-96 object-contain" />
+          </div>
+          <div v-else-if="fileType === 'pdf'" class="w-full h-96">
+            <iframe :src="`/storage/${selectedFile}`" class="w-full h-full border-0"></iframe>
+          </div>
+          <div v-else class="text-center">
+            <p class="mb-4">Este tipo de archivo no se puede visualizar en el navegador.</p>
+            <a :href="`/storage/${selectedFile}`" target="_blank" class="text-blue-600 hover:text-blue-800 underline">Descargar archivo</a>
+          </div>
+        </div>
+        <template #footer>
+          <button @click="closeViewer" class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">Cerrar</button>
+        </template>
+      </Dialog>
     </div>
   </AuthenticatedLayout>
 </template>
@@ -237,6 +269,7 @@ import AuthenticatedLayout from "@/Layouts/AuthenticatedLayout.vue";
 import Tag from "primevue/tag";
 import { ref, onMounted, watch, inject } from "vue";
 import Modal from "@/Components/Modal.vue";
+import Dialog from "primevue/dialog";
 import { CheckBadgeIcon, XCircleIcon } from "@heroicons/vue/24/solid";
 import SecondaryLink from "@/Components/SecondaryLink.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
@@ -407,5 +440,28 @@ const toggleSelectAll = (event) => {
   } else {
     selectedIds.value = [];
   }
+};
+
+const showViewer = ref(false);
+const selectedFile = ref('');
+const fileType = ref('');
+
+const viewAnexo = (anexoPath) => {
+  selectedFile.value = anexoPath;
+  const ext = anexoPath.split('.').pop().toLowerCase();
+  if (['jpg', 'jpeg', 'png'].includes(ext)) {
+    fileType.value = 'image';
+  } else if (ext === 'pdf') {
+    fileType.value = 'pdf';
+  } else {
+    fileType.value = 'other';
+  }
+  showViewer.value = true;
+};
+
+const closeViewer = () => {
+  showViewer.value = false;
+  selectedFile.value = '';
+  fileType.value = '';
 };
 </script>
