@@ -239,25 +239,65 @@
                                         for="identificacion"
                                         value="identificacion"
                                     />
-                                    <TextInput
-                                        id="identificacion"
-                                        type="number"
-                                        class="mt-1 block w-full p-0 sm:p-2 bg-gray-200"
-                                        :class="[
-                                            isContrast
-                                                ? '!text-yellow-200 font-bold bg-black'
-                                                : '',
-                                        ]"
-                                        v-model="form.identificacion"
-                                        disabled
-                                        autocomplete="identificacion"
-                                    />
-                                    <InputError
-                                        class="mt-1"
-                                        :message="form.errors.identificacion"
-                                    />
-                                </div>
-                            </div>
+                                     <TextInput
+                                         id="identificacion"
+                                         type="number"
+                                         class="mt-1 block w-full p-0 sm:p-2 bg-gray-200"
+                                         :class="[
+                                             isContrast
+                                                 ? '!text-yellow-200 font-bold bg-black'
+                                                 : '',
+                                         ]"
+                                         v-model="form.identificacion"
+                                         disabled
+                                         autocomplete="identificacion"
+                                     />
+                                     <InputError
+                                         class="mt-1"
+                                         :message="form.errors.identificacion"
+                                     />
+                                 </div>
+                             </div>
+
+                             <!-- Anexo documento solo si no está registrado -->
+                             <div v-if="!info_usuario" class="col-span-2 mb-4">
+                                 <InputLabel
+                                     :class="[
+                                         isContrast
+                                             ? '!text-yellow-200 font-bold'
+                                             : '',
+                                         letraSize == -2
+                                             ? '!sm:text-[0.65rem] !text-[0.55rem]'
+                                             : letraSize == -1
+                                             ? '!sm:text-xs !text-[0.65rem]'
+                                             : letraSize == 1
+                                             ? '!sm:text-lg !text-sm'
+                                             : letraSize == 2
+                                             ? '!sm:text-xl !text-base'
+                                             : '',
+                                     ]"
+                                     class="sm:text-sm text-xs"
+                                     for="anexo_documento"
+                                     value="Fotocopia de Cédula (PDF, JPG, PNG) *"
+                                 />
+                                 <input
+                                     id="anexo_documento"
+                                     type="file"
+                                     class="mt-1 block w-full p-0 sm:p-2 text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                                     :class="[
+                                         isContrast
+                                             ? '!text-yellow-200 font-bold bg-black'
+                                             : '',
+                                     ]"
+                                     @change="handleAnexoChange"
+                                     accept=".pdf,.jpg,.jpeg,.png"
+                                     required
+                                 />
+                                 <InputError
+                                     class="mt-1"
+                                     :message="form.errors.anexo_documento"
+                                 />
+                             </div>
                         </div>
 
                         <!-- direccion -->
@@ -802,9 +842,7 @@
                                         ? '!sm:text-xl !text-lg'
                                         : '',
                                 ]"
-                                >Acepto el tratamiento de mis datos personales
-                                para fines informativos de la Alcaldía de
-                                Pereira y la secretaría de las TICs</label
+                                >Conozco y Acepto la Política de Privacidad de Datos <a href="https://www.pereira.gov.co/publicaciones/38/politicas-de-privacidad-y-condiciones-de-uso/" target="_blank">politica</a></label
                             >
                             <InputError
                                 class="mt-1"
@@ -854,6 +892,19 @@
     </GuestLayout>
 
     <audio ref="infoAudio" :src="audioIntro"></audio>
+
+    <!-- Modal para cargar anexo -->
+    <Dialog v-model:visible="showModal" modal header="Cargar Fotocopia de Cédula" class="w-96">
+        <div class="p-4">
+            <p class="mb-4 text-gray-700">Por favor, cargue la fotocopia de su cédula en formato PDF, escaneado o imagen (JPG, PNG).</p>
+            <input type="file" @change="handleFileChange" accept=".pdf,.jpg,.jpeg,.png" class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100" />
+            <div v-if="selectedFile" class="mt-2 text-sm text-green-600">{{ selectedFile.name }}</div>
+            <div class="flex justify-end mt-6 gap-2">
+                <button @click="showModal = false" class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">Cancelar</button>
+                <button @click="uploadDocument" :disabled="!selectedFile" class="px-4 py-2 bg-primary text-white rounded hover:bg-primary-dark disabled:opacity-50">Cargar y Continuar</button>
+            </div>
+        </div>
+    </Dialog>
 </template>
 
 <script setup>
@@ -866,7 +917,7 @@ import TextInput from "@/Components/TextInput.vue";
 import { Head, Link, useForm, router, usePage } from "@inertiajs/vue3";
 import logoViveD from "../../../../public/assets/img/puntoViveDigital.webp";
 import Steps from "primevue/steps";
-import { ref, watch, inject } from "vue";
+import { ref, watch, inject, onMounted } from "vue";
 import Dialog from "primevue/dialog";
 import VueQrcode from "vue-qrcode";
 import { useToast } from "vue-toast-notification";
@@ -888,6 +939,8 @@ console.log(props.info);
 const isContrast = ref(usePage().props.accesibilidad.contraste);
 const letraSize = ref(usePage().props.accesibilidad.letra);
 const info_usuario = ref([]);
+
+
 
 watch(
     () => usePage().props.accesibilidad.contraste,
@@ -921,6 +974,7 @@ const form = useForm({
     nivel_estudio: "",
     id_oferta: props.info.id_oferta,
     checked: "",
+    anexo_documento: null,
 });
 
 //valida si ya se reprodujo el audio
@@ -1005,6 +1059,9 @@ const active = ref(0);
 const isValidate = ref(false);
 //abrir modal
 const visible = ref(false);
+//modal para anexo
+const showModal = ref(false);
+const selectedFile = ref(null);
 //SABER SI SE ACTIVA EL INPUT DE OTROS
 const IsNewGenero = ref(false);
 
@@ -1095,7 +1152,50 @@ const closeModal = () => {
     window.location.reload();
 };
 
-const submit = () => {
+const handleFileChange = (event) => {
+    selectedFile.value = event.target.files[0];
+};
+
+const handleAnexoChange = (event) => {
+    form.anexo_documento = event.target.files[0];
+};
+
+const uploadDocument = () => {
+    if (!selectedFile.value) return;
+
+    const formData = new FormData();
+    formData.append('anexo_documento', selectedFile.value);
+    formData.append('identificacion', props.info.identificacion);
+
+    axios.post('/updateAnexo', formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    }).then((response) => {
+        if (response.data.success) {
+            showModal.value = false;
+            // Actualizar info_usuario localmente
+            if (info_usuario.value) {
+                info_usuario.value.anexo_documento = 'uploaded';
+            }
+            // Proceder con el submit
+            submitForm();
+        } else {
+            $toast.open({
+                message: response.data.message || 'Error al cargar el documento.',
+                type: 'error',
+            });
+        }
+    }).catch((error) => {
+        console.error('Error uploading document:', error);
+        $toast.open({
+            message: 'Error al cargar el documento. Intente nuevamente.',
+            type: 'error',
+        });
+    });
+};
+
+const submitForm = () => {
     form.post(route("inscribirCurso"), {
         onSuccess: function () {
             swal({
@@ -1113,10 +1213,20 @@ const submit = () => {
         onError: function () {
             swal({
                 title: "Registro NO Guardado",
-                text: `Estamos teniendo inconvenientes al guardar el registro, por favor verificar si ya se registro en el curso de ${form.nombre_oferta} o vuelva a intentar más tarde.`,
+                text: `Estamos teniendo inconvenientes al guardar el registro, por favor verificar si ya se registro en el curso de ${props.info.nombre_oferta} o vuelva a intentar más tarde.`,
                 icon: "error",
             });
         },
     });
+};
+
+const submit = () => {
+    // Verificar si el usuario está registrado y si tiene anexo_documento
+    if (info_usuario.value && !info_usuario.value.anexo_documento) {
+        showModal.value = true;
+        return;
+    }
+    // Si no está registrado o ya tiene anexo, proceder
+    submitForm();
 };
 </script>

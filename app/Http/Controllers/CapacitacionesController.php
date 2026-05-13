@@ -138,15 +138,25 @@ class CapacitacionesController extends Controller
             'etnia' => 'required',
             'nivel_estudio' => 'required',
             'id_oferta' => 'required',
+            'anexo_documento' => 'nullable|file|mimes:pdf,jpg,jpeg,png|max:2048',
 
         ]);
 
         DB::transaction(function () use ($request) {
 
-
+            // Manejar el archivo anexo
+            $anexoPath = null;
+            if ($request->hasFile('anexo_documento')) {
+                $anexoPath = $request->file('anexo_documento')->store('anexos', 'public');
+            }
 
             // Verificar si ya existe un registro con la misma identificación en la tabla 'info_usuario'
             $existingUser = Info_usuario::where('identificacion', $request->identificacion)->first();
+
+            // Validar anexo para nuevos usuarios
+            if (!$existingUser && !$request->hasFile('anexo_documento')) {
+                return redirect()->back()->withErrors(['anexo_documento' => 'La fotocopia de la cédula es requerida para nuevos usuarios.']);
+            }
 
             if (!$existingUser) {
                 // Crear el registro en la tabla 'info_usuario' solo si no existe
@@ -164,6 +174,7 @@ class CapacitacionesController extends Controller
                     'condicion' => $request->condicion,
                     'etnia' => $request->etnia,
                     'nivel_estudio' => $request->nivel_estudio,
+                    'anexo_documento' => $anexoPath,
                 ]);
             } else {
                 // Actualizar el registro existente con la nueva información
@@ -180,6 +191,7 @@ class CapacitacionesController extends Controller
                     'condicion' => $request->condicion,
                     'etnia' => $request->etnia,
                     'nivel_estudio' => $request->nivel_estudio,
+                    'anexo_documento' => $anexoPath ?: $existingUser->anexo_documento,
                 ]);
             }
 

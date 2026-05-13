@@ -250,6 +250,7 @@ class RegistroController extends Controller
                     'etnia' => $user->etnia,
                     'nivel_estudio' => $user->nivel_estudio,
                     'dignatario' => $user->dignatario,
+
                 ]);
             }
             Log::info('registro', ['registro' => $user]);
@@ -337,5 +338,25 @@ class RegistroController extends Controller
         $endDate = RequestFacade::input('fecha_end');
 
         return Excel::download(new RegisterPoliticasExports($startDate, $endDate), 'register.xls', \Maatwebsite\Excel\Excel::XLS);
+    }
+
+    public function updateAnexo(Request $request)
+    {
+        $request->validate([
+            'identificacion' => 'required',
+            'anexo_documento' => 'required|file|mimes:pdf,jpg,jpeg,png|max:2048',
+        ]);
+
+        $user = Info_usuario::where('identificacion', $request->identificacion)->first();
+
+        if (!$user) {
+            return response()->json(['success' => false, 'message' => 'Usuario no encontrado'], 404);
+        }
+
+        $path = $request->file('anexo_documento')->store('anexos', 'public');
+        $user->anexo_documento = $path;
+        $user->save();
+
+        return response()->json(['success' => true]);
     }
 }

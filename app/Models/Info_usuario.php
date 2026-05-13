@@ -33,6 +33,7 @@ class Info_usuario extends Model
         'etnia',
         'nivel_estudio',
         'dignatario',
+        'anexo_documento',
 
     ];
 

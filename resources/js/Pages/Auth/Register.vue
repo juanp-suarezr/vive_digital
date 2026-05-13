@@ -854,10 +854,7 @@
                     ? '!sm:text-xl !text-lg'
                     : '',
                 ]"
-                >Acepto el tratamiento de mis datos personales para fines
-                informativos de la Alcaldía de Pereira y la secretaría de las
-                TICs</label
-              >
+                >Conozco y Acepto la Política de Privacidad de Datos <a href="https://www.pereira.gov.co/publicaciones/38/politicas-de-privacidad-y-condiciones-de-uso/" target="_blank">politica</a></label>
               <InputError class="mt-1" :message="form.errors.checked" />
             </div>
           </div>

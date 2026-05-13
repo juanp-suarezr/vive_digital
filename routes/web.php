@@ -88,6 +88,7 @@ Route::get('/home', function () {
 Route::post('registro', [RegistroController::class, 'create'])->name('registro');
 Route::get('/registrados', [RegistroController::class, 'index'])->name('registrados.index');
 Route::get('/searchRegistrado', [RegistroController::class, 'searchRegistrado'])->name('searchRegistrado');
+Route::post('/updateAnexo', [RegistroController::class, 'updateAnexo'])->name('updateAnexo');
 Route::get('register', [RegisteredUserController::class, 'create'])
     ->name('register');
 

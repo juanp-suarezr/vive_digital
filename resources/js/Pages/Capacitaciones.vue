@@ -171,38 +171,46 @@ const responsiveOptions = ref([
 
 //INSCRIPCIONES
 const submit = () => {
+    const user = props.info_usuario.find(item => item.identificacion == form.identificacion);
 
-    if (props.info_usuario.find(item => item.identificacion == form.identificacion)) {
-
-        form.post(route('puntos.store'), {
-        onSuccess: function () {
+    if (user) {
+        if (user.anexo_documento) {
+            // Usuario registrado con anexo: inscripción directa
+            form.post(route('puntos.store'), {
+                onSuccess: function () {
+                    visible.value = false;
+                    swal({
+                        title: "Registro Guardado",
+                        text: "proceso de Inscripción realizado, será notificado por Correo electrónico si es aprobado para empezar el curso o capacitación " + form.nombre_oferta,
+                        icon: "success"
+                    })
+                }, onError: function () {
+                    visible.value = false;
+                    swal({
+                        title: "Registro NO Guardado",
+                        text: `Estamos teniendo inconvenientes al guardar el registro, por favor verificar si ya se registro en el curso de ${form.nombre_oferta} o vuelva a intentar más tarde.`,
+                        icon: "error"
+                    })
+                }
+            });
+        } else {
+            // Usuario registrado sin anexo: redirigir para subir anexo
             visible.value = false;
-            swal({
-                title: "Registro Guardado",
-                text: "proceso de Inscripción realizado, será notificado por Correo electrónico si es aprobado para empezar el curso o capacitación " + form.nombre_oferta,
-                icon: "success"
-            })
-        }, onError: function () {
-            visible.value = false;
-            swal({
-                title: "Registro NO Guardado",
-                text: `Estamos teniendo inconvenientes al guardar el registro, por favor verificar si ya se registro en el curso de ${form.nombre_oferta} o vuelva a intentar más tarde.`,
-                icon: "error"
-            })
+            form.post(route('inscribir-capacitaciones'), {
+                onSuccess: () => {
+                    form.reset();
+                },
+            });
         }
-    });
-
     } else {
+        // Usuario no registrado: redirigir para registrarse
         visible.value = false;
         form.post(route('inscribir-capacitaciones'), {
-        onSuccess: () => {
-            form.reset(); // Solo se ejecuta si la petición es exitosa
-        },
-    });
-
+            onSuccess: () => {
+                form.reset();
+            },
+        });
     }
-
-
 };
 
 const formatField = value => {
