@@ -940,6 +940,31 @@ const isContrast = ref(usePage().props.accesibilidad.contraste);
 const letraSize = ref(usePage().props.accesibilidad.letra);
 const info_usuario = ref([]);
 
+onMounted(() => {
+    axios.get("/searchRegistrado", {
+        params: {
+            identificacion: props.info.identificacion,
+        },
+    }).then((response) => {
+        info_usuario.value = response.data.registrados;
+        // Llenar el form si el usuario existe
+        if (info_usuario.value) {
+            form.nombres = info_usuario.value.nombres || form.nombres;
+            form.apellidos = info_usuario.value.apellidos || form.apellidos;
+            form.edad = info_usuario.value.edad || form.edad;
+            form.tipo_documento = info_usuario.value.tipo_documento || form.tipo_documento;
+            form.direccion = info_usuario.value.direccion || form.direccion;
+            form.sector = info_usuario.value.sector || form.sector;
+            form.telefono = info_usuario.value.telefono || form.telefono;
+            form.email = info_usuario.value.email || form.email;
+            form.genero = info_usuario.value.genero || form.genero;
+            form.condicion = info_usuario.value.condicion || "NA";
+            form.etnia = info_usuario.value.etnia || "NA";
+            form.nivel_estudio = info_usuario.value.nivel_estudio || form.nivel_estudio;
+        }
+    });
+});
+
 
 
 watch(
