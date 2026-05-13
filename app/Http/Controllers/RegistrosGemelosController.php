@@ -61,22 +61,22 @@ class RegistrosGemelosController extends Controller
 
 
 
-    public function edit(Request $request)
+    public function edit($id)
     {
 
 
         return Inertia::render(
 
-            'registradosUnicos/Edit',
+            'RegistradosGemelos/Edit',
 
 
             [
-                'usuario' => Info_usuario::findOrFail($request->id),
+                'usuario' => Info_usuario::findOrFail($id),
             ]
         );
     }
 
-    public function update(Request $request)
+    public function update(Request $request, $id)
     {
         $data = $request->validate([
             'nombres' => 'required|string|max:100',
@@ -86,7 +86,7 @@ class RegistrosGemelosController extends Controller
             'identificacion' => 'required|max:20',
             'direccion' => 'required|string|max:100',
             'sector' => 'required',
-            'comuna' => '', // Asegurarse de que 'comuna' sea un string
+            'comuna' => 'required',
             'telefono' => 'required|max:15',
             'email' => 'required|string|lowercase|email|max:100',
             'genero' => 'required',
@@ -101,14 +101,11 @@ class RegistrosGemelosController extends Controller
         $data['comuna'] = $request->input('comuna.label'); // Asegurarse de que 'comuna' sea un string
 
         // Actualizar el modelo de usuario en la tabla info_usuario
-        $existingUser = Info_usuario::where('identificacion', $request->identificacion)->first();
-        if ($existingUser) {
-            $existingUser->fill($data)->save();
-        }
-
+        $existingUser = Info_usuario::findOrFail($id);
+        $existingUser->fill($data)->save();
 
         // Actualizar todos los registros en la tabla registros con la misma identificación
-        Registro::where('identificacion', $request->identificacion)->update([
+        Registro::where('identificacion', $existingUser->identificacion)->update([
             'nombres' => $data['nombres'],
             'apellidos' => $data['apellidos'],
             'edad' => $data['edad'],

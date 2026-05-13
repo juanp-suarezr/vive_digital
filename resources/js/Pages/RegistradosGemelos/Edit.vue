@@ -15,7 +15,7 @@ const props = defineProps({
 
 const breadcrumbLinks = [
     { url: '/registradosUnicos', text: 'listado de registros únicos' },
-    { url: '', text: 'Editar registrado -- '+props.usuario.id },
+    { url: '', text: 'Editar registrado -- '+(props.usuario?.id || 'N/A') },
 ];
 
 console.log(props.usuario);
@@ -26,7 +26,7 @@ console.log(props.usuario);
 
     <AuthenticatedLayout :breadCrumbLinks="breadcrumbLinks">
         <template #header>
-            Editar Registro -- {{  usuario.id }}
+            Editar Registro -- {{  usuario?.id || 'N/A' }}
         </template>
         <div class="py-2">
             <div class="overflow-hidden shadow-sm sm:rounded-lg space-y-6 w-full">

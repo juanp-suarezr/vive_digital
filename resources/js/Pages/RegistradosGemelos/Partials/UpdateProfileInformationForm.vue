@@ -103,7 +103,7 @@ const getComuna = (comuna) => {
 
 const submit = () => {
   console.log(user.value.id);
-  form.patch(route("registrados.update", { id: user.value.id }), {
+  form.patch(route("registradosUnicos.update", user.value.id), {
     onSuccess: () =>
       swal({
         title: "Registro Actualizado",
@@ -133,7 +133,7 @@ onMounted(() => {
           </p>
         </div>
         <div class="col-span-2 text-right">
-          <SecondaryLink :href="route('registrados.index')">
+          <SecondaryLink :href="route('registradosUnicos.index')">
             Regresar
           </SecondaryLink>
         </div>
