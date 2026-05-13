@@ -133,6 +133,11 @@
 
                                     <th
                                         class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
+                                        Ver Anexo
+                                    </th>
+
+                                    <th
+                                        class="border-b-2 border-gray-200 bg-gray-100 px-5 py-3 text-left text-xs font-semibold uppercase tracking-wider text-gray-600">
                                         Editar
                                     </th>
 
@@ -185,6 +190,13 @@
                                     </td>
                                     <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
                                         <p class="text-gray-900 whitespace-no-wrap">{{ user.tipo_servicio }}</p>
+                                    </td>
+
+                                    <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
+                                        <button v-if="user.anexo_documento" @click="viewAnexo(user.anexo_documento)" class="text-blue-600 hover:text-blue-800 underline">
+                                            Ver Anexo
+                                        </button>
+                                        <span v-else class="text-gray-500">Sin anexo</span>
                                     </td>
 
                                     <td class="border-b border-gray-200 bg-white px-5 py-5 text-sm">
@@ -321,6 +333,10 @@ const isToday = (fecha) => {
     // Comparar solo el año, mes y día
     console.log(formattedDate === formattedToday);
     return formattedDate === formattedToday;
+}
+
+const viewAnexo = (anexoPath) => {
+    window.open(`/storage/${anexoPath}`, '_blank');
 }
 
 

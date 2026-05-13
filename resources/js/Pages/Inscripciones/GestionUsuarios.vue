@@ -93,6 +93,7 @@
                                     class="px-5 py-3">Punto vive</th>
                                 <th class="px-5 py-3">Estado</th>
                                 <th class="px-5 py-3">Comentario</th>
+                                <th class="px-5 py-3">Ver Anexo</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -128,6 +129,12 @@
                                         <ChatBubbleBottomCenterTextIcon class="w-6 h-6" />
                                     </button>
 
+                                </td>
+                                <td class="px-3 py-5">
+                                    <button v-if="ins.info_user.anexo_documento" @click="viewAnexo(ins.info_user.anexo_documento)" class="text-blue-600 hover:text-blue-800 underline">
+                                        Ver Anexo
+                                    </button>
+                                    <span v-else class="text-gray-500">Sin anexo</span>
                                 </td>
                             </tr>
                         </tbody>
@@ -191,6 +198,25 @@
                     <Button label="Guardar" icon="pi pi-check" class="p-button-text" @click="saveComment" />
                 </div>
             </div>
+        </Dialog>
+
+        <!-- Modal para visor de anexo -->
+        <Dialog v-model:visible="showViewer" modal header="Visor de Anexo" class="w-11/12 max-w-4xl">
+            <div class="p-4">
+                <div v-if="fileType === 'image'" class="flex justify-center">
+                    <img :src="`/storage/${selectedFile}`" alt="Anexo" class="max-w-full max-h-96 object-contain" />
+                </div>
+                <div v-else-if="fileType === 'pdf'" class="w-full h-96">
+                    <iframe :src="`/storage/${selectedFile}`" class="w-full h-full border-0"></iframe>
+                </div>
+                <div v-else class="text-center">
+                    <p class="mb-4">Este tipo de archivo no se puede visualizar en el navegador.</p>
+                    <a :href="`/storage/${selectedFile}`" target="_blank" class="text-blue-600 hover:text-blue-800 underline">Descargar archivo</a>
+                </div>
+            </div>
+            <template #footer>
+                <button @click="closeViewer" class="px-4 py-2 bg-gray-300 text-gray-700 rounded hover:bg-gray-400">Cerrar</button>
+            </template>
         </Dialog>
 
     </AuthenticatedLayout>
@@ -446,6 +472,29 @@ const calcularTiempoEspera = (createdAt) => {
     }
 
     return { texto: `${dias} días`, color };
+};
+
+const showViewer = ref(false);
+const selectedFile = ref('');
+const fileType = ref('');
+
+const viewAnexo = (anexoPath) => {
+    selectedFile.value = anexoPath;
+    const ext = anexoPath.split('.').pop().toLowerCase();
+    if (['jpg', 'jpeg', 'png'].includes(ext)) {
+        fileType.value = 'image';
+    } else if (ext === 'pdf') {
+        fileType.value = 'pdf';
+    } else {
+        fileType.value = 'other';
+    }
+    showViewer.value = true;
+};
+
+const closeViewer = () => {
+    showViewer.value = false;
+    selectedFile.value = '';
+    fileType.value = '';
 };
 
 </script>
