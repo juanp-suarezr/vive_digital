@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\api\CentralDataController;
 use App\Http\Controllers\api\IndicadoresController;
 use App\Http\Controllers\api\RegistroController;
 use Illuminate\Http\Request;
@@ -44,3 +45,6 @@ Route::get('/registrados', [RegistroController::class, 'index']);
 Route::get('/indicadores', [IndicadoresController::class, 'index']);
 
 Route::post('login',[UserAuthController::class,'login']);
+
+Route::get('/persons/find', [CentralDataController::class, 'find']);
+Route::post('/persons/sync', [CentralDataController::class, 'sync']);

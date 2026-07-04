@@ -947,7 +947,7 @@ onMounted(() => {
         },
     }).then((response) => {
         info_usuario.value = response.data.registrados;
-        // Llenar el form si el usuario existe
+
         if (info_usuario.value) {
             form.nombres = info_usuario.value.nombres || form.nombres;
             form.apellidos = info_usuario.value.apellidos || form.apellidos;
@@ -961,6 +961,69 @@ onMounted(() => {
             form.condicion = info_usuario.value.condicion || "NA";
             form.etnia = info_usuario.value.etnia || "NA";
             form.nivel_estudio = info_usuario.value.nivel_estudio || form.nivel_estudio;
+        } else {
+            const tipoDoc = props.info.tipo_documento || "CC";
+            axios
+                .get("/api/persons/find", {
+                    params: {
+                        tipo_documento: tipoDoc,
+                        numero_documento: props.info.identificacion,
+                    },
+                })
+                .then((res) => {
+                    if (res.data.status && res.data.data && res.data.data.data) {
+                        const person = res.data.data.data;
+                        const fullName = person.nombre_completo || person.full_name || "";
+
+                        if (fullName) {
+                            const parts = fullName.trim().split(/\s+/);
+                            form.nombres = parts.slice(0, 2).join(" ");
+                            form.apellidos = parts.slice(2).join(" ");
+                        } else {
+                            form.nombres = person.nombres || form.nombres;
+                            form.apellidos = person.apellidos || form.apellidos;
+                        }
+
+                        form.tipo_documento = getTipoDoc(person.tipo_documento) || tipoDoc;
+
+                        if (person.fecha_nacimiento) {
+                            const birthDate = new Date(person.fecha_nacimiento);
+                            const today = new Date();
+                            let age = today.getFullYear() - birthDate.getFullYear();
+                            const monthDiff = today.getMonth() - birthDate.getMonth();
+                            if (
+                                monthDiff < 0 ||
+                                (monthDiff === 0 && today.getDate() < birthDate.getDate())
+                            ) {
+                                age--;
+                            }
+                            form.edad = age;
+                        }
+
+                        if (person.genero) {
+                            const generoMap = {
+                                M: "Masculino",
+                                F: "Femenino",
+                                m: "Masculino",
+                                f: "Femenino",
+                            };
+                            form.genero = generoMap[person.genero] || person.genero;
+                        }
+
+                        form.email = person.correo || person.email ||form.email;
+                        form.telefono = person.telefono || person.celular ||form.telefono;
+                        form.direccion = person.direccion || form.direccion;
+
+                        form.condicion = person.condicion ||form.condicion;
+                        form.etnia = person.etnia ||form.etnia;
+                        form.nivel_estudio = person.nivel_estudio ||form.nivel_estudio;
+                        form.sector = person.barrio || form.sector;
+                        form.telefono = person.telefono || person.celular ||form.telefono;
+                    }
+                })
+                .catch((err) => {
+                    console.error("Error consultando Central Data:", err);
+                });
         }
     });
 });
@@ -987,7 +1050,7 @@ const form = useForm({
     nombres: "",
     apellidos: "",
     edad: 0,
-    tipo_documento: "",
+    tipo_documento: props.info.tipo_documento || "",
     identificacion: props.info.identificacion,
     direccion: "",
     sector: "",
@@ -1001,6 +1064,11 @@ const form = useForm({
     checked: "",
     anexo_documento: null,
 });
+
+const getTipoDoc = (codigo) => {
+    console.log(codigo);
+    return tipoIden.value.find((item) => item.code === codigo)?.nombre || "";
+};
 
 //valida si ya se reprodujo el audio
 const isFirstTime = ref(true);
@@ -1023,12 +1091,14 @@ const items = ref([
 //ITEMS DEL TIPO DE IDENTIFICACION
 const tipoIden = ref([
     { id: "0", nombre: "Tarjeta de Identidad", code: "TI" },
-    { id: "1", nombre: "Registro Civil", code: "R" },
+    { id: "1", nombre: "Registro Civil", code: "RC" },
     { id: "2", nombre: "Cédula Ciudadanía", code: "CC" },
     { id: "3", nombre: "Cédula Extranjería", code: "CE" },
-    { id: "4", nombre: "Pasaporte", code: "P" },
+    { id: "4", nombre: "Pasaporte", code: "PP" },
     { id: "5", nombre: "Permiso por Protección Temporal", code: "PPT" },
-    { id: "6", nombre: "Otro", code: "O" },
+    { id: "6", nombre: "Permiso Especial PEP", code: "PEP" },
+    { id: "7", nombre: "NIT", code: "NIT" },
+    { id: "8", nombre: "Otro", code: "O" },
 ]);
 //ITEMS DE CONDICIONES
 const condiciones = ref([
