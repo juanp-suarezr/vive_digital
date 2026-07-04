@@ -947,7 +947,7 @@ import TextInput from "@/Components/TextInput.vue";
 import { Head, Link, useForm, router, usePage } from "@inertiajs/vue3";
 import logoViveD from "../../../../public/assets/img/puntoViveDigital.webp";
 import Steps from "primevue/steps";
-import { ref, watch, inject } from "vue";
+import { ref, watch, inject, onMounted } from "vue";
 import Dialog from "primevue/dialog";
 import Select from "primevue/select";
 import VueQrcode from "vue-qrcode";
@@ -1023,7 +1023,6 @@ function debounce(func, wait) {
 
 const fetchUserInfo = debounce((newVal) => {
   if (newVal.length > 6) {
-    console.log(newVal);
     axios
       .get("/searchRegistrado", {
         params: {
@@ -1032,52 +1031,109 @@ const fetchUserInfo = debounce((newVal) => {
       })
       .then((response) => {
         info_usuario.value = response.data.registrados;
-        form.nombres = info_usuario.value
-          ? info_usuario.value.nombres
-          : form.nombres;
-        form.apellidos = info_usuario.value
-          ? info_usuario.value.apellidos
-          : form.apellidos;
-        form.edad = info_usuario.value ? info_usuario.value.edad : form.edad;
-        form.tipo_documento = info_usuario.value
-          ? info_usuario.value.tipo_documento
-          : form.tipo_documento;
-        form.direccion = info_usuario.value
-          ? info_usuario.value.direccion
-          : form.direccion;
-        form.sector = info_usuario.value
-          ? info_usuario.value.sector
-          : form.sector;
-        form.comuna = info_usuario.value
-          ? getComuna(info_usuario.value.comuna, info_usuario.value.sector)
-          : form.comuna;
-        form.telefono = info_usuario.value
-          ? info_usuario.value.telefono
-          : form.telefono;
-        form.email = info_usuario.value ? info_usuario.value.email : form.email;
-        form.genero = info_usuario.value
-          ? info_usuario.value.genero
-          : form.genero;
-        form.condicion = info_usuario.value
-          ? info_usuario.value.condicion
-          : "NA";
-        form.etnia = info_usuario.value ? info_usuario.value.etnia : "NA";
-        form.nivel_estudio = info_usuario.value
-          ? info_usuario.value.nivel_estudio
-          : form.nivel_estudio;
-        form.codePunto = info_usuario.value
-          ? info_usuario.value.codePunto
-          : form.codePunto;
-        form.checked = info_usuario.value ? true : form.checked;
-        form.tipo_servicio = info_usuario.value
-          ? info_usuario.value.tipo_servicio
-          : form.tipo_servicio;
+
+        if (info_usuario.value) {
+          form.nombres = info_usuario.value.nombres || form.nombres;
+          form.apellidos = info_usuario.value.apellidos || form.apellidos;
+          form.edad = info_usuario.value.edad || form.edad;
+          form.tipo_documento = info_usuario.value.tipo_documento || form.tipo_documento;
+          form.direccion = info_usuario.value.direccion || form.direccion;
+          form.sector = info_usuario.value.sector || form.sector;
+          form.comuna = info_usuario.value
+            ? getComuna(info_usuario.value.comuna, info_usuario.value.sector)
+            : form.comuna;
+          form.telefono = info_usuario.value.telefono || form.telefono;
+          form.email = info_usuario.value.email || form.email;
+          form.genero = info_usuario.value.genero || form.genero;
+          form.condicion = info_usuario.value.condicion || "NA";
+          form.etnia = info_usuario.value.etnia || "NA";
+          form.nivel_estudio = info_usuario.value.nivel_estudio || form.nivel_estudio;
+          form.codePunto = info_usuario.value
+            ? info_usuario.value.codePunto
+            : form.codePunto;
+          form.checked = info_usuario.value ? true : form.checked;
+          form.tipo_servicio = info_usuario.value
+            ? info_usuario.value.tipo_servicio
+            : form.tipo_servicio;
+        } else {
+          const tipoDoc = form.tipo_documento || "CC";
+          axios
+            .get("/api/persons/find", {
+              params: {
+                tipo_documento: tipoDoc,
+                numero_documento: newVal,
+              },
+            })
+            .then((res) => {
+              if (res.data.status && res.data.data && res.data.data.data) {
+                const person = res.data.data.data;
+                const fullName = person.nombre_completo || person.full_name || "";
+
+                if (fullName) {
+                  const parts = fullName.trim().split(/\s+/);
+                  form.nombres = parts.slice(0, 2).join(" ");
+                  form.apellidos = parts.slice(2).join(" ");
+                } else {
+                  form.nombres = person.nombres || form.nombres;
+                  form.apellidos = person.apellidos || form.apellidos;
+                }
+
+                form.tipo_documento = getTipoDoc(person.tipo_documento) || tipoDoc;
+
+                if (person.fecha_nacimiento) {
+                  const birthDate = new Date(person.fecha_nacimiento);
+                  const today = new Date();
+                  let age = today.getFullYear() - birthDate.getFullYear();
+                  const monthDiff = today.getMonth() - birthDate.getMonth();
+                  if (
+                    monthDiff < 0 ||
+                    (monthDiff === 0 && today.getDate() < birthDate.getDate())
+                  ) {
+                    age--;
+                  }
+                  form.edad = age;
+                }
+
+                if (person.genero) {
+                  const generoMap = {
+                    M: "Masculino",
+                    F: "Femenino",
+                    m: "Masculino",
+                    f: "Femenino",
+                  };
+                  form.genero = generoMap[person.genero] || person.genero;
+                }
+
+                form.email = person.correo || person.email || form.email;
+                form.telefono = person.telefono || person.celular || form.telefono;
+                form.direccion = person.direccion || form.direccion;
+
+                if (person.comuna) {
+                  form.comuna = getComuna(person.comuna, person.barrio || person.sector);
+                }
+
+                form.condicion = person.condicion || form.condicion;
+                form.etnia = person.etnia || form.etnia;
+                form.nivel_estudio = person.nivel_estudio || form.nivel_estudio;
+                form.sector = person.barrio || person.sector || form.sector;
+                form.telefono = person.telefono || person.celular || form.telefono;
+
+                if (person.codePunto) {
+                  form.codePunto = person.codePunto;
+                }
+                form.checked = true;
+              }
+            })
+            .catch((err) => {
+              console.error("Error consultando Central Data:", err);
+            });
+        }
       })
       .catch((error) => {
         console.error("Error loading:", error);
       });
   }
-}, 300); // 300 ms debounce delay
+}, 300);
 
 watch(
   () => form.identificacion,
@@ -1260,6 +1316,11 @@ const getComuna = (comuna, sector) => {
   console.log("Comuna encontrada:", comunaEncontrada);
 
   return comunaEncontrada ? comunaEncontrada : "";
+};
+
+const getTipoDoc = (codigo) => {
+  console.log(codigo);
+  return tipoIden.value.find((item) => item.code === codigo)?.nombre || "";
 };
 
 const closeModal = () => {
