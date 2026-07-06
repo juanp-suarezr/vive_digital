@@ -1163,12 +1163,14 @@ const items = ref([
 //ITEMS DEL TIPO DE IDENTIFICACION
 const tipoIden = ref([
   { id: "0", nombre: "Tarjeta de Identidad", code: "TI" },
-  { id: "1", nombre: "Registro Civil", code: "R" },
+  { id: "1", nombre: "Registro Civil", code: "RC" },
   { id: "2", nombre: "Cédula Ciudadanía", code: "CC" },
   { id: "3", nombre: "Cédula Extranjería", code: "CE" },
-  { id: "4", nombre: "Pasaporte", code: "P" },
+  { id: "4", nombre: "Pasaporte", code: "PP" },
   { id: "5", nombre: "Permiso por Protección Temporal", code: "PPT" },
-  { id: "6", nombre: "Otro", code: "O" },
+  { id: "6", nombre: "Permiso Especial PEP", code: "PEP" },
+  { id: "7", nombre: "NIT", code: "NIT" },
+  { id: "8", nombre: "Otro", code: "O" },
 ]);
 //ITEMS DE CONDICIONES
 const condiciones = ref([

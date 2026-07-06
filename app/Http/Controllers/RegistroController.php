@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\RegisterExports;
 use App\Exports\RegisterPoliticasExports;
+use App\Services\CentralDataService;
 use Illuminate\Support\Facades\Request as RequestFacade;
 use App\Http\Controllers\Controller;
 use App\Models\Info_usuario;
@@ -25,6 +26,12 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class RegistroController extends Controller
 {
+    protected CentralDataService $service;
+
+    public function __construct(CentralDataService $service)
+    {
+        $this->service = $service;
+    }
     public function index()
     {
 
@@ -253,11 +260,41 @@ class RegistroController extends Controller
 
                 ]);
             }
-            Log::info('registro', ['registro' => $user]);
+            
             // event(new Registered($user));
         });
 
-
+        //Guarda datos en Central Data API
+        try {
+            $result = $this->service->sync([
+                'tipo_documento'    => $this->getTipoDocumentoDataCenter($request->tipo_documento),
+                'numero_documento'  => $request->identificacion,
+                'nombres'           => trim($request->nombres),
+                'apellidos'         => trim($request->apellidos),
+                'fecha_nacimiento'  => $this->getDateDataCenter($request->edad),
+                'edad' => $request->edad,
+                'genero'            => $this->getGeneroDataCenter($request->genero),
+                'dignatario'        => $request->dignatario,
+                'condicion'         => $this->getNombreCondicionDataCenter($request->condicion),
+                'etnia'             => $this->getNombreEtniaDataCenter($request->etnia),
+                'nivel_estudio'     => $this->getNombreNivelEstudioDataCenter($request->nivel_estudio),
+                'correo'            => $request->email,
+                'telefono'          => $request->telefono,
+                'comuna'            => $request->input('comuna.label'),
+                'barrio'            => $request->sector,
+                'direccion'         => [
+                    'via principal' => trim($request->direccion),
+                    'municipio'     => $request->municipio ?? ($request->comuna != 'Otro' ? 'Pereira' : ''),
+                    'departamento'  => $request->departamento ?? ($request->comuna != 'Otro' ? 'Risaralda' : ''),
+                ],
+            ]);
+            Log::info('Sync Central Data', ['result' => $result]);
+        } catch (\Throwable $e) {
+            Log::error('Error sincronizando con Central Data', [
+                'identificacion' => $request->identificacion,
+                'error' => $e->getMessage(),
+            ]);
+        }
 
         return redirect()->route('register');
     }
@@ -359,4 +396,84 @@ class RegistroController extends Controller
 
         return response()->json(['success' => true]);
     }
+
+    //METODOS DATA CENTER
+    private function getTipoDocumentoDataCenter(string $tipo): ?string
+    {
+        $map = [
+            'Tarjeta de Identidad' => 'TI',
+            'Registro Civil' => 'RC',
+            'Cédula Ciudadanía' => 'CC',
+            'Cédula Extranjería' => 'CE',
+            'Pasaporte' => 'PP',
+            'Permiso por Protección Temporal' => 'PPT',
+            'Permiso Especial PEP' => 'PEP',
+            'NIT' => 'NIT',
+            'Otro' => 'O',
+        ];
+
+        return $map[$tipo] ?? null;
+    }
+
+    private function getGeneroDataCenter($genero): ?string
+    {
+        return match ($genero) {
+            'Masculino' => 'M',
+            'Femenino'  => 'F',
+            'Otro'      => 'O',
+            default     => null,
+        };
+    }
+
+    private function getDateDataCenter($edad) {
+        $fecha = date('Y-m-d', strtotime('-' . $edad . ' years'));
+        return $fecha;
+    } 
+
+    private function getNombreEtniaDataCenter(string $code): ?string
+    {
+        $map = [
+            'NA'         => 'No aplica',
+            'mestizo'    => 'Mestizo',
+            'afro'       => 'Afrodescendiente',
+            'indigena'   => 'Indígena',
+            'palanquero' => 'Palanquero',
+            'rom'        => 'ROM',
+        ];
+
+        return $map[$code] ?? null;
+    }
+
+    private function getNombreNivelEstudioDataCenter(string $code): ?string
+    {
+        $map = [
+            'NA'           => 'Ninguno',
+            'primaria'     => 'Primaria',
+            'secundaria'   => 'Secundaria',
+            'tecnico'      => 'Tecnico',
+            'tecnologico'  => 'Tecnologico',
+            'universitario'=> 'Universitario',
+            'postgrado'    => 'Postgrado',
+        ];
+
+        return $map[$code] ?? null;
+    }
+
+    private function getNombreCondicionDataCenter(string $code): ?string
+    {
+        $map = [
+            'NA'              => 'Sin condición',
+            'discapacitado'   => 'Persona con discapacidad',
+            'desplazados'     => 'Desplazados',
+            'victimasConfArm' => 'Victimas',
+            'mujerCabHogar'   => 'Mujer cabeza de hogar',
+            'hombreCabHogar'  => 'Padre cabeza de hogar',
+            'habitanteCalle'  => 'Habitante de calle',
+            'migrante'        => 'Migrante',
+        ];
+
+        return $map[$code] ?? null;
+    }
+    
+         
 }
