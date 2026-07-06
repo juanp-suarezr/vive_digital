@@ -288,7 +288,7 @@ class RegistroController extends Controller
                     'departamento'  => $request->departamento ?? ($request->comuna != 'Otro' ? 'Risaralda' : ''),
                 ],
             ]);
-            Log::info('Sync Central Data', ['result' => $result]);
+            
         } catch (\Throwable $e) {
             Log::error('Error sincronizando con Central Data', [
                 'identificacion' => $request->identificacion,
